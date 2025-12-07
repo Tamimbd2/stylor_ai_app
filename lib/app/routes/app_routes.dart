@@ -3,7 +3,7 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
-  static final AUTH_LOGIN = _Paths.AUTH + _Paths.LOGIN;
+  static const AUTH_LOGIN = _Paths.AUTH_LOGIN;
   static const SPLASH = _Paths.SPLASH;
   static const ONBOARDING = _Paths.ONBOARDING;
 }
