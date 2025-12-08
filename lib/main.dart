@@ -14,14 +14,21 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Outfit App',
       debugShowCheckedModeBanner: false,
+
       theme: ThemeData(
         fontFamily: "Poppins",
         useMaterial3: true,
         primarySwatch: Colors.blue,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
+
+      // 🔥 Start Screen (Splash)
       initialRoute: AppPages.INITIAL,
+
+      // 🔥 All routes defined here
       getPages: AppPages.routes,
+
+      // 🔥 Called if a route doesn't exist
       unknownRoute: GetPage(
         name: '/notfound',
         page: () => const NotFoundPage(),
