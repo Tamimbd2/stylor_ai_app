@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Outfit App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: "Poppins",
         useMaterial3: true,
         primarySwatch: Colors.blue,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
