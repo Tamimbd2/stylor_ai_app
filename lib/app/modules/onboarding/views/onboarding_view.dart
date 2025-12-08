@@ -70,7 +70,9 @@ class OnboardingView extends GetView<OnboardingController> {
               text: "Get Started",
               textColor: AppColors.primaryLight,
               backgroundColor: AppColors.primaryDark,
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed('/signup');
+              },
 
             ),
 
@@ -80,7 +82,9 @@ class OnboardingView extends GetView<OnboardingController> {
               text: "Login",
               textColor: Colors.black,
               backgroundColor: AppColors.primaryLight,
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed('/auth-login');
+              },
               withBorder: true,
 
             ),

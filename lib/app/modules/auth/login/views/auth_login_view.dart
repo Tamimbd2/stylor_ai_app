@@ -186,9 +186,29 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildSocialButton(icon: Icons.g_mobiledata),
+                    _buildSocialButton(
+                      icon: Image.asset(
+                        'assets/icons/google.png',
+                        width: 22,
+                        height: 22,
+                      ),
+                      label: 'Google',
+                      onTap: () {
+                        // Handle Google sign in
+                      },
+                    ),
                     const SizedBox(width: 16),
-                    _buildSocialButton(icon: Icons.apple),
+                    _buildSocialButton(
+                      icon: Image.asset(
+                        'assets/icons/apple.png',
+                        width: 22,
+                        height: 22,
+                      ),
+                      label: 'Apple',
+                      onTap: () {
+                        // Handle Apple sign in
+                      },
+                    ),
                   ],
                 ),
 
@@ -289,19 +309,23 @@ class _AuthLoginViewState extends State<AuthLoginView> {
   /// ------------------------------
   /// SOCIAL BUTTON
   /// ------------------------------
-  Widget _buildSocialButton({required IconData icon}) {
+  Widget _buildSocialButton({
+    required Widget icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
     return InkWell(
       borderRadius: BorderRadius.circular(50),
-      onTap: () {},
+      onTap: onTap,
       child: Container(
         width: 56,
         height: 56,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
+          color: Colors.white,
           border: Border.all(color: Colors.grey[300]!),
         ),
-        child: Icon(icon, size: 32, color: Colors.black),
+        child: Center(child: icon),
       ),
     );
-  }
-}
+  }}
