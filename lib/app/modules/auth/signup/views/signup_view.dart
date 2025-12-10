@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../../../../core/color.dart';
 import '../../../../../widgets/primary_button.dart';
+import '../../../personalize/views/personalize_view.dart' hide AppButton;
 import '../controllers/signup_controller.dart';
 
 class SignupView extends StatefulWidget {
@@ -249,7 +250,10 @@ class _SignupViewState extends State<SignupView> {
                     text: _isLoading ? "Signing Up..." : "Sign Up",
                     textColor: AppColors.primaryLight,
                     backgroundColor: AppColors.primaryDark,
-                    onPressed: (){}
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PersonalizeView()));
+                    }
+
                   ),
 
                   const SizedBox(height: 24),
