@@ -53,7 +53,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PERSONALIZE,
-      page: () => const PersonalizeView(),
+      page: () =>  PersonalizeView(),
       binding: PersonalizeBinding(),
     ),
     GetPage(

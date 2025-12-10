@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../widgets/primary_button.dart';
+import '../../shapeselect/views/shapeselect_view.dart';
 import '../controllers/filter_screen_controller.dart';
 
 class FilterScreenView extends GetView<FilterScreenController> {
@@ -138,7 +139,9 @@ class FilterScreenView extends GetView<FilterScreenController> {
                   text: "See Outfit Matches",
                   textColor: Colors.white,
                   backgroundColor: const Color(0xFF060017),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> ShapeselectView()));
+                  },
                 ),
                 const SizedBox(height: 20),
               ],

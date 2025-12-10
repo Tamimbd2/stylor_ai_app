@@ -1,12 +1,51 @@
 import 'package:get/get.dart';
 
 class PersonalizeController extends GetxController {
-  //TODO: Implement PersonalizeController
+  // Date picker
+  final selectedDate = Rx<DateTime?>(null);
 
-  final count = 0.obs;
+  // Gender selection
+  final selectedGender = Rx<String?>(null);
+
+  // Country selection
+  final selectedCountry = Rx<String?>(null);
+
+  // List of countries
+  final countries = <String>[
+    'Belgium',
+    'Afghanistan',
+    'Albania',
+    'Algeria',
+    'Andorra',
+    'Angola',
+    'Argentina',
+    'Australia',
+    'Austria',
+    'Azerbaijan',
+    'Bahamas',
+    'Bahrain',
+    'Bangladesh',
+    'Barbados',
+    'Belarus',
+    'Brazil',
+    'Canada',
+    'China',
+    'France',
+    'Germany',
+    'India',
+    'Japan',
+    'United Kingdom',
+    'United States',
+    'Bangladesh',
+  ].obs;
+
   @override
   void onInit() {
     super.onInit();
+    // Set default date
+    selectedDate.value = DateTime(2000, 4, 22);
+    selectedGender.value = 'Male';
+    selectedCountry.value = 'Belgium';
   }
 
   @override
@@ -19,5 +58,41 @@ class PersonalizeController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  // Format date to display
+  String getFormattedDate() {
+    if (selectedDate.value == null) return 'Select Date';
+    final date = selectedDate.value!;
+    return '${date.day.toString().padLeft(2, '0')} / ${date.month.toString().padLeft(2, '0')} / ${date.year}';
+  }
+
+  // Get country flag emoji
+  String getCountryFlag(String country) {
+    const countryFlags = {
+      'Belgium': '🇧🇪',
+      'Afghanistan': '🇦🇫',
+      'Albania': '🇦🇱',
+      'Algeria': '🇩🇿',
+      'Andorra': '🇦🇩',
+      'Angola': '🇦🇴',
+      'Argentina': '🇦🇷',
+      'Australia': '🇦🇺',
+      'Austria': '🇦🇹',
+      'Azerbaijan': '🇦🇿',
+      'Bahamas': '🇧🇸',
+      'Bahrain': '🇧🇭',
+      'Bangladesh': '🇧🇩',
+      'Barbados': '🇧🇧',
+      'Belarus': '🇧🇾',
+      'Brazil': '🇧🇷',
+      'Canada': '🇨🇦',
+      'China': '🇨🇳',
+      'France': '🇫🇷',
+      'Germany': '🇩🇪',
+      'India': '🇮🇳',
+      'Japan': '🇯🇵',
+      'United Kingdom': '🇬🇧',
+      'United States': '🇺🇸',
+    };
+    return countryFlags[country] ?? '🌍';
+  }
 }
