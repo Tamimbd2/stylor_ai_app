@@ -58,7 +58,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.FILTER_SCREEN,
-      page: () => const FilterScreenView(),
+      page: () => FilterScreenView(),
       binding: FilterScreenBinding(),
     ),
     GetPage(
