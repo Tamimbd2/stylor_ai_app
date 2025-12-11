@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import '../controllers/favorite_controller.dart';
 
 class FavoriteView extends GetView<FavoriteController> {
-  const FavoriteView({super.key});
-
+  FavoriteView({super.key});
+  final FavoriteController controller = Get.put(FavoriteController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,96 +41,101 @@ class FavoriteView extends GetView<FavoriteController> {
               const SizedBox(height: 24),
 
               // Toggle Buttons (Product / Outfit)
-              Obx(() => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () => controller.isOutfitSelected.value = false,
-                        child: Container(
-                          height: 56,
-                          decoration: BoxDecoration(
-                            color: !controller.isOutfitSelected.value
-                                ? const Color(0xFF060017)
-                                : Colors.white,
-                            border: Border.all(
-                              color: const Color(0xFFE8E8E8),
-                              width: 1,
+              Obx(
+                () => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () =>
+                              controller.isOutfitSelected.value = false,
+                          child: Container(
+                            height: 56,
+                            decoration: BoxDecoration(
+                              color: !controller.isOutfitSelected.value
+                                  ? const Color(0xFF060017)
+                                  : Colors.white,
+                              border: Border.all(
+                                color: const Color(0xFFE8E8E8),
+                                width: 1,
+                              ),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(12),
+                                bottomLeft: Radius.circular(12),
+                              ),
                             ),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              bottomLeft: Radius.circular(12),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Product',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: !controller.isOutfitSelected.value
-                                    ? Colors.white
-                                    : const Color(0xFF1C1C1E),
-                                fontSize: 18,
-                                fontFamily: 'Helvetica Neue',
-                                fontWeight: !controller.isOutfitSelected.value
-                                    ? FontWeight.w700
-                                    : FontWeight.w500,
-                                height: 1.40,
+                            child: Center(
+                              child: Text(
+                                'Product',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: !controller.isOutfitSelected.value
+                                      ? Colors.white
+                                      : const Color(0xFF1C1C1E),
+                                  fontSize: 18,
+                                  fontFamily: 'Helvetica Neue',
+                                  fontWeight: !controller.isOutfitSelected.value
+                                      ? FontWeight.w700
+                                      : FontWeight.w500,
+                                  height: 1.40,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () => controller.isOutfitSelected.value = true,
-                        child: Container(
-                          height: 56,
-                          decoration: BoxDecoration(
-                            color: controller.isOutfitSelected.value
-                                ? const Color(0xFF060017)
-                                : Colors.white,
-                            border: Border.all(
-                              color: const Color(0xFFE8E8E8),
-                              width: 1,
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => controller.isOutfitSelected.value = true,
+                          child: Container(
+                            height: 56,
+                            decoration: BoxDecoration(
+                              color: controller.isOutfitSelected.value
+                                  ? const Color(0xFF060017)
+                                  : Colors.white,
+                              border: Border.all(
+                                color: const Color(0xFFE8E8E8),
+                                width: 1,
+                              ),
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(12),
+                                bottomRight: Radius.circular(12),
+                              ),
                             ),
-                            borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(12),
-                              bottomRight: Radius.circular(12),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Outfit',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: controller.isOutfitSelected.value
-                                    ? Colors.white
-                                    : const Color(0xFF1C1C1E),
-                                fontSize: 18,
-                                fontFamily: 'Helvetica Neue',
-                                fontWeight: controller.isOutfitSelected.value
-                                    ? FontWeight.w700
-                                    : FontWeight.w500,
-                                height: 1.40,
+                            child: Center(
+                              child: Text(
+                                'Outfit',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: controller.isOutfitSelected.value
+                                      ? Colors.white
+                                      : const Color(0xFF1C1C1E),
+                                  fontSize: 18,
+                                  fontFamily: 'Helvetica Neue',
+                                  fontWeight: controller.isOutfitSelected.value
+                                      ? FontWeight.w700
+                                      : FontWeight.w500,
+                                  height: 1.40,
+                                ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              )),
+              ),
 
               const SizedBox(height: 24),
 
               // Content based on selection
-              Obx(() => controller.isOutfitSelected.value
-                  ? _buildOutfitList()
-                  : _buildProductList()),
+              Obx(
+                () => controller.isOutfitSelected.value
+                    ? _buildOutfitList()
+                    : _buildProductList(),
+              ),
 
               const SizedBox(height: 20),
             ],
@@ -194,12 +199,7 @@ class FavoriteView extends GetView<FavoriteController> {
               ),
               child: Stack(
                 children: [
-                  Center(
-                    child: Image.asset(
-                      imagePath,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
+                  Center(child: Image.asset(imagePath, fit: BoxFit.contain)),
                   Positioned(
                     left: 12,
                     top: 12,
@@ -255,7 +255,10 @@ class FavoriteView extends GetView<FavoriteController> {
                       children: [
                         Container(
                           height: 36,
-                          padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 5),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 36,
+                            vertical: 5,
+                          ),
                           decoration: BoxDecoration(
                             color: const Color(0xFF060017),
                             borderRadius: BorderRadius.circular(10),
@@ -363,7 +366,12 @@ class FavoriteView extends GetView<FavoriteController> {
             // Outfit Details
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(top: 12, right: 12, bottom: 12, left: 6),
+                padding: const EdgeInsets.only(
+                  top: 12,
+                  right: 12,
+                  bottom: 12,
+                  left: 6,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -382,7 +390,10 @@ class FavoriteView extends GetView<FavoriteController> {
                     ),
                     Container(
                       height: 36,
-                      padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 5),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 36,
+                        vertical: 5,
+                      ),
                       decoration: BoxDecoration(
                         color: const Color(0xFF060017),
                         borderRadius: BorderRadius.circular(10),

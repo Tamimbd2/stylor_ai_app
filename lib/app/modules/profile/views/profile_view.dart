@@ -41,10 +41,7 @@ class ProfileView extends GetView<ProfileController> {
                         height: 66,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Colors.white,
-                            width: 0,
-                          ),
+                          border: Border.all(color: Colors.white, width: 0),
                           boxShadow: [
                             BoxShadow(
                               color: const Color(0x0F101828),
@@ -232,11 +229,7 @@ class ProfileView extends GetView<ProfileController> {
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       child: Row(
         children: [
-          Icon(
-            icon,
-            size: 20,
-            color: const Color(0xFF49494B),
-          ),
+          Icon(icon, size: 20, color: const Color(0xFF49494B)),
           const SizedBox(width: 8),
           Text(
             title,
@@ -270,11 +263,7 @@ class ProfileView extends GetView<ProfileController> {
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
           if (hasArrow)
-            const Icon(
-              Icons.chevron_right,
-              size: 20,
-              color: Color(0xFF8D8D8F),
-            ),
+            const Icon(Icons.chevron_right, size: 20, color: Color(0xFF8D8D8F)),
         ],
       ),
     );
@@ -283,11 +272,7 @@ class ProfileView extends GetView<ProfileController> {
   Widget _buildDivider() {
     return const Padding(
       padding: EdgeInsets.symmetric(horizontal: 12),
-      child: Divider(
-        height: 1,
-        thickness: 1,
-        color: Color(0xFFF0F0F0),
-      ),
+      child: Divider(height: 1, thickness: 1, color: Color(0xFFF0F0F0)),
     );
   }
 }

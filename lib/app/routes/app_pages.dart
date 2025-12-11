@@ -39,7 +39,7 @@ class AppPages {
   AppPages._();
 
   // 🔥 App starting route
-  static const INITIAL = Routes.PROFILE;
+  static const INITIAL = Routes.SPLASH;
 
   static final routes = [
     // 🔥 Splash Screen
@@ -91,7 +91,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.FAVORITE,
-      page: () => const FavoriteView(),
+      page: () =>  FavoriteView(),
       binding: FavoriteBinding(),
     ),
     GetPage(

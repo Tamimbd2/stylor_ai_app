@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../output_outfit/views/output_outfit_view.dart';
+import '../../output_outfit/views/main_navigation_view.dart';
 import '../controllers/shapeselect_controller.dart';
 
 class ShapeselectView extends GetView<ShapeselectController> {
@@ -168,7 +168,12 @@ class ShapeselectView extends GetView<ShapeselectController> {
                       bottom: 12,
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>OutputOutfitView()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MainNavigationView(),
+                            ),
+                          );
                         },
                         child: Container(
                           width: 48,
