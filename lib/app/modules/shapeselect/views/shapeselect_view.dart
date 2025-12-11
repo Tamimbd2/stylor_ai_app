@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../output_outfit/views/output_outfit_view.dart';
 import '../controllers/shapeselect_controller.dart';
 
 class ShapeselectView extends GetView<ShapeselectController> {
@@ -165,30 +166,35 @@ class ShapeselectView extends GetView<ShapeselectController> {
                     Positioned(
                       right: 12,
                       bottom: 12,
-                      child: Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            width: 1,
-                            color: const Color(0xFFF4F4F4),
-                          ),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0x0F101828),
-                              blurRadius: 64,
-                              offset: Offset(0, 32),
-                              spreadRadius: -12,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>OutputOutfitView()));
+                        },
+                        child: Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              width: 1,
+                              color: const Color(0xFFF4F4F4),
                             ),
-                          ],
-                        ),
-                        child: Image.asset(
-                          'assets/icons/arrow.png',
-                          width: 20,
-                          height: 20,
-                          color: const Color(0xFF1C1C1E),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0x0F101828),
+                                blurRadius: 64,
+                                offset: Offset(0, 32),
+                                spreadRadius: -12,
+                              ),
+                            ],
+                          ),
+                          child: Image.asset(
+                            'assets/icons/arrow.png',
+                            width: 20,
+                            height: 20,
+                            color: const Color(0xFF1C1C1E),
+                          ),
                         ),
                       ),
                     ),
