@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import '../modules/auth/login/bindings/auth_login_binding.dart';
 import '../modules/auth/login/views/auth_login_view.dart';
 import '../modules/auth/signup/bindings/signup_binding.dart';
@@ -32,7 +31,6 @@ import '../modules/termsAndConditions/bindings/terms_and_conditions_binding.dart
 import '../modules/termsAndConditions/views/terms_and_conditions_view.dart';
 import '../modules/wardrobe/bindings/wardrobe_binding.dart';
 import '../modules/wardrobe/views/wardrobe_view.dart';
-
 part 'app_routes.dart';
 
 class AppPages {
