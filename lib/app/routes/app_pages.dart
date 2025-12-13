@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+
 import '../modules/auth/login/bindings/auth_login_binding.dart';
 import '../modules/auth/login/views/auth_login_view.dart';
 import '../modules/auth/signup/bindings/signup_binding.dart';
@@ -27,10 +28,13 @@ import '../modules/shapeselect/bindings/shapeselect_binding.dart';
 import '../modules/shapeselect/views/shapeselect_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
+import '../modules/takePhoto/bindings/take_photo_binding.dart';
+import '../modules/takePhoto/views/take_photo_view.dart';
 import '../modules/termsAndConditions/bindings/terms_and_conditions_binding.dart';
 import '../modules/termsAndConditions/views/terms_and_conditions_view.dart';
 import '../modules/wardrobe/bindings/wardrobe_binding.dart';
 import '../modules/wardrobe/views/wardrobe_view.dart';
+
 part 'app_routes.dart';
 
 class AppPages {
@@ -89,7 +93,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.FAVORITE,
-      page: () =>  FavoriteView(),
+      page: () => FavoriteView(),
       binding: FavoriteBinding(),
     ),
     GetPage(
@@ -126,6 +130,11 @@ class AppPages {
       name: _Paths.PRIVACY_POLICY,
       page: () => const PrivacyPolicyView(),
       binding: PrivacyPolicyBinding(),
+    ),
+    GetPage(
+      name: _Paths.TAKE_PHOTO,
+      page: () => TakePhotoView(),
+      binding: TakePhotoBinding(),
     ),
   ];
 }

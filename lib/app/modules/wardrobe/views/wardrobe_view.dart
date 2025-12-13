@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../takePhoto/views/take_photo_view.dart';
 import '../controllers/wardrobe_controller.dart';
 
 class WardrobeView extends GetView<WardrobeController> {
@@ -86,7 +87,9 @@ class WardrobeView extends GetView<WardrobeController> {
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> TakePhotoView()));
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF060017),
                     shape: RoundedRectangleBorder(

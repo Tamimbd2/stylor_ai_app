@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../language/views/language_view.dart';
+import '../../privacyPolicy/views/privacy_policy_view.dart';
+import '../../termsAndConditions/views/terms_and_conditions_view.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
@@ -146,12 +149,19 @@ class ProfileView extends GetView<ProfileController> {
                         title: 'Notification',
                         hasSwitch: true,
                         switchValue: true,
+                        onTap: () {
+
+                        },
                       ),
                       _buildDivider(),
                       _buildSettingItem(
                         icon: Icons.lock_outline,
                         title: 'Privacy',
                         hasArrow: true,
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>PrivacyPolicyView()));
+                          // Navigate to Privacy settings
+                        },
                       ),
                       _buildDivider(),
                       _buildSettingItem(
@@ -159,18 +169,30 @@ class ProfileView extends GetView<ProfileController> {
                         title: 'Language',
                         trailingText: 'English',
                         hasArrow: true,
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>LanguageView()));
+                          // Navigate to Language selection
+                        },
                       ),
                       _buildDivider(),
                       _buildSettingItem(
                         icon: Icons.description_outlined,
                         title: 'Terms and condition',
                         hasArrow: true,
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>TermsAndConditionsView()));
+                          // Navigate to Terms and condition
+                        },
                       ),
                       _buildDivider(),
                       _buildSettingItem(
                         icon: Icons.share_outlined,
                         title: 'Share The app',
                         hasArrow: true,
+                        onTap: () {
+                          print('Share The app tapped');
+                          // Share app functionality
+                        },
                       ),
                     ],
                   ),
@@ -224,47 +246,57 @@ class ProfileView extends GetView<ProfileController> {
     bool hasArrow = false,
     bool hasSwitch = false,
     bool switchValue = false,
+    VoidCallback? onTap,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-      child: Row(
-        children: [
-          Icon(icon, size: 20, color: const Color(0xFF49494B)),
-          const SizedBox(width: 8),
-          Text(
-            title,
-            style: const TextStyle(
-              color: Color(0xFF49494B),
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              height: 1.56,
-            ),
-          ),
-          const Spacer(),
-          if (trailingText != null)
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        child: Row(
+          children: [
+            Icon(icon, size: 20, color: const Color(0xFF49494B)),
+            const SizedBox(width: 8),
             Text(
-              trailingText,
-              textAlign: TextAlign.right,
+              title,
               style: const TextStyle(
-                color: Color(0xFF8D8D8F),
+                color: Color(0xFF49494B),
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 height: 1.56,
               ),
             ),
-          if (hasSwitch)
-            Switch(
-              value: switchValue,
-              onChanged: (value) {},
-              activeColor: Colors.white,
-              activeTrackColor: const Color(0xFF060017),
-              inactiveThumbColor: Colors.white,
-              inactiveTrackColor: const Color(0xFFE8E8E8),
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-          if (hasArrow)
-            const Icon(Icons.chevron_right, size: 20, color: Color(0xFF8D8D8F)),
-        ],
+            const Spacer(),
+            if (trailingText != null)
+              Text(
+                trailingText,
+                textAlign: TextAlign.right,
+                style: const TextStyle(
+                  color: Color(0xFF8D8D8F),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  height: 1.56,
+                ),
+              ),
+            if (hasSwitch)
+              Switch(
+                value: switchValue,
+                onChanged: (value) {
+                  onTap?.call();
+                },
+                activeColor: Colors.white,
+                activeTrackColor: const Color(0xFF060017),
+                inactiveThumbColor: Colors.white,
+                inactiveTrackColor: const Color(0xFFE8E8E8),
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+            if (hasArrow)
+              const Icon(
+                Icons.chevron_right,
+                size: 20,
+                color: Color(0xFF8D8D8F),
+              ),
+          ],
+        ),
       ),
     );
   }
