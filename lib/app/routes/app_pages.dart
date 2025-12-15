@@ -83,7 +83,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.SHAPESELECT,
-      page: () => const ShapeselectView(),
+      page: () => ShapeselectView(),
       binding: ShapeselectBinding(),
     ),
     GetPage(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../shapeselect/views/shapeselect_view.dart';
 import 'output_outfit_view.dart';
 import '../../cart/views/cart_view.dart';
 import '../../wardrobe/views/wardrobe_view.dart';
@@ -17,10 +18,11 @@ class _MainNavigationViewState extends State<MainNavigationView> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    const OutputOutfitView(),
+     ShapeselectView(),
+     // OutputOutfitView(),
     const CartView(),
     const WardrobeView(),
-     FavoriteView(),
+          FavoriteView(),
     const ProfileView(),
   ];
 

@@ -1,356 +1,337 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../output_outfit/views/main_navigation_view.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/color.dart';
+import '../../output_outfit/views/output_outfit_view.dart';
 import '../controllers/shapeselect_controller.dart';
 
 class ShapeselectView extends GetView<ShapeselectController> {
-  const ShapeselectView({super.key});
-
+  ShapeselectView({super.key});
+  final ShapeselectController controller = Get.put(ShapeselectController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9F9),
+      backgroundColor: AppColors.background,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Header Section
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 16,
-                ),
-                child: Column(
-                  children: [
-                    // Title
-                    const Text(
-                      'Today\'s outfits',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color(0xFF1C1C1E),
-                        fontSize: 24,
-                        fontFamily: 'Helvetica Neue',
-                        fontWeight: FontWeight.w700,
-                        height: 1.40,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    // Subtitle
-                    const Text(
-                      'Your choices shape your AI style feed.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Color(0xFF101C2C),
-                        fontSize: 14,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w400,
-                        height: 1.56,
-                      ),
-                    ),
-                    const SizedBox(height: 14),
-                    // Weather and Location Info
-                    Container(
-                      width: double.infinity,
-                      height: 44,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                          width: 1,
-                          color: const Color(0xFFE8E8E8),
+        child: Obx(
+          () => controller.showOutfitDetails.value
+              ? OutputOutfitView()
+              : SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      // Header Section
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20.w,
+                          vertical: 16.h,
                         ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            'assets/icons/temperature.png',
-                            width: 18,
-                            height: 18,
-                            color: const Color(0xFF49494B),
-                          ),
-                          const SizedBox(width: 6),
-                          const Text(
-                            '30.5 °C (87°F)',
-                            style: TextStyle(
-                              color: Color(0xFF49494B),
-                              fontSize: 13,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w400,
-                              height: 1.4,
-                            ),
-                          ),
-                          Container(
-                            width: 1,
-                            height: 18,
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                            color: const Color(0xFFD2D2D2),
-                          ),
-                          Image.asset(
-                            'assets/icons/location.png',
-                            width: 18,
-                            height: 18,
-                            color: const Color(0xFF49494B),
-                          ),
-                          const SizedBox(width: 6),
-                          const Expanded(
-                            child: Text(
-                              'Brussels, Belgium',
+                        child: Column(
+                          children: [
+                            // Title
+                            Text(
+                              'Today\'s outfits',
+                              textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: Color(0xFF49494B),
-                                fontSize: 13,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w400,
-                                height: 1.4,
+                                color: AppColors.neutral900,
+                                fontSize: 24.sp,
+                                fontFamily: 'Helvetica Neue',
+                                fontWeight: FontWeight.w700,
+                                height: 1.40,
                               ),
                             ),
-                          ),
-                          Image.asset(
-                            'assets/icons/edit.png',
-                            width: 14,
-                            height: 14,
-                            color: const Color(0xFF49494B),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // Outfit Card Section
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 12,
-                ),
-                child: Stack(
-                  children: [
-                    // Main Outfit Card
-                    Center(
-                      child: Container(
-                        width: 335,
-                        height: 375,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                            width: 1,
-                            color: const Color(0xFFF4F4F4),
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Color(0x0F101828),
-                              blurRadius: 64,
-                              offset: Offset(0, 32),
-                              spreadRadius: -12,
+                            SizedBox(height: 8.h),
+                            // Subtitle
+                            Text(
+                              'Your choices shape your AI style feed.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: AppColors.neutral900,
+                                fontSize: 14.sp,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w400,
+                                height: 1.56,
+                              ),
+                            ),
+                            SizedBox(height: 14.h),
+                            // Weather and Location Info
+                            Container(
+                              width: double.infinity,
+                              height: 44.h,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 12.w,
+                                vertical: 8.h,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                  width: 1,
+                                  color: AppColors.neutral100,
+                                ),
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    'assets/icons/temperature.png',
+                                    width: 18.w,
+                                    height: 18.h,
+                                    color: AppColors.neutral700,
+                                  ),
+                                  SizedBox(width: 6.w),
+                                  Text(
+                                    '30.5 °C (87°F)',
+                                    style: TextStyle(
+                                      color: AppColors.neutral700,
+                                      fontSize: 13.sp,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.4,
+                                    ),
+                                  ),
+                                  Container(
+                                    width: 1,
+                                    height: 18.h,
+                                    margin: EdgeInsets.symmetric(
+                                      horizontal: 8.w,
+                                    ),
+                                    color: AppColors.neutral200,
+                                  ),
+                                  Image.asset(
+                                    'assets/icons/location.png',
+                                    width: 18.w,
+                                    height: 18.h,
+                                    color: AppColors.neutral700,
+                                  ),
+                                  SizedBox(width: 6.w),
+                                  Expanded(
+                                    child: Text(
+                                      'Brussels, Belgium',
+                                      style: TextStyle(
+                                        color: AppColors.neutral700,
+                                        fontSize: 13.sp,
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w400,
+                                        height: 1.4,
+                                      ),
+                                    ),
+                                  ),
+                                  Image.asset(
+                                    'assets/icons/edit.png',
+                                    width: 14.w,
+                                    height: 14.h,
+                                    color: AppColors.neutral700,
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Center(
-                            child: Image.asset(
-                              'assets/image/dress.png',
-                              width: 210,
-                              height: 290,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
                       ),
-                    ),
-                    // Share Button (bottom right of card with arrow)
-                    Positioned(
-                      right: 12,
-                      bottom: 12,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MainNavigationView(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: 48,
-                          height: 48,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              width: 1,
-                              color: const Color(0xFFF4F4F4),
-                            ),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0x0F101828),
-                                blurRadius: 64,
-                                offset: Offset(0, 32),
-                                spreadRadius: -12,
+                      // Outfit Card Section
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20.w,
+                          vertical: 12.h,
+                        ),
+                        child: Stack(
+                          children: [
+                            // Main Outfit Card
+                            Center(
+                              child: Container(
+                                width: 335.w,
+                                height: 375.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    width: 1,
+                                    color: AppColors.neutral50,
+                                  ),
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color(0x0F101828),
+                                      blurRadius: 64,
+                                      offset: Offset(0, 32),
+                                      spreadRadius: -12,
+                                    ),
+                                  ],
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  child: Center(
+                                    child: Image.asset(
+                                      'assets/image/dress.png',
+                                      width: 210.w,
+                                      height: 290.h,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ],
-                          ),
-                          child: Image.asset(
-                            'assets/icons/arrow.png',
-                            width: 20,
-                            height: 20,
-                            color: const Color(0xFF1C1C1E),
-                          ),
+                            ),
+                            // Share Button (bottom right of card with arrow)
+                            Positioned(
+                              right: 12.w,
+                              bottom: 12.h,
+                              child: GestureDetector(
+                                onTap: () {
+                                  controller.toggleOutfitDetails();
+                                },
+                                child: Container(
+                                  width: 48.w,
+                                  height: 48.h,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      width: 1,
+                                      color: AppColors.neutral50,
+                                    ),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Color(0x0F101828),
+                                        blurRadius: 64,
+                                        offset: Offset(0, 32),
+                                        spreadRadius: -12,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Image.asset(
+                                    'assets/icons/arrow.png',
+                                    width: 20.w,
+                                    height: 20.h,
+                                    color: AppColors.neutral900,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              // Action Buttons (Dislike and Like)
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 12,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          width: 1,
-                          color: const Color(0xFFF4F4F4),
+                      // Action Buttons (Dislike and Like)
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20.w,
+                          vertical: 12.h,
                         ),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x0F101828),
-                            blurRadius: 64,
-                            offset: Offset(0, 32),
-                            spreadRadius: -12,
-                          ),
-                        ],
-                      ),
-                      child: const Icon(
-                        Icons.close,
-                        size: 20,
-                        color: Color(0xFF1C1C1E),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          width: 1,
-                          color: const Color(0xFFF4F4F4),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 48.w,
+                              height: 48.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  width: 1,
+                                  color: AppColors.neutral50,
+                                ),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color(0x0F101828),
+                                    blurRadius: 64,
+                                    offset: Offset(0, 32),
+                                    spreadRadius: -12,
+                                  ),
+                                ],
+                              ),
+                              child: Icon(
+                                Icons.close,
+                                size: 20.sp,
+                                color: AppColors.neutral900,
+                              ),
+                            ),
+                            SizedBox(width: 12.w),
+                            Container(
+                              width: 48.w,
+                              height: 48.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  width: 1,
+                                  color: AppColors.neutral50,
+                                ),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color(0x0F101828),
+                                    blurRadius: 64,
+                                    offset: Offset(0, 32),
+                                    spreadRadius: -12,
+                                  ),
+                                ],
+                              ),
+                              child: const Icon(
+                                Icons.favorite,
+                                size: 20,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ],
                         ),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color(0x0F101828),
-                            blurRadius: 64,
-                            offset: Offset(0, 32),
-                            spreadRadius: -12,
-                          ),
-                        ],
                       ),
-                      child: const Icon(
-                        Icons.favorite,
-                        size: 20,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // Style Selector Dropdown
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 12,
-                ),
-                child: GestureDetector(
-                  onTap: () => _showStyleSelector(context),
-                  child: Container(
-                    width: double.infinity,
-                    height: 44,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        width: 1,
-                        color: const Color(0xFFE8E8E8),
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          'assets/icons/casual.png',
-                          width: 18,
-                          height: 18,
+                      // Style Selector Dropdown
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20.w,
+                          vertical: 12.h,
                         ),
-                        const SizedBox(width: 6),
-                        const Expanded(
-                          child: Text(
-                            'Casual',
-                            style: TextStyle(
-                              color: Color(0xFF49494B),
-                              fontSize: 13,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w400,
-                              height: 1.4,
+                        child: GestureDetector(
+                          onTap: () => _showStyleSelector(context),
+                          child: Container(
+                            width: double.infinity,
+                            height: 44.h,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12.w,
+                              vertical: 8.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                width: 1,
+                                color: AppColors.neutral100,
+                              ),
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  'assets/icons/casual.png',
+                                  width: 18.w,
+                                  height: 18.h,
+                                ),
+                                SizedBox(width: 6.w),
+                                Expanded(
+                                  child: Text(
+                                    'Casual',
+                                    style: TextStyle(
+                                      color: AppColors.neutral700,
+                                      fontSize: 13.sp,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w400,
+                                      height: 1.4,
+                                    ),
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.keyboard_arrow_down,
+                                  size: 14.sp,
+                                  color: AppColors.neutral700,
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        const Icon(
-                          Icons.keyboard_arrow_down,
-                          size: 14,
-                          color: Color(0xFF49494B),
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 16.h),
+                    ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
-            ],
-          ),
         ),
       ),
+
       // Bottom Navigation Bar
-      bottomNavigationBar: Container(
-        height: 88,
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.77),
-          border: const Border(
-            top: BorderSide(width: 1, color: Color(0xFFE8E8E8)),
-          ),
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _buildNavItem(Icons.home, 'Home', true),
-            _buildNavItem(Icons.shopping_cart_outlined, 'Cart', false),
-            _buildNavItem(Icons.checkroom_outlined, 'wardrobe', false),
-            _buildNavItem(Icons.favorite_border, 'Favorite', false),
-            _buildNavItem(Icons.person_outline, 'Profile', false),
-          ],
-        ),
-      ),
     );
   }
 
@@ -361,15 +342,15 @@ class ShapeselectView extends GetView<ShapeselectController> {
       children: [
         Icon(
           icon,
-          size: 22,
-          color: isActive ? const Color(0xFF060017) : const Color(0xFF777778),
+          size: 22.sp,
+          color: isActive ? AppColors.primaryDark : AppColors.neutral500,
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4.h),
         Text(
           label,
           style: TextStyle(
-            color: isActive ? const Color(0xFF060017) : const Color(0xFF777778),
-            fontSize: 12,
+            color: isActive ? AppColors.primaryDark : AppColors.neutral500,
+            fontSize: 12.sp,
             fontFamily: 'Poppins',
             fontWeight: FontWeight.w400,
             height: 1.4,
@@ -394,31 +375,31 @@ class ShapeselectView extends GetView<ShapeselectController> {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
+          topLeft: Radius.circular(20.r),
+          topRight: Radius.circular(20.r),
         ),
       ),
       builder: (BuildContext context) {
         return SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Select Style',
                   style: TextStyle(
-                    color: Color(0xFF1C1C1E),
-                    fontSize: 18,
+                    color: AppColors.neutral900,
+                    fontSize: 18.sp,
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w600,
                     height: 1.4,
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20.h),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -428,20 +409,20 @@ class ShapeselectView extends GetView<ShapeselectController> {
                     return GestureDetector(
                       onTap: () => Navigator.pop(context),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        padding: EdgeInsets.symmetric(vertical: 12.h),
                         child: Row(
                           children: [
                             Image.asset(
                               style['icon'] as String,
-                              width: 32,
-                              height: 32,
+                              width: 32.w,
+                              height: 32.h,
                             ),
-                            const SizedBox(width: 12),
+                            SizedBox(width: 12.w),
                             Text(
                               style['label'] as String,
-                              style: const TextStyle(
-                                color: Color(0xFF49494B),
-                                fontSize: 16,
+                              style: TextStyle(
+                                color: AppColors.neutral700,
+                                fontSize: 16.sp,
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w400,
                                 height: 1.4,
@@ -453,7 +434,7 @@ class ShapeselectView extends GetView<ShapeselectController> {
                     );
                   },
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
               ],
             ),
           ),

@@ -2,11 +2,11 @@ import 'package:get/get.dart';
 
 class FilterScreenController extends GetxController {
   // Single selection for each category
-  final selectedSeason = Rx<String>('Spring');
-  final selectedStyle = Rx<String>('Smart Casual');
-  final selectedColor = Rx<String>('Neutrals');
-  final selectedBodyType = Rx<String>('Athletic');
-  final selectedSkinTone = Rx<String>('Light-Medium');
+  final selectedSeason = Rx<String>('');
+  final selectedStyle = Rx<String>('');
+  final selectedColor = Rx<String>('');
+  final selectedBodyType = Rx<String>('');
+  final selectedSkinTone = Rx<String>('');
 
   @override
   void onInit() {

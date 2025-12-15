@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/color.dart';
 import '../../../../widgets/primary_button.dart';
 import '../../filterScreen/views/filter_screen_view.dart';
 import '../controllers/personalize_controller.dart';
@@ -11,59 +13,59 @@ class PersonalizeView extends GetView<PersonalizeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9F9),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 24),
+                SizedBox(height: 24.h),
                 // Logo
-                Image.asset('assets/logo/logo.png', height: 60),
-                const SizedBox(height: 40),
+                Image.asset('assets/logo/logo.png', height: 60.h),
+                SizedBox(height: 40.h),
                 // Greeting
-                const Text(
+                Text(
                   'Hi David',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Color(0xFF1C1C1E),
-                    fontSize: 24,
+                    color: AppColors.neutral900,
+                    fontSize: 24.sp,
                     fontFamily: 'Helvetica Neue',
                     fontWeight: FontWeight.w700,
                     height: 1.40,
                   ),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 4.h),
                 // Subtitle
-                const Text(
+                Text(
                   'Lets personalize your AI outfit experience!',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Color(0xFF101C2C),
-                    fontSize: 14,
+                    color: AppColors.neutral900,
+                    fontSize: 14.sp,
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w400,
                     height: 1.56,
                   ),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40.h),
                 // Birth Of Date
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Birth Of Date',
                       style: TextStyle(
-                        color: Color(0xFF1C1C1E),
-                        fontSize: 14,
+                        color: AppColors.neutral900,
+                        fontSize: 14.sp,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w500,
                         height: 1.56,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6.h),
                     Obx(
                       () => GestureDetector(
                         onTap: () {
@@ -71,35 +73,38 @@ class PersonalizeView extends GetView<PersonalizeController> {
                         },
                         child: Container(
                           width: double.infinity,
-                          height: 48,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 10,
+                          height: 48.h,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 14.w,
+                            vertical: 10.h,
                           ),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             border: Border.all(
                               width: 1,
-                              color: const Color(0xFFE8E8E8),
+                              color: AppColors.neutral100,
                             ),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(8.r),
                           ),
                           child: Row(
                             children: [
                               const Icon(
                                 Icons.calendar_today_outlined,
                                 size: 20,
-                                color: Color(0xFF49494B),
+                                color: AppColors.neutral700,
                               ),
-                              const SizedBox(width: 8),
-                              Text(
-                                controller.getFormattedDate(),
-                                style: const TextStyle(
-                                  color: Color(0xFF49494B),
-                                  fontSize: 14,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.56,
+                              SizedBox(width: 8.w),
+                              Expanded(
+                                child: Text(
+                                  controller.getFormattedDate(),
+                                  style: TextStyle(
+                                    color: AppColors.neutral700,
+                                    fontSize: 14.sp,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.56,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ],
@@ -109,22 +114,22 @@ class PersonalizeView extends GetView<PersonalizeController> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 // Gender
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Gender',
                       style: TextStyle(
-                        color: Color(0xFF1C1C1E),
-                        fontSize: 14,
+                        color: AppColors.neutral900,
+                        fontSize: 14.sp,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w500,
                         height: 1.56,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6.h),
                     Obx(
                       () => Row(
                         children: [
@@ -139,7 +144,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                               },
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12.w),
                           Expanded(
                             child: _GenderButton(
                               label: 'Female',
@@ -151,7 +156,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                               },
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12.w),
                           Expanded(
                             child: _GenderButton(
                               label: 'Other',
@@ -168,22 +173,22 @@ class PersonalizeView extends GetView<PersonalizeController> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 // Country
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Country',
                       style: TextStyle(
-                        color: Color(0xFF1C1C1E),
-                        fontSize: 14,
+                        color: AppColors.neutral900,
+                        fontSize: 14.sp,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w500,
                         height: 1.56,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6.h),
                     Obx(
                       () => GestureDetector(
                         onTap: () {
@@ -191,18 +196,18 @@ class PersonalizeView extends GetView<PersonalizeController> {
                         },
                         child: Container(
                           width: double.infinity,
-                          height: 48,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 10,
+                          height: 48.h,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 14.w,
+                            vertical: 10.h,
                           ),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             border: Border.all(
                               width: 1,
-                              color: const Color(0xFFE8E8E8),
+                              color: AppColors.neutral100,
                             ),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(8.r),
                           ),
                           child: Row(
                             children: [
@@ -212,24 +217,25 @@ class PersonalizeView extends GetView<PersonalizeController> {
                                 ),
                                 style: const TextStyle(fontSize: 20),
                               ),
-                              const SizedBox(width: 8),
+                              SizedBox(width: 8.w),
                               Expanded(
                                 child: Text(
                                   controller.selectedCountry.value ??
                                       'Select Country',
-                                  style: const TextStyle(
-                                    color: Color(0xFF49494B),
-                                    fontSize: 14,
+                                  style: TextStyle(
+                                    color: AppColors.neutral700,
+                                    fontSize: 14.sp,
                                     fontFamily: 'Poppins',
                                     fontWeight: FontWeight.w400,
                                     height: 1.56,
                                   ),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                               const Icon(
                                 Icons.keyboard_arrow_down,
                                 size: 16,
-                                color: Color(0xFF49494B),
+                                color: AppColors.neutral700,
                               ),
                             ],
                           ),
@@ -238,12 +244,12 @@ class PersonalizeView extends GetView<PersonalizeController> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 200),
+                SizedBox(height: 200.h),
                 // Next Button
                 AppButton(
                   text: "Next",
                   textColor: Colors.white,
-                  backgroundColor: const Color(0xFF060017),
+                  backgroundColor: AppColors.primaryDark,
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -253,7 +259,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                     );
                   },
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20.h),
               ],
             ),
           ),
@@ -293,22 +299,22 @@ class PersonalizeView extends GetView<PersonalizeController> {
       context: context,
       builder: (context) {
         return Container(
-          height: 400,
-          decoration: const BoxDecoration(
+          height: 400.h,
+          decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16),
-              topRight: Radius.circular(16),
+              topLeft: Radius.circular(16.r),
+              topRight: Radius.circular(16.r),
             ),
           ),
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16.w),
                 child: Text(
                   'Select Country',
-                  style: const TextStyle(
-                    fontSize: 16,
+                  style: TextStyle(
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.w600,
                     fontFamily: 'Poppins',
                   ),
@@ -330,13 +336,14 @@ class PersonalizeView extends GetView<PersonalizeController> {
                         country,
                         style: TextStyle(
                           color: isSelected
-                              ? const Color(0xFF060017)
-                              : const Color(0xFF49494B),
+                              ? AppColors.primaryDark
+                              : AppColors.neutral700,
                           fontWeight: isSelected
                               ? FontWeight.w600
                               : FontWeight.w400,
                           fontFamily: 'Poppins',
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                       onTap: () {
                         controller.selectedCountry.value = country;
@@ -345,7 +352,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                       trailing: isSelected
                           ? const Icon(
                               Icons.check,
-                              color: Color(0xFF060017),
+                              color: AppColors.primaryDark,
                               size: 20,
                             )
                           : null,
@@ -379,36 +386,38 @@ class _GenderButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 48,
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        height: 48.h,
+        padding: EdgeInsets.symmetric(horizontal: 11.w, vertical: 10.h),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF060017) : Colors.white,
+          color: isSelected ? AppColors.primaryDark : Colors.white,
           border: Border.all(
             width: 1,
-            color: isSelected
-                ? const Color(0xFF060017)
-                : const Color(0xFFE8E8E8),
+            color: isSelected ? AppColors.primaryDark : AppColors.neutral100,
           ),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
               iconPath,
-              width: 20,
-              height: 20,
-              color: isSelected ? Colors.white : const Color(0xFF49494B),
+              width: 20.w,
+              height: 20.h,
+              color: isSelected ? Colors.white : AppColors.neutral700,
             ),
-            const SizedBox(width: 8),
-            Text(
-              label,
-              style: TextStyle(
-                color: isSelected ? Colors.white : const Color(0xFF49494B),
-                fontSize: 14,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w400,
-                height: 1.56,
+            SizedBox(width: 2.w),
+            Expanded(
+              child: Text(
+                label,
+                style: TextStyle(
+                  color: isSelected ? Colors.white : AppColors.neutral700,
+                  fontSize: 14.sp,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w400,
+                  height: 1.56,
+                ),
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],

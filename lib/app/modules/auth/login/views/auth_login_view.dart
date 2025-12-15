@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/color.dart';
 import '../../../../../widgets/primary_button.dart';
+import '../../../personalize/views/personalize_view.dart';
 import '../controllers/auth_login_controller.dart';
 
 class AuthLoginView extends StatefulWidget {
@@ -42,82 +44,78 @@ class _AuthLoginViewState extends State<AuthLoginView> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 40),
+                SizedBox(height: 24.h),
 
                 /// Logo
                 Center(
                   child: Image.asset(
                     'assets/logo/logo.png',
-                    height: 55,
+                    height: 55.h,
                   ),
                 ),
 
-                const SizedBox(height: 30),
+                SizedBox(height: 40.h),
 
-                const Center(
+                Center(
                   child: Text(
                     'Welcome Back',
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 24.sp,
                       fontWeight: FontWeight.w600,
                       color: Colors.black,
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 8),
+                SizedBox(height: 4.h),
 
-                const Center(
+                Center(
                   child: Text(
                     'Login to access your account',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       color: Colors.black,
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 32),
+                SizedBox(height: 40.h),
 
-                /// Label
-                const Text(
+                Text(
                   'Email Address',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 6.h),
 
-                /// Email Input
                 _buildInputField(
                   controller: _emailController,
                   prefixIcon: Icons.email_outlined,
                 ),
 
-                const SizedBox(height: 18),
+                SizedBox(height: 16.h),
 
-                const Text(
+                Text(
                   'Password',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 6.h),
 
-                /// Password Input
                 _buildPasswordField(),
 
-                const SizedBox(height: 4),
+                SizedBox(height: 8.h),
 
-                /// Remember Me
                 Row(
                   children: [
                     Checkbox(
@@ -126,62 +124,82 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                         setState(() => _rememberMe = value ?? false);
                       },
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(4.r),
                       ),
                     ),
-                    const Text(
+                    Text(
                       'Remember me',
-                      style: TextStyle(fontSize: 14, color: Colors.black87),
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.black87,
+                      ),
                     ),
                   ],
                 ),
 
-                const SizedBox(height: 8),
+                SizedBox(height: 16.h),
 
-                /// Sign In Button
                 AppButton(
                   text: "Sign In",
                   textColor: AppColors.primaryLight,
                   backgroundColor: AppColors.primaryDark,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) =>
+                        PersonalizeView(),
+                    ), );
+                  },
                 ),
 
-                const SizedBox(height: 6),
+                SizedBox(height: 16.h),
 
                 Center(
                   child: TextButton(
                     onPressed: () {},
-                    child: const Text(
+                    child: Text(
                       'Forgot Password?',
-                      style: TextStyle(fontSize: 14, color: Colors.black87),
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.black87,
+                      ),
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 12),
+                SizedBox(height: 40.h),
 
                 Row(
                   children: [
                     Expanded(child: Divider(color: Colors.grey[300])),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Text('OR',
-                          style: TextStyle(fontSize: 14, color: Colors.grey)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      child: Text(
+                        'OR',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.grey,
+                        ),
+                      ),
                     ),
                     Expanded(child: Divider(color: Colors.grey[300])),
                   ],
                 ),
 
-                const SizedBox(height: 18),
+                SizedBox(height: 24.h),
 
-                const Center(
+                Center(
                   child: Text(
                     'Sign in with',
-                    style: TextStyle(fontSize: 14, color: Colors.black87),
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: Colors.black87,
+                    ),
                   ),
                 ),
 
-                const SizedBox(height: 16),
+                SizedBox(height: 24.h),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -189,45 +207,44 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                     _buildSocialButton(
                       icon: Image.asset(
                         'assets/icons/google.png',
-                        width: 22,
-                        height: 22,
+                        width: 22.w,
+                        height: 22.w,
                       ),
                       label: 'Google',
-                      onTap: () {
-                        // Handle Google sign in
-                      },
+                      onTap: () {},
                     ),
-                    const SizedBox(width: 16),
+                    SizedBox(width: 16.w),
                     _buildSocialButton(
                       icon: Image.asset(
                         'assets/icons/apple.png',
-                        width: 22,
-                        height: 22,
+                        width: 22.w,
+                        height: 22.w,
                       ),
                       label: 'Apple',
-                      onTap: () {
-                        // Handle Apple sign in
-                      },
+                      onTap: () {},
                     ),
                   ],
                 ),
 
-                const SizedBox(height: 24),
+                SizedBox(height: 40.h),
 
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "Don't have an account? ",
-                        style: TextStyle(fontSize: 14, color: Colors.black87),
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.black87,
+                        ),
                       ),
                       GestureDetector(
                         onTap: () {},
-                        child: const Text(
+                        child: Text(
                           'Sign Up',
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             color: Colors.black,
                             fontWeight: FontWeight.w600,
                             decoration: TextDecoration.underline,
@@ -238,7 +255,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                   ),
                 ),
 
-                const SizedBox(height: 40),
+                SizedBox(height: 40.h),
               ],
             ),
           ),
@@ -247,9 +264,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
     );
   }
 
-  /// ------------------------------
-  /// INPUT FIELD BUILDER
-  /// ------------------------------
+  /// INPUT FIELD
   Widget _buildInputField({
     required TextEditingController controller,
     required IconData prefixIcon,
@@ -257,7 +272,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.primaryLight,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(color: AppColors.neutral100),
       ),
       child: TextField(
@@ -266,27 +281,26 @@ class _AuthLoginViewState extends State<AuthLoginView> {
           prefixIcon: Icon(prefixIcon, color: AppColors.neutral900),
           border: InputBorder.none,
           contentPadding:
-          const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         ),
       ),
     );
   }
 
-  /// ------------------------------
   /// PASSWORD FIELD
-  /// ------------------------------
   Widget _buildPasswordField() {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.primaryLight,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(color: AppColors.neutral100),
       ),
       child: TextField(
         controller: _passwordController,
         obscureText: _obscurePassword,
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.lock_outline, color: AppColors.neutral900),
+          prefixIcon:
+          Icon(Icons.lock_outline, color: AppColors.neutral900),
           suffixIcon: IconButton(
             icon: Icon(
               _obscurePassword
@@ -300,26 +314,24 @@ class _AuthLoginViewState extends State<AuthLoginView> {
           ),
           border: InputBorder.none,
           contentPadding:
-          const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         ),
       ),
     );
   }
 
-  /// ------------------------------
   /// SOCIAL BUTTON
-  /// ------------------------------
   Widget _buildSocialButton({
     required Widget icon,
     required String label,
     required VoidCallback onTap,
   }) {
     return InkWell(
-      borderRadius: BorderRadius.circular(50),
+      borderRadius: BorderRadius.circular(50.r),
       onTap: onTap,
       child: Container(
-        width: 56,
-        height: 56,
+        width: 56.w,
+        height: 56.w,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.white,
@@ -328,4 +340,5 @@ class _AuthLoginViewState extends State<AuthLoginView> {
         child: Center(child: icon),
       ),
     );
-  }}
+  }
+}

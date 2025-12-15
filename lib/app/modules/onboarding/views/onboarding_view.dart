@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:outfit/core/color.dart';
 import '../../../../widgets/primary_button.dart';
@@ -17,7 +18,7 @@ class OnboardingView extends GetView<OnboardingController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 15),
+              const SizedBox(height: 24),
 
               /// LOGO
               Center(
@@ -27,7 +28,7 @@ class OnboardingView extends GetView<OnboardingController> {
                 ),
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 40),
 
               /// -------------------------------
               ///  BIG FULL IMAGE (NO CARD)
@@ -37,10 +38,9 @@ class OnboardingView extends GetView<OnboardingController> {
                 width: double.infinity,
                 child: Image.asset(
                   'assets/image/onboarding.png',
-
                 ),
               ),
-
+               SizedBox(height: 24),
               const Text(
                 'Your AI outfit, instantly.',
                 textAlign: TextAlign.center,

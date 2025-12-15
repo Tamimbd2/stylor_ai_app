@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/color.dart';
@@ -52,60 +53,59 @@ class _SignupViewState extends State<SignupView> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 40),
+                  SizedBox(height: 24.h),
 
                   /// Logo
                   Center(
                     child: Image.asset(
                       'assets/logo/logo.png',
-                      height: 55,
+                      height: 55.h,
                     ),
                   ),
 
-                  const SizedBox(height: 32),
+                  SizedBox(height: 40.h),
 
-                  /// Title
-                  const Center(
+                  Center(
                     child: Text(
                       'Welcome Back',
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 24.sp,
                         fontWeight: FontWeight.w600,
                         color: Colors.black,
                       ),
                     ),
                   ),
 
-                  const SizedBox(height: 8),
+                  SizedBox(height:4.h),
 
-                  const Center(
+                  Center(
                     child: Text(
                       'Login to access your account',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         color: Colors.black87,
                       ),
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: 40.h),
 
-                  /// Your Name
-                  const Text(
+                  Text(
                     'Your Name',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 6.h),
+
                   _buildInputField(
                     controller: _nameController,
                     focusNode: _nameFocus,
@@ -121,18 +121,18 @@ class _SignupViewState extends State<SignupView> {
                     },
                   ),
 
-                  const SizedBox(height: 18),
+                  SizedBox(height: 16.h),
 
-                  /// Email Address
-                  const Text(
+                  Text(
                     'Email Address',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 6.h),
+
                   _buildInputField(
                     controller: _emailController,
                     focusNode: _emailFocus,
@@ -151,18 +151,18 @@ class _SignupViewState extends State<SignupView> {
                     },
                   ),
 
-                  const SizedBox(height: 18),
+                  SizedBox(height: 16.h),
 
-                  /// Phone Number
-                  const Text(
-                    'Email Address',
+                  Text(
+                    'Phone Number',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 6.h),
+
                   _buildInputField(
                     controller: _phoneController,
                     focusNode: _phoneFocus,
@@ -181,58 +181,61 @@ class _SignupViewState extends State<SignupView> {
                     },
                   ),
 
-                  const SizedBox(height: 18),
+                  SizedBox(height:16.h),
 
-                  /// Password
-                  const Text(
+                  Text(
                     'Password',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 6.h),
+
                   _buildPasswordField(),
 
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
 
-                  /// Privacy Policy Checkbox
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        width: 24,
-                        height: 24,
+                        width: 24.w,
+                        height: 24.w,
                         child: Checkbox(
                           value: _acceptPrivacy,
                           onChanged: (value) {
                             setState(() => _acceptPrivacy = value ?? false);
                           },
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
+                            borderRadius: BorderRadius.circular(4.r),
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            setState(() => _acceptPrivacy = !_acceptPrivacy);
+                            setState(
+                                    () => _acceptPrivacy = !_acceptPrivacy);
                           },
                           child: RichText(
-                            text: const TextSpan(
+                            text: TextSpan(
                               style: TextStyle(
-                                fontSize: 13,
+                                fontSize: 13.sp,
                                 color: Colors.black87,
                               ),
-                              children: [
-                                TextSpan(text: 'By continuing you accept our '),
+                              children: const [
+                                TextSpan(
+                                    text:
+                                    'By continuing you accept our '),
                                 TextSpan(
                                   text: 'Privacy Policy',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
-                                    decoration: TextDecoration.underline,
+                                    decoration:
+                                    TextDecoration.underline,
                                   ),
                                 ),
                               ],
@@ -243,104 +246,112 @@ class _SignupViewState extends State<SignupView> {
                     ],
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
 
-                  /// Sign Up Button
                   AppButton(
-                    text: _isLoading ? "Signing Up..." : "Sign Up",
+                    text: _isLoading
+                        ? "Signing Up..."
+                        : "Sign Up",
                     textColor: AppColors.primaryLight,
                     backgroundColor: AppColors.primaryDark,
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>PersonalizeView()));
-                    }
-
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                           PersonalizeView(),
+                        ),
+                      );
+                    },
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: 32.h),
 
-                  /// OR Divider
                   Row(
                     children: [
-                      Expanded(child: Divider(color: Colors.grey[300])),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16),
+                      Expanded(
+                          child:
+                          Divider(color: Colors.grey[300])),
+                      Padding(
+                        padding:
+                        EdgeInsets.symmetric(horizontal: 16.w),
                         child: Text(
                           'OR',
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             color: Colors.grey,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
-                      Expanded(child: Divider(color: Colors.grey[300])),
+                      Expanded(
+                          child:
+                          Divider(color: Colors.grey[300])),
                     ],
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
 
-                  /// Social Login Title
-                  const Center(
+                  Center(
                     child: Text(
                       'Sign in with',
-                      style: TextStyle(fontSize: 14, color: Colors.black87),
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.black87,
+                      ),
                     ),
                   ),
 
-                  const SizedBox(height: 16),
+                  SizedBox(height: 24.h),
 
-                  /// Social Buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _buildSocialButton(
                         icon: Image.asset(
                           'assets/icons/google.png',
-                          width: 22,
-                          height: 22,
+                          width: 22.w,
+                          height: 22.w,
                         ),
                         label: 'Google',
-                        onTap: () {
-                          // Handle Google sign in
-                        },
+                        onTap: () {},
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: 16.w),
                       _buildSocialButton(
                         icon: Image.asset(
                           'assets/icons/apple.png',
-                          width: 22,
-                          height: 22,
+                          width: 22.w,
+                          height: 22.w,
                         ),
                         label: 'Apple',
-                        onTap: () {
-                          // Handle Apple sign in
-                        },
+                        onTap: () {},
                       ),
                     ],
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: 32.h),
 
-                  /// Sign In Link
                   Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
+                        Text(
                           'Already have an account? ',
-                          style: TextStyle(fontSize: 14, color: Colors.black87),
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: Colors.black87,
+                          ),
                         ),
                         GestureDetector(
-                          onTap: () {
-                            Get.back();
-                          },
-                          child: const Text(
+                          onTap: () => Get.back(),
+                          child: Text(
                             'Sign In',
                             style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 14.sp,
                               color: Colors.black,
                               fontWeight: FontWeight.w600,
-                              decoration: TextDecoration.underline,
+                              decoration:
+                              TextDecoration.underline,
                             ),
                           ),
                         ),
@@ -348,7 +359,7 @@ class _SignupViewState extends State<SignupView> {
                     ),
                   ),
 
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40.h),
                 ],
               ),
             ),
@@ -358,9 +369,7 @@ class _SignupViewState extends State<SignupView> {
     );
   }
 
-  /// ------------------------------
-  /// INPUT FIELD BUILDER
-  /// ------------------------------
+  /// INPUT FIELD
   Widget _buildInputField({
     required TextEditingController controller,
     required FocusNode focusNode,
@@ -373,7 +382,7 @@ class _SignupViewState extends State<SignupView> {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.primaryLight,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(color: AppColors.neutral100),
       ),
       child: TextFormField(
@@ -391,23 +400,22 @@ class _SignupViewState extends State<SignupView> {
         decoration: InputDecoration(
           prefixIcon: Icon(prefixIcon, color: AppColors.neutral900),
           hintText: hintText,
-          hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
+          hintStyle:
+          TextStyle(color: Colors.grey[400], fontSize: 14.sp),
           border: InputBorder.none,
           contentPadding:
-          const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         ),
       ),
     );
   }
 
-  /// ------------------------------
   /// PASSWORD FIELD
-  /// ------------------------------
   Widget _buildPasswordField() {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.primaryLight,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(color: AppColors.neutral100),
       ),
       child: TextFormField(
@@ -425,7 +433,8 @@ class _SignupViewState extends State<SignupView> {
           return null;
         },
         decoration: InputDecoration(
-          prefixIcon: Icon(Icons.lock_outline, color: AppColors.neutral900),
+          prefixIcon:
+          Icon(Icons.lock_outline, color: AppColors.neutral900),
           suffixIcon: IconButton(
             icon: Icon(
               _obscurePassword
@@ -438,29 +447,28 @@ class _SignupViewState extends State<SignupView> {
             },
           ),
           hintText: '12345678',
-          hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
+          hintStyle:
+          TextStyle(color: Colors.grey[400], fontSize: 14.sp),
           border: InputBorder.none,
           contentPadding:
-          const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         ),
       ),
     );
   }
 
-  /// ------------------------------
   /// SOCIAL BUTTON
-  /// ------------------------------
   Widget _buildSocialButton({
     required Widget icon,
     required String label,
     required VoidCallback onTap,
   }) {
     return InkWell(
-      borderRadius: BorderRadius.circular(50),
+      borderRadius: BorderRadius.circular(50.r),
       onTap: onTap,
       child: Container(
-        width: 56,
-        height: 56,
+        width: 56.w,
+        height: 56.w,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.white,
@@ -469,42 +477,5 @@ class _SignupViewState extends State<SignupView> {
         child: Center(child: icon),
       ),
     );
-  }
-
-  /// ------------------------------
-  /// HANDLE SIGN UP
-  /// ------------------------------
-  void _handleSignUp() {
-    if (_formKey.currentState!.validate()) {
-      if (!_acceptPrivacy) {
-        Get.snackbar(
-          'Privacy Policy',
-          'Please accept our Privacy Policy to continue',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red[100],
-          colorText: Colors.red[900],
-        );
-        return;
-      }
-
-      setState(() => _isLoading = true);
-
-      // Simulate API call
-      Future.delayed(const Duration(seconds: 2), () {
-        setState(() => _isLoading = false);
-
-        // Handle successful signup
-        Get.snackbar(
-          'Success',
-          'Account created successfully!',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green[100],
-          colorText: Colors.green[900],
-        );
-
-        // Navigate to next screen or login
-        // Get.offAllNamed('/home');
-      });
-    }
   }
 }

@@ -4,6 +4,8 @@ class ShapeselectController extends GetxController {
   //TODO: Implement ShapeselectController
 
   final count = 0.obs;
+  final showOutfitDetails = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -20,4 +22,6 @@ class ShapeselectController extends GetxController {
   }
 
   void increment() => count.value++;
+
+  void toggleOutfitDetails() => showOutfitDetails.toggle();
 }
