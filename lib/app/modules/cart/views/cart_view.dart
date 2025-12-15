@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../core/color.dart';
 import '../controllers/cart_controller.dart';
 
 class CartView extends GetView<CartController> {
@@ -8,44 +10,44 @@ class CartView extends GetView<CartController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9F9),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(height: 40),
+              SizedBox(height: 40.h),
               // Header
-              const Text(
+              Text(
                 'Cart',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color(0xFF1C1C1E),
-                  fontSize: 24,
+                  color: AppColors.neutral900,
+                  fontSize: 24.sp,
                   fontFamily: 'Helvetica Neue',
                   fontWeight: FontWeight.w700,
                   height: 1.40,
                 ),
               ),
-              const SizedBox(height: 6),
-              const Text(
+              SizedBox(height: 6.h),
+              Text(
                 'Your choices shape your AI style feed.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color(0xFF101C2C),
-                  fontSize: 14,
+                  color: AppColors.neutral900,
+                  fontSize: 14.sp,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.w400,
                   height: 1.56,
                 ),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
 
               // Cart Items
               _buildCartCard('assets/image/clothes.png'),
               _buildCartCard('assets/image/dreess1.png'),
               _buildCartCard('assets/image/shoe.png'),
 
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
             ],
           ),
         ),
@@ -55,13 +57,13 @@ class CartView extends GetView<CartController> {
 
   Widget _buildCartCard(String imagePath) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: Container(
-        height: 156,
+        height: 156.h,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0xFFF4F4F4)),
+          borderRadius: BorderRadius.circular(16.r),
+          border: Border.all(color: AppColors.neutral100),
           boxShadow: const [
             BoxShadow(
               color: Color(0x0F101828),
@@ -75,35 +77,30 @@ class CartView extends GetView<CartController> {
           children: [
             // Product Image Container
             Container(
-              width: 134,
-              height: 132,
-              margin: const EdgeInsets.all(12),
+              width: 134.w,
+              height: 132.h,
+              margin: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: const Color(0xFFF4F4F4)),
+                borderRadius: BorderRadius.circular(10.r),
+                border: Border.all(color: AppColors.neutral100),
               ),
-              child: Center(
-                child: Image.asset(
-                  imagePath,
-                  fit: BoxFit.contain,
-                ),
-              ),
+              child: Center(child: Image.asset(imagePath, fit: BoxFit.contain)),
             ),
 
             // Product Details
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(top: 12, right: 12, bottom: 12),
+                padding: EdgeInsets.only(top: 12.h, right: 12.w, bottom: 12.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'ONLMADISON High waist Wide Leg Fit Jeans',
                       style: TextStyle(
-                        color: Color(0xFF1C1C1E),
-                        fontSize: 14,
+                        color: AppColors.neutral900,
+                        fontSize: 14.sp,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w400,
                         height: 1.56,
@@ -111,29 +108,32 @@ class CartView extends GetView<CartController> {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const Text(
+                    Text(
                       '\$20.50',
                       style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 24,
+                        color: AppColors.neutral900,
+                        fontSize: 24.sp,
                         fontFamily: 'Helvetica Neue',
                         fontWeight: FontWeight.w500,
                         height: 1.40,
                       ),
                     ),
                     Container(
-                      height: 36,
-                      padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 5),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF060017),
-                        borderRadius: BorderRadius.circular(10),
+                      height: 36.h,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 36.w,
+                        vertical: 5.h,
                       ),
-                      child: const Center(
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryDark,
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: Center(
                         child: Text(
                           'Buy Now',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontFamily: 'Helvetica Neue',
                             fontWeight: FontWeight.w400,
                             height: 1.50,

@@ -1,15 +1,9 @@
 import 'package:get/get.dart';
 
-class WardrobeController extends GetxController {
-  //TODO: Implement WardrobeController
+class ProfileDetailsController extends GetxController {
+  //TODO: Implement ProfileDetailsController
 
   final count = 0.obs;
-  final selectedFilter = 'All'.obs;
-
-  void selectFilter(String filterLabel) {
-    selectedFilter.value = filterLabel;
-  }
-
   @override
   void onInit() {
     super.onInit();

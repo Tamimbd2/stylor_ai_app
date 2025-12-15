@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 
+import '../modules/EditProfile/bindings/edit_profile_binding.dart';
+import '../modules/EditProfile/views/edit_profile_view.dart';
+import '../modules/ProfileDetails/bindings/profile_details_binding.dart';
+import '../modules/ProfileDetails/views/profile_details_view.dart';
 import '../modules/auth/login/bindings/auth_login_binding.dart';
 import '../modules/auth/login/views/auth_login_view.dart';
 import '../modules/auth/signup/bindings/signup_binding.dart';
@@ -88,7 +92,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.OUTPUT_OUTFIT,
-      page: () => const OutputOutfitView(),
+      page: () => OutputOutfitView(),
       binding: OutputOutfitBinding(),
     ),
     GetPage(
@@ -108,12 +112,12 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.WARDROBE,
-      page: () => const WardrobeView(),
+      page: () => WardrobeView(),
       binding: WardrobeBinding(),
     ),
     GetPage(
       name: _Paths.PROFILE,
-      page: () => const ProfileView(),
+      page: () => ProfileView(),
       binding: ProfileBinding(),
     ),
     GetPage(
@@ -135,6 +139,16 @@ class AppPages {
       name: _Paths.TAKE_PHOTO,
       page: () => TakePhotoView(),
       binding: TakePhotoBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROFILE_DETAILS,
+      page: () => const ProfileDetailsView(),
+      binding: ProfileDetailsBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_PROFILE,
+      page: () =>  EditProfileView(),
+      binding: EditProfileBinding(),
     ),
   ];
 }

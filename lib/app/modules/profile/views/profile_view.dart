@@ -1,138 +1,151 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import '../../../../core/color.dart';
 import '../../language/views/language_view.dart';
 import '../../privacyPolicy/views/privacy_policy_view.dart';
 import '../../termsAndConditions/views/terms_and_conditions_view.dart';
+import '../../ProfileDetails/views/profile_details_view.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
-  const ProfileView({super.key});
-
+  ProfileView({super.key});
+  final ProfileController controller = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF9F9F9),
+      backgroundColor: AppColors.background,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(20.0.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 4),
+                SizedBox(height: 4.h),
                 // Profile Card
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0x0F101828),
-                        blurRadius: 64,
-                        offset: const Offset(0, 32),
-                        spreadRadius: -12,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileDetailsView(),
                       ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      // Profile Image
-                      Container(
-                        width: 66,
-                        height: 66,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0x0F101828),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
-                              spreadRadius: -2,
-                            ),
-                            BoxShadow(
-                              color: const Color(0x19101828),
-                              blurRadius: 8,
-                              offset: const Offset(0, 4),
-                              spreadRadius: -2,
-                            ),
-                          ],
+                    );
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(20.w),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0x0F101828),
+                          blurRadius: 64,
+                          offset: const Offset(0, 32),
+                          spreadRadius: -12,
                         ),
-                        child: ClipOval(
-                          child: Image.asset(
-                            'assets/image/profile.png',
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                color: const Color(0xFFE8E8E8),
-                                child: const Icon(
-                                  Icons.person,
-                                  size: 40,
-                                  color: Color(0xFF8D8D8F),
-                                ),
-                              );
-                            },
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        // Profile Image
+                        Container(
+                          width: 66.w,
+                          height: 66.h,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.white, width: 0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0x0F101828),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                                spreadRadius: -2,
+                              ),
+                              BoxShadow(
+                                color: const Color(0x19101828),
+                                blurRadius: 8,
+                                offset: const Offset(0, 4),
+                                spreadRadius: -2,
+                              ),
+                            ],
+                          ),
+                          child: ClipOval(
+                            child: Image.asset(
+                              'assets/image/profile.png',
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: const Color(0xFFE8E8E8),
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 40.sp,
+                                    color: AppColors.neutral700,
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      // Name and Details
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Mohammad Ali',
-                              style: TextStyle(
-                                color: Color(0xFF101C2C),
-                                fontSize: 16,
-                                fontFamily: 'Helvetica Neue',
-                                fontWeight: FontWeight.w700,
-                                height: 1.50,
+                        SizedBox(width: 12.w),
+                        // Name and Details
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Mohammad Ali',
+                                style: TextStyle(
+                                  color: AppColors.neutral900,
+                                  fontSize: 16.sp,
+                                  fontFamily: 'Helvetica Neue',
+                                  fontWeight: FontWeight.w700,
+                                  height: 1.50,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 2),
-                            const Text(
-                              'Your account Details',
-                              style: TextStyle(
-                                color: Color(0xFF303437),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                height: 1.56,
+                              SizedBox(height: 2.h),
+                              Text(
+                                'Your account Details',
+                                style: TextStyle(
+                                  color: AppColors.neutral700,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                  height: 1.56,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      // Arrow Icon
-                      const Icon(
-                        Icons.chevron_right,
-                        color: Color(0xFF8D8D8F),
-                        size: 24,
-                      ),
-                    ],
+                        // Arrow Icon
+                        Icon(
+                          Icons.chevron_right,
+                          color: AppColors.neutral700,
+                          size: 24.sp,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                const SizedBox(height: 32),
+                SizedBox(height: 32.h),
                 // Settings Title
-                const Text(
+                Text(
                   'Settings',
                   style: TextStyle(
-                    color: Color(0xFF1C1C1E),
-                    fontSize: 20,
+                    color: AppColors.neutral900,
+                    fontSize: 20.sp,
                     fontFamily: 'Helvetica Neue',
                     fontWeight: FontWeight.w700,
                     height: 1.40,
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 // Settings Card
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                     boxShadow: [
                       BoxShadow(
                         color: const Color(0x0F101828),
@@ -144,14 +157,16 @@ class ProfileView extends GetView<ProfileController> {
                   ),
                   child: Column(
                     children: [
-                      _buildSettingItem(
-                        icon: Icons.notifications_outlined,
-                        title: 'Notification',
-                        hasSwitch: true,
-                        switchValue: true,
-                        onTap: () {
-
-                        },
+                      Obx(
+                        () => _buildSettingItem(
+                          icon: Icons.notifications_outlined,
+                          title: 'Notification',
+                          hasSwitch: true,
+                          switchValue: controller.isNotificationEnabled.value,
+                          onTap: () => controller.toggleNotification(
+                            !controller.isNotificationEnabled.value,
+                          ),
+                        ),
                       ),
                       _buildDivider(),
                       _buildSettingItem(
@@ -159,7 +174,12 @@ class ProfileView extends GetView<ProfileController> {
                         title: 'Privacy',
                         hasArrow: true,
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>PrivacyPolicyView()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PrivacyPolicyView(),
+                            ),
+                          );
                           // Navigate to Privacy settings
                         },
                       ),
@@ -170,7 +190,12 @@ class ProfileView extends GetView<ProfileController> {
                         trailingText: 'English',
                         hasArrow: true,
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>LanguageView()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LanguageView(),
+                            ),
+                          );
                           // Navigate to Language selection
                         },
                       ),
@@ -180,7 +205,12 @@ class ProfileView extends GetView<ProfileController> {
                         title: 'Terms and condition',
                         hasArrow: true,
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>TermsAndConditionsView()));
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TermsAndConditionsView(),
+                            ),
+                          );
                           // Navigate to Terms and condition
                         },
                       ),
@@ -197,18 +227,15 @@ class ProfileView extends GetView<ProfileController> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 300),
+                SizedBox(height: 300.h),
                 // Log Out Button
                 Container(
                   width: double.infinity,
-                  height: 56,
+                  height: 56.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: const Color(0xFFD2D2D2),
-                      width: 1,
-                    ),
+                    borderRadius: BorderRadius.circular(12.r),
+                    border: Border.all(color: AppColors.neutral100, width: 1),
                   ),
                   child: TextButton(
                     onPressed: () {},
@@ -217,12 +244,12 @@ class ProfileView extends GetView<ProfileController> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Log Out',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Color(0xFF060017),
-                        fontSize: 18,
+                        color: AppColors.primaryDark,
+                        fontSize: 18.sp,
                         fontFamily: 'Helvetica Neue',
                         fontWeight: FontWeight.w500,
                         height: 1.40,
@@ -230,7 +257,7 @@ class ProfileView extends GetView<ProfileController> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20.h),
               ],
             ),
           ),
@@ -251,16 +278,16 @@ class ProfileView extends GetView<ProfileController> {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
         child: Row(
           children: [
-            Icon(icon, size: 20, color: const Color(0xFF49494B)),
-            const SizedBox(width: 8),
+            Icon(icon, size: 20.sp, color: AppColors.neutral700),
+            SizedBox(width: 8.w),
             Text(
               title,
-              style: const TextStyle(
-                color: Color(0xFF49494B),
-                fontSize: 14,
+              style: TextStyle(
+                color: AppColors.neutral700,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w400,
                 height: 1.56,
               ),
@@ -270,9 +297,9 @@ class ProfileView extends GetView<ProfileController> {
               Text(
                 trailingText,
                 textAlign: TextAlign.right,
-                style: const TextStyle(
-                  color: Color(0xFF8D8D8F),
-                  fontSize: 14,
+                style: TextStyle(
+                  color: AppColors.neutral700,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w400,
                   height: 1.56,
                 ),
@@ -284,16 +311,16 @@ class ProfileView extends GetView<ProfileController> {
                   onTap?.call();
                 },
                 activeColor: Colors.white,
-                activeTrackColor: const Color(0xFF060017),
+                activeTrackColor: AppColors.primaryDark,
                 inactiveThumbColor: Colors.white,
-                inactiveTrackColor: const Color(0xFFE8E8E8),
+                inactiveTrackColor: AppColors.neutral100,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
             if (hasArrow)
-              const Icon(
+              Icon(
                 Icons.chevron_right,
-                size: 20,
-                color: Color(0xFF8D8D8F),
+                size: 20.sp,
+                color: AppColors.neutral700,
               ),
           ],
         ),
@@ -302,9 +329,9 @@ class ProfileView extends GetView<ProfileController> {
   }
 
   Widget _buildDivider() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12),
-      child: Divider(height: 1, thickness: 1, color: Color(0xFFF0F0F0)),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12.w),
+      child: Divider(height: 1, thickness: 1, color: AppColors.neutral100),
     );
   }
 }

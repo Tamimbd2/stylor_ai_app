@@ -19,6 +19,8 @@ abstract class Routes {
   static const TERMS_AND_CONDITIONS = _Paths.TERMS_AND_CONDITIONS;
   static const PRIVACY_POLICY = _Paths.PRIVACY_POLICY;
   static const TAKE_PHOTO = _Paths.TAKE_PHOTO;
+  static const PROFILE_DETAILS = _Paths.PROFILE_DETAILS;
+  static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
 }
 
 abstract class _Paths {
@@ -39,4 +41,6 @@ abstract class _Paths {
   static const TERMS_AND_CONDITIONS = '/terms-and-conditions';
   static const PRIVACY_POLICY = '/privacy-policy';
   static const TAKE_PHOTO = '/take-photo';
+  static const PROFILE_DETAILS = '/profile-details';
+  static const EDIT_PROFILE = '/edit-profile';
 }

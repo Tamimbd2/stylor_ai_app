@@ -132,7 +132,7 @@ class TakePhotoView extends GetView<TakePhotoController> {
                   child: GestureDetector(
                     onTap: () {
                       // Navigate to WardrobeView
-                      Get.to(() => const WardrobeView());
+                      Get.to(() =>  WardrobeView());
                     },
                     child: Container(
                       width: double.infinity,

@@ -20,10 +20,10 @@ class _MainNavigationViewState extends State<MainNavigationView> {
   final List<Widget> _screens = [
      ShapeselectView(),
      // OutputOutfitView(),
-    const CartView(),
-    const WardrobeView(),
+     CartView(),
+     WardrobeView(),
           FavoriteView(),
-    const ProfileView(),
+     ProfileView(),
   ];
 
   void _onItemTapped(int index) {

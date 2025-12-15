@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import '../controllers/output_outfit_controller.dart';
 
 class OutputOutfitView extends GetView<OutputOutfitController> {
-  const OutputOutfitView({super.key});
-
+  OutputOutfitView({super.key});
+  final OutputOutfitController controller = Get.put(OutputOutfitController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,7 +14,7 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 40),
+              const SizedBox(height: 24),
               // Header
               const Center(
                 child: Text(
@@ -97,26 +97,38 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                       Positioned(
                         right: 24,
                         top: 24,
-                        child: Container(
-                          width: 56,
-                          height: 56,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: const Color(0xFFF4F4F4)),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0x0F101828),
-                                blurRadius: 64,
-                                offset: Offset(0, 32),
-                                spreadRadius: -12,
+                        child: Obx(
+                          () => GestureDetector(
+                            onTap: () => controller.toggleFeaturedFavorite(),
+                            child: Container(
+                              width: 56,
+                              height: 56,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: const Color(0xFFF4F4F4),
+                                ),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color(0x0F101828),
+                                    blurRadius: 64,
+                                    offset: Offset(0, 32),
+                                    spreadRadius: -12,
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          child: const Icon(
-                            Icons.favorite_border,
-                            color: Color(0xFF1C1C1E),
-                            size: 24,
+                              child: Icon(
+                                controller.isFeaturedOutfitFavorited.value
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color:
+                                    controller.isFeaturedOutfitFavorited.value
+                                    ? Colors.red
+                                    : const Color(0xFF1C1C1E),
+                                size: 24,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -175,29 +187,46 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    _buildChip('All', isSelected: true),
-                    const SizedBox(width: 8),
-                    _buildChip('Top'),
-                    const SizedBox(width: 8),
-                    _buildChip('bottoms'),
-                    const SizedBox(width: 8),
-                    _buildChip('Sunglass'),
-                    const SizedBox(width: 8),
-                    _buildChip('Bag'),
-                  ],
+                child: Obx(
+                  () => Row(
+                    children: [
+                      _buildChip(
+                        'All',
+                        isSelected: controller.selectedChip.value == 'All',
+                      ),
+                      const SizedBox(width: 8),
+                      _buildChip(
+                        'Top',
+                        isSelected: controller.selectedChip.value == 'Top',
+                      ),
+                      const SizedBox(width: 8),
+                      _buildChip(
+                        'bottoms',
+                        isSelected: controller.selectedChip.value == 'bottoms',
+                      ),
+                      const SizedBox(width: 8),
+                      _buildChip(
+                        'Sunglass',
+                        isSelected: controller.selectedChip.value == 'Sunglass',
+                      ),
+                      const SizedBox(width: 8),
+                      _buildChip(
+                        'Bag',
+                        isSelected: controller.selectedChip.value == 'Bag',
+                      ),
+                    ],
+                  ),
                 ),
               ),
 
               const SizedBox(height: 16),
 
               // Product List
-              _buildProductCard('assets/image/clothes.png'),
-              _buildProductCard('assets/image/dreess1.png'),
-              _buildProductCard('assets/image/shoe.png'),
-              _buildProductCard('assets/image/dress2.png'),
-              _buildProductCard('assets/image/sunglass.png'),
+              _buildProductCard('assets/image/clothes.png', index: 0),
+              _buildProductCard('assets/image/dreess1.png', index: 1),
+              _buildProductCard('assets/image/shoe.png', index: 2),
+              _buildProductCard('assets/image/dress2.png', index: 3),
+              _buildProductCard('assets/image/sunglass.png', index: 4),
 
               const SizedBox(height: 20),
             ],
@@ -208,29 +237,32 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
   }
 
   Widget _buildChip(String label, {bool isSelected = false}) {
-    return Container(
-      height: 36,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      decoration: BoxDecoration(
-        color: isSelected ? const Color(0xFF060017) : const Color(0xFFE8E8E8),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Center(
-        child: Text(
-          label,
-          style: TextStyle(
-            color: isSelected ? Colors.white : const Color(0xFF1C1C1E),
-            fontSize: 14,
-            fontFamily: 'Poppins',
-            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-            height: 1.56,
+    return GestureDetector(
+      onTap: () => controller.selectChip(label),
+      child: Container(
+        height: 36,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF060017) : const Color(0xFFE8E8E8),
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Center(
+          child: Text(
+            label,
+            style: TextStyle(
+              color: isSelected ? Colors.white : const Color(0xFF1C1C1E),
+              fontSize: 14,
+              fontFamily: 'Poppins',
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+              height: 1.56,
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildProductCard(String imagePath) {
+  Widget _buildProductCard(String imagePath, {int index = 0}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Container(
@@ -262,26 +294,30 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
               ),
               child: Stack(
                 children: [
-                  Center(
-                    child: Image.asset(
-                      imagePath,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
+                  Center(child: Image.asset(imagePath, fit: BoxFit.contain)),
                   Positioned(
                     left: 12,
                     top: 12,
-                    child: Container(
-                      width: 20,
-                      height: 20,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.favorite_border,
-                        size: 14,
-                        color: Color(0xFF1C1C1E),
+                    child: Obx(
+                      () => GestureDetector(
+                        onTap: () => controller.toggleProductFavorite(index),
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            controller.favoriteProducts.contains(index)
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            size: 14,
+                            color: controller.favoriteProducts.contains(index)
+                                ? Colors.red
+                                : const Color(0xFF1C1C1E),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -323,7 +359,10 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                       children: [
                         Container(
                           height: 36,
-                          padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 5),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 36,
+                            vertical: 5,
+                          ),
                           decoration: BoxDecoration(
                             color: const Color(0xFF060017),
                             borderRadius: BorderRadius.circular(10),
