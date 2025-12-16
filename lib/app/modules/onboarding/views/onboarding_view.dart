@@ -14,83 +14,74 @@ class OnboardingView extends GetView<OnboardingController> {
       backgroundColor: const Color(0xFFFAFAFA),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
 
               /// LOGO
-              Center(
-                child: Image.asset(
-                  'assets/logo/logo.png',
-                  height: 50,
-                ),
-              ),
+              Center(child: Image.asset('assets/logo/logo.png', height: 50.h)),
 
-              const SizedBox(height: 40),
+              SizedBox(height: 40.h),
 
               /// -------------------------------
               ///  BIG FULL IMAGE (NO CARD)
               /// -------------------------------
               SizedBox(
-                height: 450,
+                height: 350.h,
                 width: double.infinity,
-                child: Image.asset(
-                  'assets/image/onboarding.png',
-                ),
+                child: Image.asset('assets/image/onboarding.png'),
               ),
-               SizedBox(height: 24),
-              const Text(
+              SizedBox(height: 24.h),
+              Text(
                 'Your AI outfit, instantly.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 24.sp,
                   fontWeight: FontWeight.w700,
                   height: 1.2,
                 ),
               ),
 
-              const SizedBox(height: 10),
+              SizedBox(height: 10.h),
 
-              const Text(
+              Text(
                 'Personalized fashion advice, AI-powered outfit\nrecommendations, all in one app.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   height: 1.4,
                   color: Colors.black54,
                 ),
               ),
 
-              const SizedBox(height: 28),
+              SizedBox(height: 28.h),
 
               /// GET STARTED BUTTON
-            AppButton(
-              text: "Get Started",
-              textColor: AppColors.primaryLight,
-              backgroundColor: AppColors.primaryDark,
-              onPressed: () {
-                Get.toNamed('/signup');
-              },
+              AppButton(
+                text: "Get Started",
+                textColor: AppColors.primaryLight,
+                backgroundColor: AppColors.primaryDark,
+                onPressed: () {
+                  Get.toNamed('/signup');
+                },
+              ),
 
-            ),
+              SizedBox(height: 12.h),
 
-              const SizedBox(height: 12),
               /// LOGIN BUTTON
-            AppButton(
-              text: "Login",
-              textColor: Colors.black,
-              backgroundColor: AppColors.primaryLight,
-              onPressed: () {
-                Get.toNamed('/auth-login');
-              },
-              withBorder: true,
+              AppButton(
+                text: "Login",
+                textColor: Colors.black,
+                backgroundColor: AppColors.primaryLight,
+                onPressed: () {
+                  Get.toNamed('/auth-login');
+                },
+                withBorder: true,
+              ),
 
-            ),
-
-
-            const SizedBox(height: 24),
+              SizedBox(height: 24.h),
             ],
           ),
         ),

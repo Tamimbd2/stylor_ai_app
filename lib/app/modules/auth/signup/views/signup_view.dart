@@ -33,6 +33,12 @@ class _SignupViewState extends State<SignupView> {
   bool _acceptPrivacy = false;
   bool _isLoading = false;
 
+  String? _nameError;
+  String? _emailError;
+  String? _phoneError;
+  String? _passwordError;
+  String? _privacyError;
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -63,10 +69,7 @@ class _SignupViewState extends State<SignupView> {
 
                   /// Logo
                   Center(
-                    child: Image.asset(
-                      'assets/logo/logo.png',
-                      height: 55.h,
-                    ),
+                    child: Image.asset('assets/logo/logo.png', height: 55.h),
                   ),
 
                   SizedBox(height: 40.h),
@@ -82,15 +85,12 @@ class _SignupViewState extends State<SignupView> {
                     ),
                   ),
 
-                  SizedBox(height:4.h),
+                  SizedBox(height: 4.h),
 
                   Center(
                     child: Text(
                       'Login to access your account',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.black87,
-                      ),
+                      style: TextStyle(fontSize: 14.sp, color: Colors.black87),
                     ),
                   ),
 
@@ -120,6 +120,15 @@ class _SignupViewState extends State<SignupView> {
                       return null;
                     },
                   ),
+
+                  if (_nameError != null)
+                    Padding(
+                      padding: EdgeInsets.only(top: 6.h),
+                      child: Text(
+                        _nameError!,
+                        style: TextStyle(fontSize: 12.sp, color: Colors.red),
+                      ),
+                    ),
 
                   SizedBox(height: 16.h),
 
@@ -151,6 +160,15 @@ class _SignupViewState extends State<SignupView> {
                     },
                   ),
 
+                  if (_emailError != null)
+                    Padding(
+                      padding: EdgeInsets.only(top: 6.h),
+                      child: Text(
+                        _emailError!,
+                        style: TextStyle(fontSize: 12.sp, color: Colors.red),
+                      ),
+                    ),
+
                   SizedBox(height: 16.h),
 
                   Text(
@@ -181,7 +199,16 @@ class _SignupViewState extends State<SignupView> {
                     },
                   ),
 
-                  SizedBox(height:16.h),
+                  if (_phoneError != null)
+                    Padding(
+                      padding: EdgeInsets.only(top: 6.h),
+                      child: Text(
+                        _phoneError!,
+                        style: TextStyle(fontSize: 12.sp, color: Colors.red),
+                      ),
+                    ),
+
+                  SizedBox(height: 16.h),
 
                   Text(
                     'Password',
@@ -195,10 +222,19 @@ class _SignupViewState extends State<SignupView> {
 
                   _buildPasswordField(),
 
+                  if (_passwordError != null)
+                    Padding(
+                      padding: EdgeInsets.only(top: 6.h),
+                      child: Text(
+                        _passwordError!,
+                        style: TextStyle(fontSize: 12.sp, color: Colors.red),
+                      ),
+                    ),
+
                   SizedBox(height: 16.h),
 
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
                         width: 24.w,
@@ -211,14 +247,22 @@ class _SignupViewState extends State<SignupView> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4.r),
                           ),
+                          fillColor: MaterialStateProperty.resolveWith((
+                            states,
+                          ) {
+                            if (states.contains(MaterialState.selected)) {
+                              return Colors.black;
+                            }
+                            return Colors.transparent;
+                          }),
+                          checkColor: Colors.white,
                         ),
                       ),
                       SizedBox(width: 8.w),
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            setState(
-                                    () => _acceptPrivacy = !_acceptPrivacy);
+                            setState(() => _acceptPrivacy = !_acceptPrivacy);
                           },
                           child: RichText(
                             text: TextSpan(
@@ -227,15 +271,12 @@ class _SignupViewState extends State<SignupView> {
                                 color: Colors.black87,
                               ),
                               children: const [
-                                TextSpan(
-                                    text:
-                                    'By continuing you accept our '),
+                                TextSpan(text: 'By continuing you accept our '),
                                 TextSpan(
                                   text: 'Privacy Policy',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
-                                    decoration:
-                                    TextDecoration.underline,
+                                    decoration: TextDecoration.underline,
                                   ),
                                 ),
                               ],
@@ -246,22 +287,25 @@ class _SignupViewState extends State<SignupView> {
                     ],
                   ),
 
+                  if (_privacyError != null)
+                    Padding(
+                      padding: EdgeInsets.only(top: 8.h),
+                      child: Text(
+                        _privacyError!,
+                        style: TextStyle(fontSize: 12.sp, color: Colors.red),
+                      ),
+                    ),
+
                   SizedBox(height: 24.h),
 
                   AppButton(
-                    text: _isLoading
-                        ? "Signing Up..."
-                        : "Sign Up",
+                    text: _isLoading ? "Signing Up..." : "Sign Up",
                     textColor: AppColors.primaryLight,
                     backgroundColor: AppColors.primaryDark,
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                           PersonalizeView(),
-                        ),
-                      );
+                      if (!_isLoading) {
+                        _handleSignUp();
+                      }
                     },
                   ),
 
@@ -269,12 +313,9 @@ class _SignupViewState extends State<SignupView> {
 
                   Row(
                     children: [
-                      Expanded(
-                          child:
-                          Divider(color: Colors.grey[300])),
+                      Expanded(child: Divider(color: Colors.grey[300])),
                       Padding(
-                        padding:
-                        EdgeInsets.symmetric(horizontal: 16.w),
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
                         child: Text(
                           'OR',
                           style: TextStyle(
@@ -284,9 +325,7 @@ class _SignupViewState extends State<SignupView> {
                           ),
                         ),
                       ),
-                      Expanded(
-                          child:
-                          Divider(color: Colors.grey[300])),
+                      Expanded(child: Divider(color: Colors.grey[300])),
                     ],
                   ),
 
@@ -295,10 +334,7 @@ class _SignupViewState extends State<SignupView> {
                   Center(
                     child: Text(
                       'Sign in with',
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: Colors.black87,
-                      ),
+                      style: TextStyle(fontSize: 14.sp, color: Colors.black87),
                     ),
                   ),
 
@@ -350,8 +386,7 @@ class _SignupViewState extends State<SignupView> {
                               fontSize: 14.sp,
                               color: Colors.black,
                               fontWeight: FontWeight.w600,
-                              decoration:
-                              TextDecoration.underline,
+                              decoration: TextDecoration.underline,
                             ),
                           ),
                         ),
@@ -379,34 +414,40 @@ class _SignupViewState extends State<SignupView> {
     TextInputType keyboardType = TextInputType.text,
     String? Function(String?)? validator,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.primaryLight,
-        borderRadius: BorderRadius.circular(12.r),
-        border: Border.all(color: AppColors.neutral100),
-      ),
-      child: TextFormField(
-        controller: controller,
-        focusNode: focusNode,
-        keyboardType: keyboardType,
-        textInputAction:
-        nextFocus != null ? TextInputAction.next : TextInputAction.done,
-        onFieldSubmitted: (_) {
-          if (nextFocus != null) {
-            FocusScope.of(context).requestFocus(nextFocus);
-          }
-        },
-        validator: validator,
-        decoration: InputDecoration(
-          prefixIcon: Icon(prefixIcon, color: AppColors.neutral900),
-          hintText: hintText,
-          hintStyle:
-          TextStyle(color: Colors.grey[400], fontSize: 14.sp),
-          border: InputBorder.none,
-          contentPadding:
-          EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.primaryLight,
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(color: AppColors.neutral100),
+          ),
+          child: TextFormField(
+            controller: controller,
+            focusNode: focusNode,
+            keyboardType: keyboardType,
+            textInputAction: nextFocus != null
+                ? TextInputAction.next
+                : TextInputAction.done,
+            onFieldSubmitted: (_) {
+              if (nextFocus != null) {
+                FocusScope.of(context).requestFocus(nextFocus);
+              }
+            },
+            decoration: InputDecoration(
+              prefixIcon: Icon(prefixIcon, color: AppColors.neutral900),
+              hintText: hintText,
+              hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14.sp),
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 12.h,
+              ),
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 
@@ -433,8 +474,7 @@ class _SignupViewState extends State<SignupView> {
           return null;
         },
         decoration: InputDecoration(
-          prefixIcon:
-          Icon(Icons.lock_outline, color: AppColors.neutral900),
+          prefixIcon: Icon(Icons.lock_outline, color: AppColors.neutral900),
           suffixIcon: IconButton(
             icon: Icon(
               _obscurePassword
@@ -447,11 +487,12 @@ class _SignupViewState extends State<SignupView> {
             },
           ),
           hintText: '12345678',
-          hintStyle:
-          TextStyle(color: Colors.grey[400], fontSize: 14.sp),
+          hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14.sp),
           border: InputBorder.none,
-          contentPadding:
-          EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: 12.h,
+          ),
         ),
       ),
     );
@@ -477,5 +518,91 @@ class _SignupViewState extends State<SignupView> {
         child: Center(child: icon),
       ),
     );
+  }
+
+  /// HANDLE SIGN UP
+  void _handleSignUp() async {
+    // Reset errors
+    setState(() {
+      _nameError = null;
+      _emailError = null;
+      _phoneError = null;
+      _passwordError = null;
+      _privacyError = null;
+    });
+
+    bool isValid = true;
+
+    // Name validation
+    if (_nameController.text.trim().isEmpty) {
+      setState(() => _nameError = 'Please enter your name');
+      isValid = false;
+    }
+
+    // Email validation
+    String email = _emailController.text.trim();
+    if (email.isEmpty) {
+      setState(() => _emailError = 'Please enter your email');
+      isValid = false;
+    } else if (!GetUtils.isEmail(email)) {
+      setState(() => _emailError = 'Please enter a valid email');
+      isValid = false;
+    }
+
+    // Phone validation
+    if (_phoneController.text.trim().isEmpty) {
+      setState(() => _phoneError = 'Please enter your phone number');
+      isValid = false;
+    }
+
+    // Password validation
+    String password = _passwordController.text;
+    if (password.isEmpty) {
+      setState(() => _passwordError = 'Please enter your password');
+      isValid = false;
+    } else if (password.length < 6) {
+      setState(() => _passwordError = 'Password must be at least 6 characters');
+      isValid = false;
+    }
+
+    // If all fields are valid, then check privacy policy
+    if (isValid && !_acceptPrivacy) {
+      setState(
+        () => _privacyError = 'Please accept Privacy Policy to continue',
+      );
+      return;
+    }
+
+    if (!isValid) {
+      return;
+    }
+
+    // Show loading
+    setState(() => _isLoading = true);
+
+    // Simulate sign up delay
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (mounted) {
+      setState(() => _isLoading = false);
+
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Sign Up Successful!'),
+          backgroundColor: AppColors.primaryDark,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+
+      // Navigate after delay
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => PersonalizeView()),
+        );
+      }
+    }
   }
 }

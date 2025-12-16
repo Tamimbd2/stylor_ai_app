@@ -5,9 +5,31 @@ import '../../../../core/color.dart';
 import '../../output_outfit/views/output_outfit_view.dart';
 import '../controllers/shapeselect_controller.dart';
 
-class ShapeselectView extends GetView<ShapeselectController> {
-  ShapeselectView({super.key});
+class ShapeselectView extends StatefulWidget {
+  const ShapeselectView({super.key});
+
+  @override
+  State<ShapeselectView> createState() => _ShapeselectViewState();
+}
+
+class _ShapeselectViewState extends State<ShapeselectView> {
   final ShapeselectController controller = Get.put(ShapeselectController());
+
+  late TextEditingController _tempController;
+  final RxBool _isEditingTemp = false.obs;
+
+  @override
+  void initState() {
+    super.initState();
+    _tempController = TextEditingController(text: '30.5 °C (87°F)');
+  }
+
+  @override
+  void dispose() {
+    _tempController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,15 +100,43 @@ class ShapeselectView extends GetView<ShapeselectController> {
                                     color: AppColors.neutral700,
                                   ),
                                   SizedBox(width: 6.w),
-                                  Text(
-                                    '30.5 °C (87°F)',
-                                    style: TextStyle(
-                                      color: AppColors.neutral700,
-                                      fontSize: 13.sp,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w400,
-                                      height: 1.4,
-                                    ),
+                                  Obx(
+                                    () => _isEditingTemp.value
+                                        ? SizedBox(
+                                            width: 100.w,
+                                            height: 24.h,
+                                            child: TextField(
+                                              controller: _tempController,
+                                              style: TextStyle(
+                                                color: AppColors.neutral700,
+                                                fontSize: 13.sp,
+                                                fontFamily: 'Poppins',
+                                              ),
+                                              decoration: InputDecoration(
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                        4.r,
+                                                      ),
+                                                ),
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                      horizontal: 6.w,
+                                                      vertical: 2.h,
+                                                    ),
+                                              ),
+                                            ),
+                                          )
+                                        : Text(
+                                            _tempController.text,
+                                            style: TextStyle(
+                                              color: AppColors.neutral700,
+                                              fontSize: 13.sp,
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w400,
+                                              height: 1.4,
+                                            ),
+                                          ),
                                   ),
                                   Container(
                                     width: 1,
@@ -115,11 +165,53 @@ class ShapeselectView extends GetView<ShapeselectController> {
                                       ),
                                     ),
                                   ),
-                                  Image.asset(
-                                    'assets/icons/edit.png',
-                                    width: 14.w,
-                                    height: 14.h,
-                                    color: AppColors.neutral700,
+                                  Obx(
+                                    () => GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          if (_isEditingTemp.value) {
+                                            // Save
+                                            _isEditingTemp.value = false;
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: const Text(
+                                                  'Temperature updated!',
+                                                ),
+                                                backgroundColor:
+                                                    AppColors.primaryDark,
+                                                duration: const Duration(
+                                                  seconds: 1,
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            // Edit
+                                            _isEditingTemp.value = true;
+                                          }
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(4.w),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: _isEditingTemp.value
+                                              ? AppColors.primaryDark
+                                              : Colors.transparent,
+                                        ),
+                                        child: Image.asset(
+                                          _isEditingTemp.value
+                                              ? 'assets/icons/saved.png'
+                                              : 'assets/icons/edit.png',
+                                          width: 14.w,
+                                          height: 14.h,
+                                          color: _isEditingTemp.value
+                                              ? Colors.white
+                                              : AppColors.neutral700,
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -362,14 +454,16 @@ class ShapeselectView extends GetView<ShapeselectController> {
 
   void _showStyleSelector(BuildContext context) {
     final styles = [
-      {'label': 'Casual', 'icon': 'assets/icons/casual.png'},
-      {'label': 'Formal', 'icon': 'assets/icons/formal.png'},
-      {'label': 'Streetwear', 'icon': 'assets/icons/Streetwear.png'},
-      {'label': 'Minimalist', 'icon': 'assets/icons/Minimalist.png'},
-      {'label': 'Party', 'icon': 'assets/icons/Party.png'},
-      {'label': 'Artistic', 'icon': 'assets/icons/Artistic.png'},
-      {'label': 'Vintage', 'icon': 'assets/icons/Vintage.png'},
-      {'label': 'Sporty', 'icon': 'assets/icons/Sporty.png'},
+      'Casual Outing',
+      'Formal Occasion',
+      'Business Meeting',
+      'Date Night',
+      'Wedding',
+      'Workout',
+      'Travel',
+      'Festival',
+      'Beach Day',
+      'Winter Outdoor',
     ];
 
     showModalBottomSheet(
@@ -412,20 +506,28 @@ class ShapeselectView extends GetView<ShapeselectController> {
                         padding: EdgeInsets.symmetric(vertical: 12.h),
                         child: Row(
                           children: [
-                            Image.asset(
-                              style['icon'] as String,
-                              width: 32.w,
-                              height: 32.h,
+                            Container(
+                              width: 20.w,
+                              height: 20.h,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  width: 2,
+                                  color: AppColors.neutral300,
+                                ),
+                              ),
                             ),
                             SizedBox(width: 12.w),
-                            Text(
-                              style['label'] as String,
-                              style: TextStyle(
-                                color: AppColors.neutral700,
-                                fontSize: 16.sp,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w400,
-                                height: 1.4,
+                            Expanded(
+                              child: Text(
+                                style,
+                                style: TextStyle(
+                                  color: AppColors.neutral700,
+                                  fontSize: 14.sp,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w400,
+                                  height: 1.4,
+                                ),
                               ),
                             ),
                           ],
