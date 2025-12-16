@@ -17,6 +17,7 @@ class _ShapeselectViewState extends State<ShapeselectView> {
 
   late TextEditingController _tempController;
   final RxBool _isEditingTemp = false.obs;
+  String _selectedStyle = 'Casual Outing';
 
   @override
   void initState() {
@@ -388,15 +389,10 @@ class _ShapeselectViewState extends State<ShapeselectView> {
                             ),
                             child: Row(
                               children: [
-                                Image.asset(
-                                  'assets/icons/casual.png',
-                                  width: 18.w,
-                                  height: 18.h,
-                                ),
                                 SizedBox(width: 6.w),
                                 Expanded(
                                   child: Text(
-                                    'Casual',
+                                    _selectedStyle,
                                     style: TextStyle(
                                       color: AppColors.neutral700,
                                       fontSize: 13.sp,
@@ -500,8 +496,14 @@ class _ShapeselectViewState extends State<ShapeselectView> {
                   itemCount: styles.length,
                   itemBuilder: (context, index) {
                     final style = styles[index];
+                    final isSelected = _selectedStyle == style;
                     return GestureDetector(
-                      onTap: () => Navigator.pop(context),
+                      onTap: () {
+                        setState(() {
+                          _selectedStyle = style;
+                        });
+                        Navigator.pop(context);
+                      },
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 12.h),
                         child: Row(
@@ -511,11 +513,23 @@ class _ShapeselectViewState extends State<ShapeselectView> {
                               height: 20.h,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
+                                color: isSelected
+                                    ? AppColors.primaryDark
+                                    : Colors.transparent,
                                 border: Border.all(
                                   width: 2,
-                                  color: AppColors.neutral300,
+                                  color: isSelected
+                                      ? AppColors.primaryDark
+                                      : AppColors.neutral300,
                                 ),
                               ),
+                              child: isSelected
+                                  ? Icon(
+                                      Icons.check,
+                                      size: 12.sp,
+                                      color: Colors.white,
+                                    )
+                                  : null,
                             ),
                             SizedBox(width: 12.w),
                             Expanded(

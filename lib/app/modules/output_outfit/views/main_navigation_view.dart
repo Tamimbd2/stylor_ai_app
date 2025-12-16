@@ -71,16 +71,27 @@ class _MainNavigationViewState extends State<MainNavigationView> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            size: 22,
-            color: isActive ? const Color(0xFF060017) : const Color(0xFF777778),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: isActive
+                  ? const Color(0xFF060017).withOpacity(0.1)
+                  : Colors.transparent,
+            ),
+            child: Icon(
+              isActive ? _getFilledIcon(icon) : icon,
+              size: 22,
+              color:
+                  isActive ? const Color(0xFF060017) : const Color(0xFF777778),
+            ),
           ),
           const SizedBox(height: 4),
           Text(
             label,
             style: TextStyle(
-              color: isActive ? const Color(0xFF060017) : const Color(0xFF777778),
+              color:
+                  isActive ? const Color(0xFF060017) : const Color(0xFF777778),
               fontSize: 12,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w400,
@@ -90,5 +101,14 @@ class _MainNavigationViewState extends State<MainNavigationView> {
         ],
       ),
     );
+  }
+
+  IconData _getFilledIcon(IconData icon) {
+    if (icon == Icons.home) return Icons.home;
+    if (icon == Icons.shopping_cart_outlined) return Icons.shopping_cart;
+    if (icon == Icons.checkroom_outlined) return Icons.checkroom;
+    if (icon == Icons.favorite_border) return Icons.favorite;
+    if (icon == Icons.person_outline) return Icons.person;
+    return icon;
   }
 }
