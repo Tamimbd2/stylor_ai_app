@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../shapeselect/views/shapeselect_view.dart';
 import 'output_outfit_view.dart';
@@ -18,12 +19,12 @@ class _MainNavigationViewState extends State<MainNavigationView> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-     ShapeselectView(),
-     // OutputOutfitView(),
-     CartView(),
-     WardrobeView(),
-          FavoriteView(),
-     ProfileView(),
+    ShapeselectView(),
+    // OutputOutfitView(),
+    CartView(),
+    WardrobeView(),
+    FavoriteView(),
+    ProfileView(),
   ];
 
   void _onItemTapped(int index) {
@@ -52,18 +53,18 @@ class _MainNavigationViewState extends State<MainNavigationView> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildNavItem(Icons.home, 'Home', 0),
-            _buildNavItem(Icons.shopping_cart_outlined, 'Cart', 1),
-            _buildNavItem(Icons.checkroom_outlined, 'Wardrobe', 2),
-            _buildNavItem(Icons.favorite_border, 'Favorite', 3),
-            _buildNavItem(Icons.person_outline, 'Profile', 4),
+            _buildNavItem('assets/svg/home.svg', 'Home', 0),
+            _buildNavItem('assets/svg/Cart.svg', 'Cart', 1),
+            _buildNavItem('assets/svg/wardrop.svg', 'Wardrobe', 2),
+            _buildNavItem('assets/svg/favorite.svg', 'Favorite', 3),
+            _buildNavItem('assets/svg/profile.svg', 'Profile', 4),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, int index) {
+  Widget _buildNavItem(String assetPath, String label, int index) {
     final isActive = _selectedIndex == index;
     return GestureDetector(
       onTap: () => _onItemTapped(index),
@@ -79,19 +80,23 @@ class _MainNavigationViewState extends State<MainNavigationView> {
                   ? const Color(0xFF060017).withOpacity(0.1)
                   : Colors.transparent,
             ),
-            child: Icon(
-              isActive ? _getFilledIcon(icon) : icon,
-              size: 22,
-              color:
-                  isActive ? const Color(0xFF060017) : const Color(0xFF777778),
+            child: SvgPicture.asset(
+              assetPath,
+              width: 28,
+              height: 28,
+              colorFilter: ColorFilter.mode(
+                isActive ? const Color(0xFF060017) : const Color(0xFF777778),
+                BlendMode.srcIn,
+              ),
             ),
           ),
           const SizedBox(height: 4),
           Text(
             label,
             style: TextStyle(
-              color:
-                  isActive ? const Color(0xFF060017) : const Color(0xFF777778),
+              color: isActive
+                  ? const Color(0xFF060017)
+                  : const Color(0xFF777778),
               fontSize: 12,
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w400,
@@ -101,14 +106,5 @@ class _MainNavigationViewState extends State<MainNavigationView> {
         ],
       ),
     );
-  }
-
-  IconData _getFilledIcon(IconData icon) {
-    if (icon == Icons.home) return Icons.home;
-    if (icon == Icons.shopping_cart_outlined) return Icons.shopping_cart;
-    if (icon == Icons.checkroom_outlined) return Icons.checkroom;
-    if (icon == Icons.favorite_border) return Icons.favorite;
-    if (icon == Icons.person_outline) return Icons.person;
-    return icon;
   }
 }
