@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/color.dart';
+import '../../cart/controllers/cart_controller.dart';
 import '../../output_outfit/views/output_outfit_view.dart';
 import '../controllers/shapeselect_controller.dart';
 
 class ShapeselectView extends StatefulWidget {
-  const ShapeselectView({super.key});
-
+   ShapeselectView({super.key});
+final ShapeselectController controller = Get.put(ShapeselectController());
+final CartController cartController = Get.put(CartController());
   @override
   State<ShapeselectView> createState() => _ShapeselectViewState();
 }

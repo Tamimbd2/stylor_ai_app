@@ -4,13 +4,14 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../routes/app_pages.dart';
 import '../../../models/product_model.dart';
 import '../../cart/controllers/cart_controller.dart';
+import '../../favorite/controllers/favorite_controller.dart';
 import '../controllers/output_outfit_controller.dart';
 
 class OutputOutfitView extends GetView<OutputOutfitController> {
   OutputOutfitView({super.key});
   final OutputOutfitController controller = Get.put(OutputOutfitController());
-  // final CartController cartController = Get.find<CartController>();
   final CartController cartController = Get.put(CartController());
+  final FavoriteController favoriteController = Get.put(FavoriteController());
 
   @override
   Widget build(BuildContext context) {
@@ -347,7 +348,10 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                     top: 12,
                     child: Obx(
                       () => GestureDetector(
-                        onTap: () => controller.toggleProductFavorite(index),
+                        onTap: () {
+                          controller.toggleProductFavorite(index);
+                          favoriteController.toggleFavorite(product);
+                        },
                         child: Container(
                           width: 20,
                           height: 20,
