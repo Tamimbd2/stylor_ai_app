@@ -6,7 +6,7 @@ class ActionButtonsSection extends StatelessWidget {
   final VoidCallback? onCancel;
   final VoidCallback? onLike;
 
-  const ActionButtonsSection({this.onCancel, this.onLike});
+  const ActionButtonsSection({super.key, this.onCancel, this.onLike});
 
   @override
   Widget build(BuildContext context) {

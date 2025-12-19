@@ -4,7 +4,7 @@ import '../../../core/color.dart';
 import 'weather_location_card.dart';
 
 class HeaderSection extends StatelessWidget {
-  const HeaderSection();
+  const HeaderSection({super.key});
 
   @override
   Widget build(BuildContext context) {
