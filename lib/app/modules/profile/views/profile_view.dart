@@ -75,7 +75,7 @@ class ProfileView extends GetView<ProfileController> {
                           ),
                           child: ClipOval(
                             child: Image.asset(
-                              'assets/image/profile.png',
+                              'assets/image/profilef.jpg',
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
                                   color: const Color(0xFFE8E8E8),
@@ -96,7 +96,7 @@ class ProfileView extends GetView<ProfileController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Mohammad Ali',
+                                'Sarah Ali Khan',
                                 style: TextStyle(
                                   color: AppColors.neutral900,
                                   fontSize: 16.sp,

@@ -10,6 +10,21 @@ class PersonalizeController extends GetxController {
   // Country selection
   final selectedCountry = Rx<String?>(null);
 
+  // Season selection
+  final selectedSeason = Rx<String?>(null);
+
+  // Style selection
+  final selectedStyle = Rx<String?>(null);
+
+  // Color preference selection
+  final selectedColor = Rx<String?>(null);
+
+  // Body type selection
+  final selectedBodyType = Rx<String?>(null);
+
+  // Skin tone selection
+  final selectedSkinTone = Rx<String?>(null);
+
   // List of countries
   final countries = <String>[
     'Belgium',
@@ -46,6 +61,11 @@ class PersonalizeController extends GetxController {
     selectedDate.value = DateTime(2000, 4, 22);
     selectedGender.value = 'Male';
     selectedCountry.value = 'Belgium';
+    selectedSeason.value = 'Spring';
+    selectedStyle.value = 'Casual';
+    selectedColor.value = 'Neutrals';
+    selectedBodyType.value = 'Athletic';
+    selectedSkinTone.value = 'Medium';
   }
 
 
