@@ -6,7 +6,7 @@ class StyleSelectorSection extends StatelessWidget {
   final String selectedStyle;
   final ValueChanged<String> onStyleChanged;
 
-  const StyleSelectorSection({
+  const StyleSelectorSection({super.key, 
     required this.selectedStyle,
     required this.onStyleChanged,
   });
@@ -95,7 +95,7 @@ class StyleSelectBottomSheet extends StatelessWidget {
   final String selectedStyle;
   final ValueChanged<String> onStyleSelected;
 
-  const StyleSelectBottomSheet({
+  const StyleSelectBottomSheet({super.key, 
     required this.styles,
     required this.selectedStyle,
     required this.onStyleSelected,
@@ -148,7 +148,7 @@ class StyleOption extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-  const StyleOption({
+  const StyleOption({super.key, 
     required this.style,
     required this.isSelected,
     required this.onTap,
