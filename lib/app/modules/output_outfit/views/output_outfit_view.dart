@@ -230,51 +230,31 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
               const SizedBox(height: 16),
 
               // Product List
-              _buildProductCard(
-                ProductModel(
-                  id: '1',
-                  name: 'ONLMADISON High waist Wide Leg Fit Jeans',
-                  imagePath: 'assets/image/clothes.png',
-                  price: 20.50,
-                ),
-                index: 0,
-              ),
-              _buildProductCard(
-                ProductModel(
-                  id: '2',
-                  name: 'Elegant Summer Dress',
-                  imagePath: 'assets/image/dreess1.png',
-                  price: 35.99,
-                ),
-                index: 1,
-              ),
-              _buildProductCard(
-                ProductModel(
-                  id: '3',
-                  name: 'Classic Black Shoes',
-                  imagePath: 'assets/image/shoe.png',
-                  price: 45.00,
-                ),
-                index: 2,
-              ),
-              _buildProductCard(
-                ProductModel(
-                  id: '4',
-                  name: 'Designer Party Dress',
-                  imagePath: 'assets/image/dress2.png',
-                  price: 55.50,
-                ),
-                index: 3,
-              ),
-              _buildProductCard(
-                ProductModel(
-                  id: '5',
-                  name: 'Stylish Sunglasses',
-                  imagePath: 'assets/image/sunglass.png',
-                  price: 25.00,
-                ),
-                index: 4,
-              ),
+              Obx(() {
+                final products = controller.filteredProducts;
+                if (products.isEmpty) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 40),
+                    child: Center(
+                      child: Text(
+                        'No products in this category',
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 16,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+                
+                return Column(
+                  children: products.asMap().entries.map((entry) {
+                    return _buildProductCard(entry.value, index: entry.key);
+                  }).toList(),
+                );
+              }),
 
               const SizedBox(height: 20),
             ],
