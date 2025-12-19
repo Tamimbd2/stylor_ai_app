@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:outfit/core/color.dart';
 import '../../shapeselect/views/shapeselect_view.dart';
 import '../../cart/views/cart_view.dart';
 import '../../wardrobe/views/wardrobe_view.dart';
@@ -16,12 +17,10 @@ class MainNavigationView extends StatefulWidget {
 
 class _MainNavigationViewState extends State<MainNavigationView> {
   static const double _navBarHeight = 80;
-  static const double _iconSize = 20;
-  static const double _svgIconSize = 25;
   static const int _animationDuration = 200;
-  static const Color _activeColor = Color(0xFF060017);
+  static const Color _activeColor = AppColors.black;
   static const Color _inactiveColor = Colors.grey;
-  static const Color _navBorderColor = Colors.transparent;
+  static const Color _navBorderColor = Colors.black12;
 
   int _selectedIndex = 0;
 
@@ -151,6 +150,9 @@ class _MainNavigationViewState extends State<MainNavigationView> {
   }
 
   Widget _buildIcon(String assetPath, {Key? key, bool isActive = false}) {
+    final iconSize = isActive ? 24.0 : 22.0;
+    final svgSize = isActive ? 38.0 : 28.0;
+
     if (assetPath.startsWith('flutter_icon:')) {
       final iconName = assetPath.replaceFirst('flutter_icon:', '');
       final icon = _getIconData(iconName);
@@ -158,22 +160,22 @@ class _MainNavigationViewState extends State<MainNavigationView> {
       return Icon(
         icon,
         key: key,
-        size: _iconSize,
+        size: iconSize,
         color: isActive ? Colors.black : Colors.grey,
       );
     } else if (assetPath.endsWith('.png')) {
       return SizedBox(
         key: key,
-        width: _iconSize,
-        height: _iconSize,
+        width: iconSize,
+        height: iconSize,
         child: Image.asset(assetPath, fit: BoxFit.contain),
       );
     } else {
       return SvgPicture.asset(
         assetPath,
         key: key,
-        width: _svgIconSize,
-        height: _svgIconSize,
+        width: svgSize,
+        height: svgSize,
         fit: BoxFit.contain,
       );
     }

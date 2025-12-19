@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/color.dart';
 import '../controllers/cart_controller.dart';
 
@@ -82,7 +83,9 @@ class CartView extends GetView<CartController> {
                 return SingleChildScrollView(
                   child: Column(
                     children: [
-                      ...controller.cartItems.map((product) => _buildCartCard(product)),
+                      ...controller.cartItems.map(
+                        (product) => _buildCartCard(product),
+                      ),
                       SizedBox(height: 20.h),
                     ],
                   ),
@@ -127,7 +130,9 @@ class CartView extends GetView<CartController> {
               ),
               child: Stack(
                 children: [
-                  Center(child: Image.asset(product.imagePath, fit: BoxFit.contain)),
+                  Center(
+                    child: Image.asset(product.imagePath, fit: BoxFit.contain),
+                  ),
                   // Delete button
                   Positioned(
                     right: 8,
@@ -186,9 +191,14 @@ class CartView extends GetView<CartController> {
                     GestureDetector(
                       onTap: () async {
                         // Open product URL in browser
-                        final Uri url = Uri.parse('https://www.example.com/product');
+                        final Uri url = Uri.parse(
+                          'https://www.example.com/product',
+                        );
                         if (await canLaunchUrl(url)) {
-                          await launchUrl(url, mode: LaunchMode.externalApplication);
+                          await launchUrl(
+                            url,
+                            mode: LaunchMode.externalApplication,
+                          );
                         }
                       },
                       child: Container(

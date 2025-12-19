@@ -19,7 +19,7 @@ dependencies:
   # ➤ Added GetX Package
   get: ^4.6.6
   camera: ^0.10.5+5
-  url_launcher: ^6.1.14
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
