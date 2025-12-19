@@ -38,6 +38,8 @@ import '../modules/termsAndConditions/bindings/terms_and_conditions_binding.dart
 import '../modules/termsAndConditions/views/terms_and_conditions_view.dart';
 import '../modules/wardrobe/bindings/wardrobe_binding.dart';
 import '../modules/wardrobe/views/wardrobe_view.dart';
+import '../modules/wardropDetails/bindings/wardrop_details_binding.dart';
+import '../modules/wardropDetails/views/wardrop_details_view.dart';
 
 part 'app_routes.dart';
 
@@ -147,8 +149,13 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.EDIT_PROFILE,
-      page: () =>  EditProfileView(),
+      page: () => EditProfileView(),
       binding: EditProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.WARDROP_DETAILS,
+      page: () => const WardropDetailsView(),
+      binding: WardropDetailsBinding(),
     ),
   ];
 }

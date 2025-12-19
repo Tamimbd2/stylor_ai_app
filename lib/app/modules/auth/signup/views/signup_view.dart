@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -247,9 +248,7 @@ class _SignupViewState extends State<SignupView> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4.r),
                           ),
-                          fillColor: WidgetStateProperty.resolveWith((
-                            states,
-                          ) {
+                          fillColor: WidgetStateProperty.resolveWith((states) {
                             if (states.contains(WidgetState.selected)) {
                               return Colors.black;
                             }
@@ -270,14 +269,21 @@ class _SignupViewState extends State<SignupView> {
                                 fontSize: 13.sp,
                                 color: Colors.black87,
                               ),
-                              children: const [
-                                TextSpan(text: 'By continuing you accept our '),
+                              children: [
+                                const TextSpan(
+                                  text: 'By continuing you accept our ',
+                                ),
                                 TextSpan(
                                   text: 'Privacy Policy',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     decoration: TextDecoration.underline,
+                                    color: Colors.black87,
                                   ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Get.toNamed('/privacy-policy');
+                                    },
                                 ),
                               ],
                             ),

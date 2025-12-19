@@ -89,7 +89,8 @@ class WardrobeView extends GetView<WardrobeController> {
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Obx(() {
                   // Show analyzing UI if analyzing
-                  if (controller.isAnalyzing.value && controller.analyzingImage.value != null) {
+                  if (controller.isAnalyzing.value &&
+                      controller.analyzingImage.value != null) {
                     return Column(
                       children: [
                         // Analyzing Card
@@ -161,22 +162,33 @@ class WardrobeView extends GetView<WardrobeController> {
                         // Show existing items below
                         Expanded(
                           child: GridView.builder(
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              crossAxisSpacing: 16.w,
-                              mainAxisSpacing: 16.h,
-                              childAspectRatio: 119.0 / 126.0,
-                            ),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 16.w,
+                                  mainAxisSpacing: 16.h,
+                                  childAspectRatio: 119.0 / 126.0,
+                                ),
                             itemCount: controller.wardrobeItems.length,
                             itemBuilder: (context, index) {
-                              return _buildWardrobeItem(controller.wardrobeItems[index]);
+                              return GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(
+                                    '/wardrop-details',
+                                    arguments: controller.wardrobeItems[index],
+                                  );
+                                },
+                                child: _buildWardrobeItem(
+                                  controller.wardrobeItems[index],
+                                ),
+                              );
                             },
                           ),
                         ),
                       ],
                     );
                   }
-                  
+
                   // Show normal grid
                   return GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -187,7 +199,17 @@ class WardrobeView extends GetView<WardrobeController> {
                     ),
                     itemCount: controller.wardrobeItems.length,
                     itemBuilder: (context, index) {
-                      return _buildWardrobeItem(controller.wardrobeItems[index]);
+                      return GestureDetector(
+                        onTap: () {
+                          Get.toNamed(
+                            '/wardrop-details',
+                            arguments: controller.wardrobeItems[index],
+                          );
+                        },
+                        child: _buildWardrobeItem(
+                          controller.wardrobeItems[index],
+                        ),
+                      );
                     },
                   );
                 }),
