@@ -7,6 +7,7 @@ import '../controllers/wardrobe_controller.dart';
 
 class WardrobeView extends GetView<WardrobeController> {
   WardrobeView({super.key});
+  @override
   final WardrobeController controller = Get.put(WardrobeController());
   @override
   Widget build(BuildContext context) {

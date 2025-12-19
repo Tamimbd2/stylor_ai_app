@@ -8,6 +8,7 @@ import '../controllers/personalize_controller.dart';
 
 class PersonalizeView extends GetView<PersonalizeController> {
   PersonalizeView({super.key});
+  @override
   final PersonalizeController controller = Get.put(PersonalizeController());
 
   @override

@@ -68,15 +68,7 @@ class PersonalizeController extends GetxController {
     selectedSkinTone.value = 'Medium';
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
   // Format date to display
   String getFormattedDate() {

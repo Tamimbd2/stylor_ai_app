@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../../../core/color.dart';
 import '../../../../../widgets/primary_button.dart';
-import '../../../personalize/views/personalize_view.dart' hide AppButton;
+import '../../../personalize/views/personalize_view.dart';
 import '../controllers/signup_controller.dart';
 
 class SignupView extends StatefulWidget {
@@ -247,10 +247,10 @@ class _SignupViewState extends State<SignupView> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4.r),
                           ),
-                          fillColor: MaterialStateProperty.resolveWith((
+                          fillColor: WidgetStateProperty.resolveWith((
                             states,
                           ) {
-                            if (states.contains(MaterialState.selected)) {
+                            if (states.contains(WidgetState.selected)) {
                               return Colors.black;
                             }
                             return Colors.transparent;

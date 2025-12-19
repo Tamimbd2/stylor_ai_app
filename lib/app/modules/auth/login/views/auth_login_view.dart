@@ -144,10 +144,10 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4.r),
                           ),
-                          fillColor: MaterialStateProperty.resolveWith((
+                          fillColor: WidgetStateProperty.resolveWith((
                             states,
                           ) {
-                            if (states.contains(MaterialState.selected)) {
+                            if (states.contains(WidgetState.selected)) {
                               return Colors.black;
                             }
                             return Colors.transparent;

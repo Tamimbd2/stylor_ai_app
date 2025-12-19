@@ -4,24 +4,15 @@ import '../../../models/product_model.dart';
 
 class FavoriteController extends GetxController {
   final isOutfitSelected = false.obs;
+  //TODO: Implement FavoriteController
+
+  final count = 0.obs;
   
   // List of favorite products
   final RxList<ProductModel> favoriteProducts = <ProductModel>[].obs;
   
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
   // Add product to favorites
   void addToFavorites(ProductModel product) {

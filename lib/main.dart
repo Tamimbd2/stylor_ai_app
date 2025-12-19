@@ -26,8 +26,8 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             fontFamily: "Poppins",
             useMaterial3: true,
-            primarySwatch: Colors.blue,
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+            // primarySwatch: Colors.blue,
+            // colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           ),
 
           /// 🔥 Start Screen (Splash)
