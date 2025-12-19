@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../models/product_model.dart';
+import '../../cart/controllers/cart_controller.dart';
 import '../controllers/favorite_controller.dart';
 
 class FavoriteView extends GetView<FavoriteController> {
   FavoriteView({super.key});
   @override
   final FavoriteController controller = Get.put(FavoriteController());
+  final CartController cartController = Get.find<CartController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,37 +18,37 @@ class FavoriteView extends GetView<FavoriteController> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(height: 40),
+              SizedBox(height: 40.h),
               // Header
-              const Text(
+              Text(
                 'Favorite',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color(0xFF1C1C1E),
-                  fontSize: 24,
+                  color: const Color(0xFF1C1C1E),
+                  fontSize: 24.sp,
                   fontFamily: 'Helvetica Neue',
                   fontWeight: FontWeight.w700,
                   height: 1.40,
                 ),
               ),
-              const SizedBox(height: 6),
-              const Text(
+              SizedBox(height: 6.h),
+              Text(
                 'Your choices shape your AI style feed.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Color(0xFF101C2C),
-                  fontSize: 14,
+                  color: const Color(0xFF101C2C),
+                  fontSize: 14.sp,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.w400,
                   height: 1.56,
                 ),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
 
               // Toggle Buttons (Product / Outfit)
               Obx(
                 () => Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Row(
                     children: [
                       Expanded(
@@ -52,7 +56,7 @@ class FavoriteView extends GetView<FavoriteController> {
                           onTap: () =>
                               controller.isOutfitSelected.value = false,
                           child: Container(
-                            height: 56,
+                            height: 56.h,
                             decoration: BoxDecoration(
                               color: !controller.isOutfitSelected.value
                                   ? const Color(0xFF060017)
@@ -61,9 +65,9 @@ class FavoriteView extends GetView<FavoriteController> {
                                 color: const Color(0xFFE8E8E8),
                                 width: 1,
                               ),
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(12),
-                                bottomLeft: Radius.circular(12),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(12.r),
+                                bottomLeft: Radius.circular(12.r),
                               ),
                             ),
                             child: Center(
@@ -74,7 +78,7 @@ class FavoriteView extends GetView<FavoriteController> {
                                   color: !controller.isOutfitSelected.value
                                       ? Colors.white
                                       : const Color(0xFF1C1C1E),
-                                  fontSize: 18,
+                                  fontSize: 18.sp,
                                   fontFamily: 'Helvetica Neue',
                                   fontWeight: !controller.isOutfitSelected.value
                                       ? FontWeight.w700
@@ -90,7 +94,7 @@ class FavoriteView extends GetView<FavoriteController> {
                         child: GestureDetector(
                           onTap: () => controller.isOutfitSelected.value = true,
                           child: Container(
-                            height: 56,
+                            height: 56.h,
                             decoration: BoxDecoration(
                               color: controller.isOutfitSelected.value
                                   ? const Color(0xFF060017)
@@ -99,9 +103,9 @@ class FavoriteView extends GetView<FavoriteController> {
                                 color: const Color(0xFFE8E8E8),
                                 width: 1,
                               ),
-                              borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(12),
-                                bottomRight: Radius.circular(12),
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(12.r),
+                                bottomRight: Radius.circular(12.r),
                               ),
                             ),
                             child: Center(
@@ -112,7 +116,7 @@ class FavoriteView extends GetView<FavoriteController> {
                                   color: controller.isOutfitSelected.value
                                       ? Colors.white
                                       : const Color(0xFF1C1C1E),
-                                  fontSize: 18,
+                                  fontSize: 18.sp,
                                   fontFamily: 'Helvetica Neue',
                                   fontWeight: controller.isOutfitSelected.value
                                       ? FontWeight.w700
@@ -129,7 +133,7 @@ class FavoriteView extends GetView<FavoriteController> {
                 ),
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
 
               // Content based on selection
               Obx(
@@ -138,7 +142,7 @@ class FavoriteView extends GetView<FavoriteController> {
                     : _buildProductList(),
               ),
 
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
             ],
           ),
         ),
@@ -147,15 +151,49 @@ class FavoriteView extends GetView<FavoriteController> {
   }
 
   Widget _buildProductList() {
-    return Column(
-      children: [
-        _buildFavoriteCard('assets/image/clothes.png'),
-        _buildFavoriteCard('assets/image/dreess1.png'),
-        _buildFavoriteCard('assets/image/shoe.png'),
-        _buildFavoriteCard('assets/image/dress2.png'),
-        _buildFavoriteCard('assets/image/sunglass.png'),
-      ],
-    );
+    return Obx(() {
+      if (controller.favoriteProducts.isEmpty) {
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: 80.h),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.favorite_border,
+                size: 80.sp,
+                color: Colors.grey[300],
+              ),
+              SizedBox(height: 16.h),
+              Text(
+                'No favorite products yet',
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 18.sp,
+                  fontFamily: 'Helvetica Neue',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: 8.h),
+              Text(
+                'Start adding products to your favorites',
+                style: TextStyle(
+                  color: Colors.grey[500],
+                  fontSize: 14.sp,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+      
+      return Column(
+        children: controller.favoriteProducts
+            .map((product) => _buildFavoriteCard(product))
+            .toList(),
+      );
+    });
   }
 
   Widget _buildOutfitList() {
@@ -168,14 +206,14 @@ class FavoriteView extends GetView<FavoriteController> {
     );
   }
 
-  Widget _buildFavoriteCard(String imagePath) {
+  Widget _buildFavoriteCard(ProductModel product) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: Container(
-        height: 156,
+        height: 156.h,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
           border: Border.all(color: const Color(0xFFF4F4F4)),
           boxShadow: const [
             BoxShadow(
@@ -190,31 +228,34 @@ class FavoriteView extends GetView<FavoriteController> {
           children: [
             // Product Image Container
             Container(
-              width: 134,
-              height: 132,
-              margin: const EdgeInsets.all(12),
+              width: 134.w,
+              height: 132.h,
+              margin: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10.r),
                 border: Border.all(color: const Color(0xFFF4F4F4)),
               ),
               child: Stack(
                 children: [
-                  Center(child: Image.asset(imagePath, fit: BoxFit.contain)),
+                  Center(child: Image.asset(product.imagePath, fit: BoxFit.contain)),
                   Positioned(
-                    left: 12,
-                    top: 12,
-                    child: Container(
-                      width: 24,
-                      height: 24,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.favorite,
-                        size: 18,
-                        color: Colors.red,
+                    left: 12.w,
+                    top: 12.h,
+                    child: GestureDetector(
+                      onTap: () => controller.removeFromFavorites(product),
+                      child: Container(
+                        width: 24.w,
+                        height: 24.h,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.favorite,
+                          size: 18.sp,
+                          color: Colors.red,
+                        ),
                       ),
                     ),
                   ),
@@ -225,16 +266,16 @@ class FavoriteView extends GetView<FavoriteController> {
             // Product Details
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(top: 12, right: 12, bottom: 12),
+                padding: EdgeInsets.only(top: 12.h, right: 12.w, bottom: 12.h),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'ONLMADISON High waist Wide Leg Fit Jeans',
+                    Text(
+                      product.name,
                       style: TextStyle(
-                        color: Color(0xFF1C1C1E),
-                        fontSize: 14,
+                        color: const Color(0xFF1C1C1E),
+                        fontSize: 14.sp,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w400,
                         height: 1.56,
@@ -242,11 +283,11 @@ class FavoriteView extends GetView<FavoriteController> {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const Text(
-                      '\$20.50',
+                    Text(
+                      '\$${product.price.toStringAsFixed(2)}',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 24,
+                        fontSize: 24.sp,
                         fontFamily: 'Helvetica Neue',
                         fontWeight: FontWeight.w500,
                         height: 1.40,
@@ -254,41 +295,52 @@ class FavoriteView extends GetView<FavoriteController> {
                     ),
                     Row(
                       children: [
-                        Container(
-                          height: 36,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 36,
-                            vertical: 5,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF060017),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'Buy Now',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontFamily: 'Helvetica Neue',
-                                fontWeight: FontWeight.w400,
-                                height: 1.50,
+                        GestureDetector(
+                          onTap: () async {
+                            final Uri url = Uri.parse('https://www.example.com/product');
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(url, mode: LaunchMode.externalApplication);
+                            }
+                          },
+                          child: Container(
+                            height: 36.h,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 28.w,
+                              vertical: 5.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF060017),
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'Buy Now',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'Helvetica Neue',
+                                  fontWeight: FontWeight.w400,
+                                  height: 1.50,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        Container(
-                          width: 36,
-                          height: 36,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFF4F4F4),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(
-                            Icons.shopping_cart_outlined,
-                            size: 20,
-                            color: Color(0xFF1C1C1E),
+                        SizedBox(width: 8.w),
+                        GestureDetector(
+                          onTap: () => cartController.addToCart(product),
+                          child: Container(
+                            width: 36.w,
+                            height: 36.h,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF4F4F4),
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Icon(
+                              Icons.shopping_cart_outlined,
+                              size: 20.sp,
+                              color: Color(0xFF1C1C1E),
+                            ),
                           ),
                         ),
                       ],
@@ -305,12 +357,12 @@ class FavoriteView extends GetView<FavoriteController> {
 
   Widget _buildOutfitCard(String imagePath) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: Container(
-        height: 156,
+        height: 156.h,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
           border: Border.all(color: const Color(0xFFF4F4F4)),
           boxShadow: const [
             BoxShadow(
@@ -325,12 +377,12 @@ class FavoriteView extends GetView<FavoriteController> {
           children: [
             // Outfit Image Container
             Container(
-              width: 134,
-              height: 132,
-              margin: const EdgeInsets.all(12),
+              width: 134.w,
+              height: 132.h,
+              margin: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10.r),
                 border: Border.all(color: const Color(0xFFF4F4F4)),
               ),
               child: Stack(
@@ -338,24 +390,24 @@ class FavoriteView extends GetView<FavoriteController> {
                   Center(
                     child: Image.asset(
                       imagePath,
-                      width: 62,
-                      height: 83,
+                      width: 62.w,
+                      height: 83.h,
                       fit: BoxFit.cover,
                     ),
                   ),
                   Positioned(
-                    left: 12,
-                    top: 12,
+                    left: 12.w,
+                    top: 12.h,
                     child: Container(
-                      width: 20,
-                      height: 20,
+                      width: 20.w,
+                      height: 20.h,
                       decoration: const BoxDecoration(
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.favorite,
-                        size: 14,
+                        size: 14.sp,
                         color: Colors.red,
                       ),
                     ),
@@ -367,21 +419,21 @@ class FavoriteView extends GetView<FavoriteController> {
             // Outfit Details
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 12,
-                  right: 12,
-                  bottom: 12,
-                  left: 6,
+                padding: EdgeInsets.only(
+                  top: 12.h,
+                  right: 12.w,
+                  bottom: 12.h,
+                  left: 6.w,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       'This is really white shirt and black pant black show which show for this wither. it will match very good ....',
                       style: TextStyle(
-                        color: Color(0xFF1C1C1E),
-                        fontSize: 14,
+                        color: const Color(0xFF1C1C1E),
+                        fontSize: 14.sp,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w400,
                         height: 1.56,
@@ -390,21 +442,21 @@ class FavoriteView extends GetView<FavoriteController> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Container(
-                      height: 36,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 36,
-                        vertical: 5,
+                      height: 36.h,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 28.w,
+                        vertical: 5.h,
                       ),
                       decoration: BoxDecoration(
                         color: const Color(0xFF060017),
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(10.r),
                       ),
-                      child: const Center(
+                      child: Center(
                         child: Text(
                           'Find Similar',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontFamily: 'Helvetica Neue',
                             fontWeight: FontWeight.w400,
                             height: 1.50,

@@ -12,50 +12,90 @@ class CartView extends GetView<CartController> {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 40.h),
-              // Header
-              Text(
-                'Cart',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: AppColors.neutral900,
-                  fontSize: 24.sp,
-                  fontFamily: 'Helvetica Neue',
-                  fontWeight: FontWeight.w700,
-                  height: 1.40,
-                ),
+        child: Column(
+          children: [
+            SizedBox(height: 40.h),
+            // Header
+            Text(
+              'Cart',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppColors.neutral900,
+                fontSize: 24.sp,
+                fontFamily: 'Helvetica Neue',
+                fontWeight: FontWeight.w700,
+                height: 1.40,
               ),
-              SizedBox(height: 6.h),
-              Text(
-                'Your choices shape your AI style feed.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: AppColors.neutral900,
-                  fontSize: 14.sp,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w400,
-                  height: 1.56,
-                ),
+            ),
+            SizedBox(height: 6.h),
+            Text(
+              'Your choices shape your AI style feed.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppColors.neutral900,
+                fontSize: 14.sp,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w400,
+                height: 1.56,
               ),
-              SizedBox(height: 24.h),
+            ),
+            SizedBox(height: 24.h),
 
-              // Cart Items
-              _buildCartCard('assets/image/clothes.png'),
-              _buildCartCard('assets/image/dreess1.png'),
-              _buildCartCard('assets/image/shoe.png'),
+            // Cart Items or Empty State
+            Expanded(
+              child: Obx(() {
+                if (controller.isCartEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.shopping_cart_outlined,
+                          size: 80.sp,
+                          color: AppColors.neutral300,
+                        ),
+                        SizedBox(height: 16.h),
+                        Text(
+                          'Your cart is empty',
+                          style: TextStyle(
+                            color: AppColors.neutral600,
+                            fontSize: 18.sp,
+                            fontFamily: 'Helvetica Neue',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(height: 8.h),
+                        Text(
+                          'Add some products to get started',
+                          style: TextStyle(
+                            color: AppColors.neutral500,
+                            fontSize: 14.sp,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
 
-              SizedBox(height: 20.h),
-            ],
-          ),
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ...controller.cartItems.map((product) => _buildCartCard(product)),
+                      SizedBox(height: 20.h),
+                    ],
+                  ),
+                );
+              }),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildCartCard(String imagePath) {
+  Widget _buildCartCard(product) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: Container(
@@ -85,7 +125,32 @@ class CartView extends GetView<CartController> {
                 borderRadius: BorderRadius.circular(10.r),
                 border: Border.all(color: AppColors.neutral100),
               ),
-              child: Center(child: Image.asset(imagePath, fit: BoxFit.contain)),
+              child: Stack(
+                children: [
+                  Center(child: Image.asset(product.imagePath, fit: BoxFit.contain)),
+                  // Delete button
+                  Positioned(
+                    right: 8,
+                    top: 8,
+                    child: GestureDetector(
+                      onTap: () => controller.removeFromCart(product),
+                      child: Container(
+                        width: 24,
+                        height: 24,
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
 
             // Product Details
@@ -97,7 +162,7 @@ class CartView extends GetView<CartController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'ONLMADISON High waist Wide Leg Fit Jeans',
+                      product.name,
                       style: TextStyle(
                         color: AppColors.neutral900,
                         fontSize: 14.sp,
@@ -109,7 +174,7 @@ class CartView extends GetView<CartController> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      '\$20.50',
+                      '\$${product.price.toStringAsFixed(2)}',
                       style: TextStyle(
                         color: AppColors.neutral900,
                         fontSize: 24.sp,
@@ -118,25 +183,34 @@ class CartView extends GetView<CartController> {
                         height: 1.40,
                       ),
                     ),
-                    Container(
-                      height: 36.h,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 36.w,
-                        vertical: 5.h,
-                      ),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryDark,
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Buy Now',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.sp,
-                            fontFamily: 'Helvetica Neue',
-                            fontWeight: FontWeight.w400,
-                            height: 1.50,
+                    GestureDetector(
+                      onTap: () async {
+                        // Open product URL in browser
+                        final Uri url = Uri.parse('https://www.example.com/product');
+                        if (await canLaunchUrl(url)) {
+                          await launchUrl(url, mode: LaunchMode.externalApplication);
+                        }
+                      },
+                      child: Container(
+                        height: 36.h,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 36.w,
+                          vertical: 5.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryDark,
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Buy Now',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.sp,
+                              fontFamily: 'Helvetica Neue',
+                              fontWeight: FontWeight.w400,
+                              height: 1.50,
+                            ),
                           ),
                         ),
                       ),
