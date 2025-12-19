@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/color.dart';
 
 class WeatherLocationCard extends StatefulWidget {
-  const WeatherLocationCard();
+  const WeatherLocationCard({super.key});
 
   @override
   State<WeatherLocationCard> createState() => _WeatherLocationCardState();
@@ -141,7 +141,7 @@ class IconImage extends StatelessWidget {
   final double width;
   final double height;
 
-  const IconImage(this.assetPath, {this.width = 18, this.height = 18});
+  const IconImage(this.assetPath, {super.key, this.width = 18, this.height = 18});
 
   @override
   Widget build(BuildContext context) {

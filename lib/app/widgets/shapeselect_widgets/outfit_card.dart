@@ -15,7 +15,7 @@ class OutfitCard extends StatelessWidget {
   final BoxShadow? shadow;
   final BoxFit imageFit;
 
-  const OutfitCard({
+  const OutfitCard({super.key, 
     required this.imagePath,
     required this.imageWidth,
     required this.imageHeight,

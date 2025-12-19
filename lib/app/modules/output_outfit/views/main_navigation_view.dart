@@ -184,15 +184,6 @@ class _MainNavigationViewState extends State<MainNavigationView> {
   IconData _getIconData(String iconName) {
     return switch (iconName) {
       'home_outlined' => Icons.home_outlined,
-      'home' => Icons.home,
-      'shopping_cart' => Icons.shopping_cart,
-      'shopping_cart_outlined' => Icons.shopping_cart_outlined,
-      'checkroom' => Icons.checkroom,
-      'checkroom_outlined' => Icons.checkroom_outlined,
-      'favorite' => Icons.favorite,
-      'favorite_outlined' => Icons.favorite_outlined,
-      'person' => Icons.person,
-      'person_outlined' => Icons.person_outlined,
       _ => Icons.home,
     };
   }

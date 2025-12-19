@@ -7,7 +7,7 @@ class CircleIconButton extends StatelessWidget {
   final VoidCallback onTap;
   final Color? backgroundColor;
 
-  const CircleIconButton({
+  const CircleIconButton({super.key, 
     required this.iconPath,
     required this.onTap,
     this.backgroundColor,
@@ -49,7 +49,7 @@ class ActionButton extends StatelessWidget {
   final Color? iconColor;
   final VoidCallback onTap;
 
-  const ActionButton({required this.icon, required this.onTap, this.iconColor});
+  const ActionButton({super.key, required this.icon, required this.onTap, this.iconColor});
 
   @override
   Widget build(BuildContext context) {
