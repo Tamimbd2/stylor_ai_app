@@ -186,7 +186,7 @@ class _SignupViewState extends State<SignupView> {
                     focusNode: _phoneFocus,
                     nextFocus: _passwordFocus,
                     prefixIcon: Icons.phone_outlined,
-                    hintText: '+880173869506',
+                    hintText: '5645511123',
                     keyboardType: TextInputType.phone,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
