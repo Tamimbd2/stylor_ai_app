@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../../routes/app_pages.dart';
+import '../../../models/product_model.dart';
+import '../../cart/controllers/cart_controller.dart';
 import '../controllers/output_outfit_controller.dart';
 
 class OutputOutfitView extends GetView<OutputOutfitController> {
   OutputOutfitView({super.key});
   final OutputOutfitController controller = Get.put(OutputOutfitController());
+  // final CartController cartController = Get.find<CartController>();
+  final CartController cartController = Get.put(CartController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -222,11 +229,51 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
               const SizedBox(height: 16),
 
               // Product List
-              _buildProductCard('assets/image/clothes.png', index: 0),
-              _buildProductCard('assets/image/dreess1.png', index: 1),
-              _buildProductCard('assets/image/shoe.png', index: 2),
-              _buildProductCard('assets/image/dress2.png', index: 3),
-              _buildProductCard('assets/image/sunglass.png', index: 4),
+              _buildProductCard(
+                ProductModel(
+                  id: '1',
+                  name: 'ONLMADISON High waist Wide Leg Fit Jeans',
+                  imagePath: 'assets/image/clothes.png',
+                  price: 20.50,
+                ),
+                index: 0,
+              ),
+              _buildProductCard(
+                ProductModel(
+                  id: '2',
+                  name: 'Elegant Summer Dress',
+                  imagePath: 'assets/image/dreess1.png',
+                  price: 35.99,
+                ),
+                index: 1,
+              ),
+              _buildProductCard(
+                ProductModel(
+                  id: '3',
+                  name: 'Classic Black Shoes',
+                  imagePath: 'assets/image/shoe.png',
+                  price: 45.00,
+                ),
+                index: 2,
+              ),
+              _buildProductCard(
+                ProductModel(
+                  id: '4',
+                  name: 'Designer Party Dress',
+                  imagePath: 'assets/image/dress2.png',
+                  price: 55.50,
+                ),
+                index: 3,
+              ),
+              _buildProductCard(
+                ProductModel(
+                  id: '5',
+                  name: 'Stylish Sunglasses',
+                  imagePath: 'assets/image/sunglass.png',
+                  price: 25.00,
+                ),
+                index: 4,
+              ),
 
               const SizedBox(height: 20),
             ],
@@ -262,7 +309,7 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
     );
   }
 
-  Widget _buildProductCard(String imagePath, {int index = 0}) {
+  Widget _buildProductCard(ProductModel product, {int index = 0}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: Container(
@@ -294,7 +341,7 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
               ),
               child: Stack(
                 children: [
-                  Center(child: Image.asset(imagePath, fit: BoxFit.contain)),
+                  Center(child: Image.asset(product.imagePath, fit: BoxFit.contain)),
                   Positioned(
                     left: 12,
                     top: 12,
@@ -333,9 +380,9 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'ONLMADISON High waist Wide Leg Fit Jeans',
-                      style: TextStyle(
+                    Text(
+                      product.name,
+                      style: const TextStyle(
                         color: Color(0xFF1C1C1E),
                         fontSize: 14,
                         fontFamily: 'Poppins',
@@ -345,9 +392,9 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const Text(
-                      '\$20.50',
-                      style: TextStyle(
+                    Text(
+                      '\$${product.price.toStringAsFixed(2)}',
+                      style: const TextStyle(
                         color: Colors.black,
                         fontSize: 24,
                         fontFamily: 'Helvetica Neue',
@@ -357,41 +404,56 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                     ),
                     Row(
                       children: [
-                        Container(
-                          height: 36,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 36,
-                            vertical: 5,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF060017),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'Buy Now',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontFamily: 'Helvetica Neue',
-                                fontWeight: FontWeight.w400,
-                                height: 1.50,
+                        GestureDetector(
+                          onTap: () async {
+                            // Open product URL in browser
+                            final Uri url = Uri.parse('https://www.example.com/product');
+                            if (await canLaunchUrl(url)) {
+                              await launchUrl(url, mode: LaunchMode.externalApplication);
+                            }
+                          },
+                          child: Container(
+                            height: 36,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 36,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF060017),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'Buy Now',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'Helvetica Neue',
+                                  fontWeight: FontWeight.w400,
+                                  height: 1.50,
+                                ),
                               ),
                             ),
                           ),
                         ),
                         const SizedBox(width: 8),
-                        Container(
-                          width: 36,
-                          height: 36,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFF4F4F4),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const Icon(
-                            Icons.shopping_cart_outlined,
-                            size: 20,
-                            color: Color(0xFF1C1C1E),
+                        GestureDetector(
+                          onTap: () {
+                            // Add to cart
+                            cartController.addToCart(product);
+                          },
+                          child: Container(
+                            width: 36,
+                            height: 36,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF4F4F4),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              Icons.shopping_cart_outlined,
+                              size: 20,
+                              color: Color(0xFF1C1C1E),
+                            ),
                           ),
                         ),
                       ],
