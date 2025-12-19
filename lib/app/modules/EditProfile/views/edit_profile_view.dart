@@ -273,7 +273,7 @@ class EditProfileView extends GetView<EditProfileController> {
   Widget _buildGenderButtons() {
     return Row(
       children: [
-        Expanded(child: _buildGenderButton('Male', 'assets/icons/males.png')),
+        Expanded(child: _buildGenderButton('Male', 'assets/image/man.svg')),
         SizedBox(width: 12.w),
         Expanded(child: _buildGenderButton('Female', 'assets/image/female.svg')),
         SizedBox(width: 12.w),
