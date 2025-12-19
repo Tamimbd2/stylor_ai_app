@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../controllers/privacy_policy_controller.dart';
@@ -18,22 +19,20 @@ class PrivacyPolicyView extends GetView<PrivacyPolicyController> {
           onPressed: () => Get.back(),
         ),
         centerTitle: true,
-        title: const Text(
-          "Privacy policy",
+        title: Text(
+          "Privacy Policy",
           style: TextStyle(
-            color: Color(0xFF1C1C1E),
-            fontSize: 22,
+            color: const Color(0xFF1C1C1E),
+            fontSize: 22.sp,
             fontWeight: FontWeight.w700,
           ),
         ),
       ),
-
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             _title("Stylor.ai — Privacy Policy"),
             _space(),
 
@@ -48,6 +47,7 @@ class PrivacyPolicyView extends GetView<PrivacyPolicyController> {
 
             _section("1. Information We Collect"),
             _body("We collect the following types of information:"),
+
             _subSection("1.1 Account Information"),
             _bulletList([
               "Name",
@@ -155,63 +155,63 @@ class PrivacyPolicyView extends GetView<PrivacyPolicyController> {
                   "stylorai.123@gmail.com",
             ),
 
-            const SizedBox(height: 50),
+            SizedBox(height: 50.h),
           ],
         ),
       ),
     );
   }
 
-  // ------- UI HELPERS BELOW -------
+  // ---------------- UI HELPERS ----------------
 
   Widget _title(String text) => Text(
     text,
-    style: const TextStyle(
-      fontSize: 20,
+    style: TextStyle(
+      fontSize: 20.sp,
       fontWeight: FontWeight.w700,
-      color: Color(0xFF060017),
+      color: const Color(0xFF060017),
     ),
   );
 
   Widget _subTitle(String text) => Text(
     text,
-    style: const TextStyle(
-      fontSize: 16,
+    style: TextStyle(
+      fontSize: 16.sp,
       fontWeight: FontWeight.w500,
-      color: Color(0xFF060017),
+      color: const Color(0xFF060017),
     ),
   );
 
   Widget _section(String text) => Padding(
-    padding: const EdgeInsets.only(top: 20, bottom: 6),
+    padding: EdgeInsets.only(top: 20.h, bottom: 6.h),
     child: Text(
       text,
-      style: const TextStyle(
-        fontSize: 18,
+      style: TextStyle(
+        fontSize: 18.sp,
         fontWeight: FontWeight.w600,
-        color: Color(0xFF060017),
+        color: const Color(0xFF060017),
       ),
     ),
   );
 
   Widget _subSection(String text) => Padding(
-    padding: const EdgeInsets.only(top: 14, bottom: 6),
+    padding: EdgeInsets.only(top: 14.h, bottom: 6.h),
     child: Text(
       text,
-      style: const TextStyle(
-        fontSize: 16,
+      style: TextStyle(
+        fontSize: 16.sp,
         fontWeight: FontWeight.w500,
-        color: Color(0xFF060017),
+        color: const Color(0xFF060017),
       ),
     ),
   );
 
   Widget _body(String text) => Text(
     text,
-    style: const TextStyle(
-      fontSize: 14,
+    style: TextStyle(
+      fontSize: 14.sp,
       height: 1.55,
-      color: Color(0xFF49494B),
+      color: const Color(0xFF49494B),
     ),
   );
 
@@ -220,18 +220,18 @@ class PrivacyPolicyView extends GetView<PrivacyPolicyController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: items.map((e) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 6),
+          padding: EdgeInsets.only(bottom: 6.h),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("•  ", style: TextStyle(fontSize: 16)),
+              Text("•  ", style: TextStyle(fontSize: 16.sp)),
               Expanded(
                 child: Text(
                   e,
-                  style: const TextStyle(
-                    fontSize: 14,
+                  style: TextStyle(
+                    fontSize: 14.sp,
                     height: 1.55,
-                    color: Color(0xFF49494B),
+                    color: const Color(0xFF49494B),
                   ),
                 ),
               ),
@@ -242,5 +242,5 @@ class PrivacyPolicyView extends GetView<PrivacyPolicyController> {
     );
   }
 
-  Widget _space() => const SizedBox(height: 10);
+  Widget _space() => SizedBox(height: 10.h);
 }

@@ -153,7 +153,72 @@ class ProfileDetailsView extends StatelessWidget {
                 width: double.infinity,
                 height: 56.h,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.dialog(
+                      AlertDialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16.r),
+                        ),
+                        title: Text(
+                          'Delete Account',
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.neutral900,
+                          ),
+                        ),
+                        content: Text(
+                          'Are you sure you want to delete your account? This action cannot be undone.',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.neutral600,
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Get.back(),
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.neutral600,
+                              ),
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              // Delete account logic here
+                              Get.back();
+                              Get.snackbar(
+                                'Account Deleted',
+                                'Your account has been successfully deleted',
+                                snackPosition: SnackPosition.BOTTOM,
+                                backgroundColor: const Color(0xFFFF3232),
+                                colorText: Colors.white,
+                                margin: EdgeInsets.all(16.w),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFFF3232),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                            ),
+                            child: Text(
+                              'Delete',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                   style: OutlinedButton.styleFrom(
                     side: const BorderSide(color: Color(0xFFFF3232)),
                     shape: RoundedRectangleBorder(
