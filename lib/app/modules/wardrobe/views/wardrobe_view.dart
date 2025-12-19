@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -85,18 +86,110 @@ class WardrobeView extends GetView<WardrobeController> {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 16.w,
-                    mainAxisSpacing: 16.h,
-                    childAspectRatio: 119.0 / 126.0,
-                  ),
-                  itemCount: 5,
-                  itemBuilder: (context, index) {
-                    return _buildWardrobeItem(index);
-                  },
-                ),
+                child: Obx(() {
+                  // Show analyzing UI if analyzing
+                  if (controller.isAnalyzing.value && controller.analyzingImage.value != null) {
+                    return Column(
+                      children: [
+                        // Analyzing Card
+                        Container(
+                          width: 358.w,
+                          height: 126.h,
+                          padding: EdgeInsets.all(16.w),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12.r),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0x0F101828),
+                                blurRadius: 64,
+                                offset: const Offset(0, 32),
+                                spreadRadius: -12,
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              // Photo Preview
+                              Container(
+                                width: 94.w,
+                                height: 94.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.neutral100,
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
+                                clipBehavior: Clip.antiAlias,
+                                child: Image.file(
+                                  controller.analyzingImage.value!,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              SizedBox(width: 16.w),
+                              // Analyzing Text
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'AI Analyzing your photo',
+                                      style: TextStyle(
+                                        color: AppColors.neutral900,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.40,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8.h),
+                                    Text(
+                                      'Item will be store in your wardrobe',
+                                      style: TextStyle(
+                                        color: AppColors.neutral700,
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w400,
+                                        height: 1.56,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 24.h),
+                        // Show existing items below
+                        Expanded(
+                          child: GridView.builder(
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 16.w,
+                              mainAxisSpacing: 16.h,
+                              childAspectRatio: 119.0 / 126.0,
+                            ),
+                            itemCount: controller.wardrobeItems.length,
+                            itemBuilder: (context, index) {
+                              return _buildWardrobeItem(controller.wardrobeItems[index]);
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  
+                  // Show normal grid
+                  return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 16.w,
+                      mainAxisSpacing: 16.h,
+                      childAspectRatio: 119.0 / 126.0,
+                    ),
+                    itemCount: controller.wardrobeItems.length,
+                    itemBuilder: (context, index) {
+                      return _buildWardrobeItem(controller.wardrobeItems[index]);
+                    },
+                  );
+                }),
               ),
             ),
             // Add new Outfit button
@@ -174,16 +267,10 @@ class WardrobeView extends GetView<WardrobeController> {
     );
   }
 
-  Widget _buildWardrobeItem(int index) {
-    final items = [
-      {'image': 'assets/image/clothes.png', 'fit': BoxFit.cover},
-      {'image': 'assets/image/dress2.png', 'fit': BoxFit.cover},
-      {'image': 'assets/image/shoe.png', 'fit': BoxFit.contain},
-      {'image': 'assets/image/dreess1.png', 'fit': BoxFit.cover},
-      {'image': 'assets/image/sunglass.png', 'fit': BoxFit.contain},
-    ];
-
-    if (index >= items.length) return const SizedBox.shrink();
+  Widget _buildWardrobeItem(Map<String, dynamic> item) {
+    final isAsset = item['isAsset'] as bool? ?? true;
+    final imagePath = item['image'] as String;
+    final fit = item['fit'] as BoxFit? ?? BoxFit.cover;
 
     return Container(
       decoration: BoxDecoration(
@@ -203,17 +290,29 @@ class WardrobeView extends GetView<WardrobeController> {
         child: Padding(
           padding: EdgeInsets.all(12.w),
           child: Center(
-            child: Image.asset(
-              items[index]['image'] as String,
-              fit: items[index]['fit'] as BoxFit,
-              errorBuilder: (context, error, stackTrace) {
-                return Icon(
-                  Icons.image_outlined,
-                  size: 40.sp,
-                  color: AppColors.neutral100,
-                );
-              },
-            ),
+            child: isAsset
+                ? Image.asset(
+                    imagePath,
+                    fit: fit,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(
+                        Icons.image_outlined,
+                        size: 40.sp,
+                        color: AppColors.neutral100,
+                      );
+                    },
+                  )
+                : Image.file(
+                    File(imagePath),
+                    fit: fit,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(
+                        Icons.image_outlined,
+                        size: 40.sp,
+                        color: AppColors.neutral100,
+                      );
+                    },
+                  ),
           ),
         ),
       ),
