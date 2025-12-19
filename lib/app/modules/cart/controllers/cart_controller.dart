@@ -5,20 +5,9 @@ class CartController extends GetxController {
   // List of products in cart
   final RxList<ProductModel> cartItems = <ProductModel>[].obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
+  final count = 0.obs;
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
   // Add product to cart
   void addToCart(ProductModel product) {

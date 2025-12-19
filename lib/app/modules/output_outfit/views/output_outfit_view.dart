@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../routes/app_pages.dart';
+
 import '../../../models/product_model.dart';
 import '../../cart/controllers/cart_controller.dart';
 import '../../favorite/controllers/favorite_controller.dart';
@@ -10,6 +10,7 @@ import '../controllers/output_outfit_controller.dart';
 
 class OutputOutfitView extends GetView<OutputOutfitController> {
   OutputOutfitView({super.key});
+  @override
   final OutputOutfitController controller = Get.put(OutputOutfitController());
   final CartController cartController = Get.put(CartController());
   final FavoriteController favoriteController = Get.put(FavoriteController());
@@ -249,7 +250,7 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                     ),
                   );
                 }
-                
+
                 return Column(
                   children: products.asMap().entries.map((entry) {
                     return _buildProductCard(entry.value, index: entry.key);
@@ -323,7 +324,9 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
               ),
               child: Stack(
                 children: [
-                  Center(child: Image.asset(product.imagePath, fit: BoxFit.contain)),
+                  Center(
+                    child: Image.asset(product.imagePath, fit: BoxFit.contain),
+                  ),
                   Positioned(
                     left: 12.w,
                     top: 12.h,
@@ -392,9 +395,14 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                         GestureDetector(
                           onTap: () async {
                             // Open product URL in browser
-                            final Uri url = Uri.parse('https://www.example.com/product');
+                            final Uri url = Uri.parse(
+                              'https://www.example.com/product',
+                            );
                             if (await canLaunchUrl(url)) {
-                              await launchUrl(url, mode: LaunchMode.externalApplication);
+                              await launchUrl(
+                                url,
+                                mode: LaunchMode.externalApplication,
+                              );
                             }
                           },
                           child: Container(

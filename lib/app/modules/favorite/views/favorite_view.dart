@@ -8,6 +8,7 @@ import '../controllers/favorite_controller.dart';
 
 class FavoriteView extends GetView<FavoriteController> {
   FavoriteView({super.key});
+  @override
   final FavoriteController controller = Get.put(FavoriteController());
   final CartController cartController = Get.find<CartController>();
   @override
@@ -158,11 +159,7 @@ class FavoriteView extends GetView<FavoriteController> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.favorite_border,
-                size: 80.sp,
-                color: Colors.grey[300],
-              ),
+              Icon(Icons.favorite_border, size: 80.sp, color: Colors.grey[300]),
               SizedBox(height: 16.h),
               Text(
                 'No favorite products yet',
@@ -187,7 +184,7 @@ class FavoriteView extends GetView<FavoriteController> {
           ),
         );
       }
-      
+
       return Column(
         children: controller.favoriteProducts
             .map((product) => _buildFavoriteCard(product))
@@ -238,7 +235,9 @@ class FavoriteView extends GetView<FavoriteController> {
               ),
               child: Stack(
                 children: [
-                  Center(child: Image.asset(product.imagePath, fit: BoxFit.contain)),
+                  Center(
+                    child: Image.asset(product.imagePath, fit: BoxFit.contain),
+                  ),
                   Positioned(
                     left: 12.w,
                     top: 12.h,
@@ -297,9 +296,14 @@ class FavoriteView extends GetView<FavoriteController> {
                       children: [
                         GestureDetector(
                           onTap: () async {
-                            final Uri url = Uri.parse('https://www.example.com/product');
+                            final Uri url = Uri.parse(
+                              'https://www.example.com/product',
+                            );
                             if (await canLaunchUrl(url)) {
-                              await launchUrl(url, mode: LaunchMode.externalApplication);
+                              await launchUrl(
+                                url,
+                                mode: LaunchMode.externalApplication,
+                              );
                             }
                           },
                           child: Container(

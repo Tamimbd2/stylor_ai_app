@@ -1,4 +1,4 @@
-import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
@@ -9,6 +9,7 @@ import '../../wardrobe/views/wardrobe_view.dart';
 
 class TakePhotoView extends GetView<TakePhotoController> {
   TakePhotoView({super.key});
+  @override
   final TakePhotoController controller = Get.put(TakePhotoController());
 
   @override
@@ -48,8 +49,12 @@ class TakePhotoView extends GetView<TakePhotoController> {
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.19),
-                    borderRadius: BorderRadius.circular(24.r),
+
+
+
+                    color: Colors.black.withAlpha(48),
+                    borderRadius: BorderRadius.circular(24),
+
                   ),
                   clipBehavior: Clip.antiAlias,
                   child: Obx(() {
