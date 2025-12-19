@@ -86,7 +86,7 @@ class _MainNavigationViewState extends State<MainNavigationView> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: List.generate(
               _navItems.length,
-              (index) => _buildNavItem(
+                  (index) => _buildNavItem(
                 activeAssetPath: _navItems[index]['active']!,
                 inactiveAssetPath: _navItems[index]['inactive']!,
                 label: _navItems[index]['label']!,

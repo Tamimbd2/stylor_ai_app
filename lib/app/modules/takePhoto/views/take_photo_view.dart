@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../wardrobe/controllers/wardrobe_controller.dart';
 import '../controllers/take_photo_controller.dart';
 import '../../wardrobe/views/wardrobe_view.dart';
 
@@ -19,24 +21,24 @@ class TakePhotoView extends GetView<TakePhotoController> {
           children: [
             /// Header
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.close, color: Color(0xFF1C1C1E)),
+                    icon: Icon(Icons.close, color: Color(0xFF1C1C1E), size: 24.sp),
                     onPressed: () => Get.back(),
                     padding: EdgeInsets.zero,
                   ),
-                  const Text(
+                  Text(
                     'Take a photo',
                     style: TextStyle(
                       color: Color(0xFF1C1C1E),
-                      fontSize: 24,
+                      fontSize: 24.sp,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  const SizedBox(width: 48),
+                  SizedBox(width: 48.w),
                 ],
               ),
             ),
@@ -44,11 +46,15 @@ class TakePhotoView extends GetView<TakePhotoController> {
             /// Camera Preview Container
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Container(
                   decoration: BoxDecoration(
+
+
+
                     color: Colors.black.withAlpha(48),
                     borderRadius: BorderRadius.circular(24),
+
                   ),
                   clipBehavior: Clip.antiAlias,
                   child: Obx(() {
@@ -66,10 +72,10 @@ class TakePhotoView extends GetView<TakePhotoController> {
                     }
 
                     if (controller.cameraController == null) {
-                      return const Center(
+                      return Center(
                         child: Text(
                           'Camera not available',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white, fontSize: 16.sp),
                         ),
                       );
                     }
@@ -83,34 +89,34 @@ class TakePhotoView extends GetView<TakePhotoController> {
             /// Retake Button
             Obx(() {
               if (controller.capturedImage.value == null) {
-                return const SizedBox(height: 30);
+                return SizedBox(height: 30.h);
               }
 
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20),
+                padding: EdgeInsets.symmetric(vertical: 20.h),
                 child: GestureDetector(
                   onTap: controller.retakePhoto,
                   child: Container(
-                    width: 206,
-                    height: 56,
+                    width: 206.w,
+                    height: 56.h,
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.48),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.refresh,
                           color: Colors.white,
-                          size: 24,
+                          size: 24.sp,
                         ),
-                        const SizedBox(width: 12),
-                        const Text(
+                        SizedBox(width: 12.w),
+                        Text(
                           'Retake photo',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 18.sp,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -126,29 +132,33 @@ class TakePhotoView extends GetView<TakePhotoController> {
               if (controller.capturedImage.value != null) {
                 /// Show Use Photo Button
                 return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 20,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20.w,
+                    vertical: 20.h,
                   ),
                   child: GestureDetector(
                     onTap: () {
-                      // Navigate to WardrobeView
-                      Get.to(() =>  WardrobeView());
+                      // Navigate to WardrobeView and start analyzing
+                      if (controller.capturedImage.value != null) {
+                        Get.back();
+                        final wardrobeController = Get.find<WardrobeController>();
+                        wardrobeController.startAnalyzing(controller.capturedImage.value!);
+                      }
                     },
                     child: Container(
                       width: double.infinity,
-                      height: 56,
+                      height: 56.h,
                       decoration: BoxDecoration(
                         color: const Color(0xFF060017),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
-                      child: const Center(
+                      child: Center(
                         child: Text(
                           'Use this photo',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 18.sp,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -160,7 +170,7 @@ class TakePhotoView extends GetView<TakePhotoController> {
 
               /// Show Camera Controls
               return Padding(
-                padding: const EdgeInsets.only(bottom: 30),
+                padding: EdgeInsets.only(bottom: 30.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -174,9 +184,9 @@ class TakePhotoView extends GetView<TakePhotoController> {
                     _buildControlButton(
                       child: Text(
                         '${controller.photoCount.value}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Color(0xFF060017),
-                          fontSize: 20,
+                          fontSize: 20.sp,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -187,13 +197,13 @@ class TakePhotoView extends GetView<TakePhotoController> {
                     GestureDetector(
                       onTap: controller.takePicture,
                       child: Container(
-                        width: 56,
-                        height: 56,
+                        width: 56.w,
+                        height: 56.w,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
                           border: Border.all(
-                            width: 1,
+                            width: 1.w,
                             color: const Color(0xFF060017),
                           ),
                           boxShadow: [
@@ -207,8 +217,8 @@ class TakePhotoView extends GetView<TakePhotoController> {
                         ),
                         child: Center(
                           child: Container(
-                            width: 38,
-                            height: 38,
+                            width: 38.w,
+                            height: 38.w,
                             decoration: const BoxDecoration(
                               color: Color(0xFF060017),
                               shape: BoxShape.circle,
@@ -249,12 +259,12 @@ class TakePhotoView extends GetView<TakePhotoController> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 56,
-        height: 56,
+        width: 56.w,
+        height: 56.w,
         decoration: BoxDecoration(
           color: Colors.white,
           shape: BoxShape.circle,
-          border: Border.all(width: 1, color: const Color(0xFFF4F4F4)),
+          border: Border.all(width: 1.w, color: const Color(0xFFF4F4F4)),
           boxShadow: [
             BoxShadow(
               color: const Color(0x0F101828),
@@ -264,7 +274,7 @@ class TakePhotoView extends GetView<TakePhotoController> {
             ),
           ],
         ),
-        child: child ?? Icon(icon, color: const Color(0xFF060017), size: 24),
+        child: child ?? Icon(icon, color: const Color(0xFF060017), size: 24.sp),
       ),
     );
   }
