@@ -47,7 +47,7 @@ class TakePhotoView extends GetView<TakePhotoController> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.19),
+                    color: Colors.black.withAlpha(48),
                     borderRadius: BorderRadius.circular(24),
                   ),
                   clipBehavior: Clip.antiAlias,
