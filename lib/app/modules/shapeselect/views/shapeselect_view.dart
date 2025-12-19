@@ -423,30 +423,30 @@ class _ShapeselectViewState extends State<ShapeselectView> {
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, bool isActive) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          icon,
-          size: 22.sp,
-          color: isActive ? AppColors.primaryDark : AppColors.neutral500,
-        ),
-        SizedBox(height: 4.h),
-        Text(
-          label,
-          style: TextStyle(
-            color: isActive ? AppColors.primaryDark : AppColors.neutral500,
-            fontSize: 12.sp,
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w400,
-            height: 1.4,
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _buildNavItem(IconData icon, String label, bool isActive) {
+  //   return Column(
+  //     mainAxisSize: MainAxisSize.min,
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: [
+  //       Icon(
+  //         icon,
+  //         size: 22.sp,
+  //         color: isActive ? AppColors.primaryDark : AppColors.neutral500,
+  //       ),
+  //       SizedBox(height: 4.h),
+  //       Text(
+  //         label,
+  //         style: TextStyle(
+  //           color: isActive ? AppColors.primaryDark : AppColors.neutral500,
+  //           fontSize: 12.sp,
+  //           fontFamily: 'Poppins',
+  //           fontWeight: FontWeight.w400,
+  //           height: 1.4,
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   void _showStyleSelector(BuildContext context) {
     final styles = [

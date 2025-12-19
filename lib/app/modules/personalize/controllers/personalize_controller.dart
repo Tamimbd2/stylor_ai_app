@@ -48,15 +48,7 @@ class PersonalizeController extends GetxController {
     selectedCountry.value = 'Belgium';
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
   // Format date to display
   String getFormattedDate() {

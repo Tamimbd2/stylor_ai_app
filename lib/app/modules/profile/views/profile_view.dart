@@ -10,6 +10,7 @@ import '../controllers/profile_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
   ProfileView({super.key});
+  @override
   final ProfileController controller = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
@@ -310,7 +311,7 @@ class ProfileView extends GetView<ProfileController> {
                 onChanged: (value) {
                   onTap?.call();
                 },
-                activeColor: Colors.white,
+                activeThumbColor: Colors.white,
                 activeTrackColor: AppColors.primaryDark,
                 inactiveThumbColor: Colors.white,
                 inactiveTrackColor: AppColors.neutral100,

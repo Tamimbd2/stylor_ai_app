@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import '../../shapeselect/views/shapeselect_view.dart';
-import 'output_outfit_view.dart';
 import '../../cart/views/cart_view.dart';
 import '../../wardrobe/views/wardrobe_view.dart';
 import '../../favorite/views/favorite_view.dart';

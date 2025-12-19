@@ -1,4 +1,4 @@
-import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
@@ -7,6 +7,7 @@ import '../../wardrobe/views/wardrobe_view.dart';
 
 class TakePhotoView extends GetView<TakePhotoController> {
   TakePhotoView({super.key});
+  @override
   final TakePhotoController controller = Get.put(TakePhotoController());
 
   @override

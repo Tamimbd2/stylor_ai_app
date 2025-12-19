@@ -8,20 +8,8 @@ class FilterScreenController extends GetxController {
   final selectedBodyType = Rx<String>('');
   final selectedSkinTone = Rx<String>('');
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
   // Single selection for seasons
   void selectSeason(String season) {

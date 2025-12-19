@@ -4,6 +4,7 @@ import '../controllers/output_outfit_controller.dart';
 
 class OutputOutfitView extends GetView<OutputOutfitController> {
   OutputOutfitView({super.key});
+  @override
   final OutputOutfitController controller = Get.put(OutputOutfitController());
   @override
   Widget build(BuildContext context) {

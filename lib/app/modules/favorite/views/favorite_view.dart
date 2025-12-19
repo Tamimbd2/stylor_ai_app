@@ -4,6 +4,7 @@ import '../controllers/favorite_controller.dart';
 
 class FavoriteView extends GetView<FavoriteController> {
   FavoriteView({super.key});
+  @override
   final FavoriteController controller = Get.put(FavoriteController());
   @override
   Widget build(BuildContext context) {

@@ -24,20 +24,8 @@ class OutputOutfitController extends GetxController {
     selectedChip.value = chipLabel;
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
   void increment() => count.value++;
 }
