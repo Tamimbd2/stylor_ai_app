@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/color.dart';
 import '../../personalize/controllers/personalize_controller.dart';
@@ -136,7 +137,7 @@ class EditProfileView extends GetView<EditProfileController> {
                 /// ======================
                 /// Country
                 /// ======================
-                _buildLabel('Courtney'),
+                _buildLabel('Country'),
                 SizedBox(height: 8.h),
                 Obx(() => _buildCountryDropdown()),
 
@@ -296,8 +297,15 @@ class EditProfileView extends GetView<EditProfileController> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(iconPath, width: 20.w, height: 20.w, 
-              color: isSelected ? Colors.white : AppColors.neutral700),
+            SvgPicture.asset(
+              iconPath,
+              width: 20.w,
+              height: 20.w,
+              colorFilter: ColorFilter.mode(
+                isSelected ? Colors.white : AppColors.neutral700,
+                BlendMode.srcIn,
+              ),
+            ),
             SizedBox(width: 8.w),
             Text(
               gender,
@@ -323,27 +331,26 @@ class EditProfileView extends GetView<EditProfileController> {
         border: Border.all(color: AppColors.neutral200),
         borderRadius: BorderRadius.circular(12.r),
       ),
-      child: DropdownButton<String>(
-        value: personalizeController.selectedCountry.value,
-        isExpanded: true,
-        underline: SizedBox(),
-        icon: Icon(Icons.keyboard_arrow_down, color: AppColors.neutral700),
-        items: personalizeController.countries.map((String country) {
-          return DropdownMenuItem<String>(
-            value: country,
-            child: Row(
-              children: [
-                Text('🇧🇪 ', style: TextStyle(fontSize: 20.sp)),
-                Text(country, style: TextStyle(fontSize: 16.sp)),
-              ],
-            ),
-          );
-        }).toList(),
-        onChanged: (String? newValue) {
-          if (newValue != null) {
-            personalizeController.selectedCountry.value = newValue;
-          }
-        },
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: personalizeController.selectedCountry.value,
+          isExpanded: true,
+          icon: Icon(Icons.keyboard_arrow_down, color: AppColors.neutral700),
+          items: personalizeController.countries.map((String country) {
+            return DropdownMenuItem<String>(
+              value: country,
+              child: Text(
+                country,
+                style: TextStyle(fontSize: 16.sp, color: AppColors.neutral900),
+              ),
+            );
+          }).toList(),
+          onChanged: (String? newValue) {
+            if (newValue != null) {
+              personalizeController.selectedCountry.value = newValue;
+            }
+          },
+        ),
       ),
     );
   }
@@ -417,10 +424,10 @@ class EditProfileView extends GetView<EditProfileController> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.primaryDark : AppColors.neutral100,
-          borderRadius: BorderRadius.circular(100.r),
+          borderRadius: BorderRadius.circular(10.r),
         ),
         child: Text(
           text,
