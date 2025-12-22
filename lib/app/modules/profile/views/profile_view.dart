@@ -311,7 +311,7 @@ class ProfileView extends GetView<ProfileController> {
                 onChanged: (value) {
                   onTap?.call();
                 },
-                activeThumbColor: Colors.white,
+                //activeThumbColor: Colors.white,
                 activeTrackColor: AppColors.primaryDark,
                 inactiveThumbColor: Colors.white,
                 inactiveTrackColor: AppColors.neutral100,
