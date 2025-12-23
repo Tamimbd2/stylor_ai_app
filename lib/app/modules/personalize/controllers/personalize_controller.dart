@@ -27,31 +27,15 @@ class PersonalizeController extends GetxController {
 
   // List of countries
   final countries = <String>[
+    'United Kingdom',
     'Belgium',
-    'Afghanistan',
     'Albania',
-    'Algeria',
     'Andorra',
-    'Angola',
-    'Argentina',
-    'Australia',
     'Austria',
-    'Azerbaijan',
-    'Bahamas',
-    'Bahrain',
-    'Bangladesh',
-    'Barbados',
     'Belarus',
-    'Brazil',
-    'Canada',
-    'China',
     'France',
     'Germany',
-    'India',
-    'Japan',
-    'United Kingdom',
-    'United States',
-    'Bangladesh',
+
   ].obs;
 
   @override

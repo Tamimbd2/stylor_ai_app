@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/color.dart';
@@ -137,7 +138,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                           Expanded(
                             child: _GenderButton(
                               label: 'Male',
-                              iconPath: 'assets/icons/male.png',
+                              iconPath: 'assets/svg/male.svg',
                               isSelected:
                                   controller.selectedGender.value == 'Male',
                               onTap: () {
@@ -149,7 +150,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                           Expanded(
                             child: _GenderButton(
                               label: 'Female',
-                              iconPath: 'assets/icons/female.png',
+                              iconPath: 'assets/svg/female.svg',
                               isSelected:
                                   controller.selectedGender.value == 'Female',
                               onTap: () {
@@ -161,7 +162,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                           Expanded(
                             child: _GenderButton(
                               label: 'Other',
-                              iconPath: 'assets/icons/others.png',
+                              iconPath: 'assets/svg/othersgender.svg',
                               isSelected:
                                   controller.selectedGender.value == 'Other',
                               onTap: () {
@@ -400,7 +401,7 @@ class _GenderButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
+            SvgPicture.asset(
               iconPath,
               width: 20.w,
               height: 20.h,
