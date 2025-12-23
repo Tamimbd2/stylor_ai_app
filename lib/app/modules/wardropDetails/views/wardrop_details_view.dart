@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:camera/camera.dart';
 import '../../wardrobe/controllers/wardrobe_controller.dart';
 import '../controllers/wardrop_details_controller.dart';
 
@@ -12,9 +12,6 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
   @override
   Widget build(BuildContext context) {
     final product = Get.arguments as Map<String, dynamic>?;
-    final imagePath = product?['image'] as String? ?? '';
-    final isAsset = product?['isAsset'] as bool? ?? true;
-    final fit = product?['fit'] as BoxFit? ?? BoxFit.cover;
     final wardrobeController = Get.find<WardrobeController>();
 
     return Scaffold(
@@ -24,42 +21,34 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 20.sp),
+          icon: Icon(Icons.arrow_back_ios, size: 20.sp),
           onPressed: () => Get.back(),
         ),
         title: Text(
           'Details',
           style: TextStyle(
-            color: const Color(0xFF1C1C1E),
             fontSize: 24.sp,
             fontWeight: FontWeight.w700,
-            fontFamily: 'Helvetica Neue',
           ),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.delete_outline, color: Colors.black, size: 24.sp),
-            onPressed: () => Get.back(),
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 32.h),
-            // Main Product Card
+
+            /// MAIN CARD
             Center(
               child: Container(
                 width: 390.w,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(24.r),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
-                      color: const Color(0x0F101828),
+                      color: Color(0x0F101828),
                       blurRadius: 64,
-                      offset: const Offset(0, 32),
+                      offset: Offset(0, 32),
                       spreadRadius: -12,
                     ),
                   ],
@@ -67,85 +56,72 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
                 child: Column(
                   children: [
                     SizedBox(height: 16.h),
-                    // Product Image
-                    Obx(
-                      () => SizedBox(
-                        height: 157.h,
-                        width: 112.w,
-                        child: imagePath.isNotEmpty
-                            ? isAsset
-                                  ? Image.asset(
-                                      controller.colorVariants[controller
-                                              .selectedColorIndex
-                                              .value]['image'] ??
-                                          imagePath,
-                                      fit: fit,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                            return Container(
-                                              color: Colors.grey[200],
-                                              child: const Icon(
-                                                Icons.image,
-                                                size: 50,
-                                              ),
-                                            );
-                                          },
-                                    )
-                                  : Image.file(
-                                      File(imagePath),
-                                      fit: fit,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                            return Container(
-                                              color: Colors.grey[200],
-                                              child: const Icon(
-                                                Icons.image,
-                                                size: 50,
-                                              ),
-                                            );
-                                          },
-                                    )
-                            : Container(
-                                color: Colors.grey[200],
-                                child: Icon(Icons.image, size: 50.sp),
-                              ),
+
+                    /// 🔥 SWIPEABLE IMAGE
+                    SizedBox(
+                      height: 157.h,
+                      width: 112.w,
+                      child: PageView.builder(
+                        controller: controller.pageController,
+                        itemCount: controller.colorVariants.length,
+                        onPageChanged: controller.onPageChanged,
+                        itemBuilder: (context, index) {
+                          final item = controller.colorVariants[index];
+                          final imagePath = item['image'] as String;
+                          final isAsset = item['isAsset'] as bool? ?? true;
+
+                          return isAsset
+                              ? Image.asset(
+                            imagePath,
+                            fit: BoxFit.cover,
+                          )
+                              : Image.file(
+                            File(imagePath),
+                            fit: BoxFit.cover,
+                          );
+                        },
                       ),
                     ),
+
                     SizedBox(height: 20.h),
-                    // Color Indicators
+
+                    /// COLOR DOTS
                     Obx(
-                      () => Row(
+                          () => Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ...controller.colorVariants.asMap().entries.map(
-                            (entry) => Padding(
-                              padding: EdgeInsets.only(right: 7.w),
-                              child: GestureDetector(
-                                onTap: () => controller.selectColor(entry.key),
-                                child: Container(
-                                  width: 20.w,
-                                  height: 20.h,
-                                  decoration: BoxDecoration(
-                                    color: Color(entry.value['color'] as int),
-                                    shape: BoxShape.circle,
-                                    border:
-                                        controller.selectedColorIndex.value ==
-                                            entry.key
-                                        ? Border.all(
-                                            color: Colors.black,
-                                            width: 2.w,
-                                          )
-                                        : null,
-                                  ),
-                                ),
+                        children: controller.colorVariants
+                            .asMap()
+                            .entries
+                            .map(
+                              (entry) => GestureDetector(
+                            onTap: () =>
+                                controller.selectColor(entry.key),
+                            child: Container(
+                              margin: EdgeInsets.only(right: 8.w),
+                              width: 20.w,
+                              height: 20.h,
+                              decoration: BoxDecoration(
+                                color: Color(entry.value['color']),
+                                shape: BoxShape.circle,
+                                border:
+                                controller.selectedColorIndex.value ==
+                                    entry.key
+                                    ? Border.all(
+                                  color: Colors.black,
+                                  width: 2,
+                                )
+                                    : null,
                               ),
                             ),
                           ),
-                        ],
+                        )
+                            .toList(),
                       ),
                     ),
+
                     SizedBox(height: 26.h),
-                    // Category Tag
+
+                    /// CATEGORY
                     Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: 36.w,
@@ -156,43 +132,40 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
                         borderRadius: BorderRadius.circular(6.r),
                       ),
                       child: Text(
-                        product?['category'] as String? ?? 'Top',
-                        style: TextStyle(
-                          color: const Color(0xFF1C1C1E),
-                          fontSize: 14.sp,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
-                        ),
+                        product?['category'] ?? 'Top',
+                        style: TextStyle(fontSize: 14.sp),
                       ),
                     ),
+
                     SizedBox(height: 12.h),
-                    // Product Name
+
+                    /// TITLE
                     Text(
-                      product?['name'] as String? ?? 'Vintage-style midi dress',
+                      product?['name'] ?? 'Vintage-style midi dress',
                       style: TextStyle(
-                        color: const Color(0xFF1C1C1E),
                         fontSize: 16.sp,
-                        fontFamily: 'Helvetica Neue',
                         fontWeight: FontWeight.w700,
                       ),
                     ),
+
                     SizedBox(height: 4.h),
-                    // Product Description
+
+                    /// DESCRIPTION
                     Text(
                       'perhaps a light denim blue',
-                      style: TextStyle(
-                        color: const Color(0xFF101C2C),
-                        fontSize: 14.sp,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: TextStyle(fontSize: 14.sp),
                     ),
+
                     SizedBox(height: 32.h),
                   ],
                 ),
               ),
             ),
+
             SizedBox(height: 32.h),
+
+            /// باقي সব আগের মতোই আছে
+            /// (Wardrobe items, purchase list, etc.)
             // Item Your Wardrobe Section
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -213,10 +186,10 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Obx(
-                  () => Row(
+                      () => Row(
                     children: [
                       ...wardrobeController.wardrobeItems.asMap().entries.map(
-                        (entry) => Padding(
+                            (entry) => Padding(
                           padding: EdgeInsets.only(right: 12.w),
                           child: _buildWardrobeItem(entry.value),
                         ),
@@ -268,220 +241,223 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
       ),
     );
   }
+}
 
-  Widget _buildWardrobeItem(Map<String, dynamic> item) {
-    final imagePath = item['image'] as String? ?? '';
-    final isAsset = item['isAsset'] as bool? ?? true;
-    final fit = item['fit'] as BoxFit? ?? BoxFit.contain;
 
-    return Container(
-      width: 112.w,
-      height: 126.h,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.r),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0x0F101828),
-            blurRadius: 64,
-            offset: const Offset(0, 32),
-            spreadRadius: -12,
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12.r),
-        child: Center(
-          child: isAsset
-              ? Image.asset(
-                  imagePath,
-                  height: 80.h,
-                  width: 60.w,
-                  fit: fit,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: Colors.grey[100],
-                      child: Center(
-                        child: Icon(
-                          Icons.image_not_supported_outlined,
-                          color: Colors.grey[400],
-                          size: 40.sp,
-                        ),
-                      ),
-                    );
-                  },
-                )
-              : Image.file(
-                  File(imagePath),
-                  height: 80.h,
-                  width: 60.w,
-                  fit: fit,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: Colors.grey[100],
-                      child: Center(
-                        child: Icon(
-                          Icons.image_not_supported_outlined,
-                          color: Colors.grey[400],
-                          size: 40.sp,
-                        ),
-                      ),
-                    );
-                  },
+
+Widget _buildWardrobeItem(Map<String, dynamic> item) {
+  final imagePath = item['image'] as String? ?? '';
+  final isAsset = item['isAsset'] as bool? ?? true;
+  final fit = item['fit'] as BoxFit? ?? BoxFit.contain;
+
+  return Container(
+    width: 112.w,
+    height: 126.h,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12.r),
+      boxShadow: [
+        BoxShadow(
+          color: const Color(0x0F101828),
+          blurRadius: 64,
+          offset: const Offset(0, 32),
+          spreadRadius: -12,
+        ),
+      ],
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(12.r),
+      child: Center(
+        child: isAsset
+            ? Image.asset(
+          imagePath,
+          height: 80.h,
+          width: 60.w,
+          fit: fit,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              color: Colors.grey[100],
+              child: Center(
+                child: Icon(
+                  Icons.image_not_supported_outlined,
+                  color: Colors.grey[400],
+                  size: 40.sp,
                 ),
+              ),
+            );
+          },
+        )
+            : Image.file(
+          File(imagePath),
+          height: 80.h,
+          width: 60.w,
+          fit: fit,
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              color: Colors.grey[100],
+              child: Center(
+                child: Icon(
+                  Icons.image_not_supported_outlined,
+                  color: Colors.grey[400],
+                  size: 40.sp,
+                ),
+              ),
+            );
+          },
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
-  Widget _buildPurchaseItem(
+Widget _buildPurchaseItem(
     String imagePath,
     String title,
     String price, {
-    required bool isFavorited,
-  }) {
-    return Container(
-      height: 156.h,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.r),
-        border: Border.all(color: const Color(0xFFF4F4F4)),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0x0F101828),
-            blurRadius: 64,
-            offset: const Offset(0, 32),
-            spreadRadius: -12,
-          ),
-        ],
-      ),
-      child: Stack(
-        children: [
-          // Left Image Container
-          Positioned(
-            left: 12.w,
-            top: 12.h,
-            child: Container(
-              width: 134.w,
-              height: 132.h,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10.r),
-                border: Border.all(color: const Color(0xFFF4F4F4)),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.r),
-                child: Center(
-                  child: Image.asset(
-                    imagePath,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: Colors.grey[100],
-                        child: Center(
-                          child: Icon(
-                            Icons.image_not_supported_outlined,
-                            color: Colors.grey[400],
-                            size: 40.sp,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
+      required bool isFavorited,
+    }) {
+  return Container(
+    height: 156.h,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(16.r),
+      border: Border.all(color: const Color(0xFFF4F4F4)),
+      boxShadow: [
+        BoxShadow(
+          color: const Color(0x0F101828),
+          blurRadius: 64,
+          offset: const Offset(0, 32),
+          spreadRadius: -12,
+        ),
+      ],
+    ),
+    child: Stack(
+      children: [
+        // Left Image Container
+        Positioned(
+          left: 12.w,
+          top: 12.h,
+          child: Container(
+            width: 134.w,
+            height: 132.h,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.r),
+              border: Border.all(color: const Color(0xFFF4F4F4)),
             ),
-          ),
-          // Heart Icon
-          Positioned(
-            left: 24.w,
-            top: 24.h,
-            child: GestureDetector(
-              onTap: () {},
-              child: Icon(
-                isFavorited ? Icons.favorite : Icons.favorite_outline,
-                color: isFavorited ? Colors.red : Colors.grey[400],
-                size: 20.sp,
-              ),
-            ),
-          ),
-          // Product Details
-          Positioned(
-            left: 163.w,
-            top: 12.h,
-            right: 12.w,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 205.w,
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      color: const Color(0xFF1C1C1E),
-                      fontSize: 14.sp,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w400,
-                      height: 1.56,
-                    ),
-                  ),
-                ),
-
-                Text(
-                  price,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24.sp,
-                    fontFamily: 'Helvetica Neue',
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-
-                Row(
-                  children: [
-                    Container(
-                      height: 32.h,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 28.w,
-                        vertical: 5.h,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF060017),
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.r),
+              child: Center(
+                child: Image.asset(
+                  imagePath,
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: Colors.grey[100],
                       child: Center(
-                        child: Text(
-                          'Buy Now',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.sp,
-                            fontFamily: 'Helvetica Neue',
-                            fontWeight: FontWeight.w400,
-                          ),
+                        child: Icon(
+                          Icons.image_not_supported_outlined,
+                          color: Colors.grey[400],
+                          size: 40.sp,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+        // Heart Icon
+        Positioned(
+          left: 24.w,
+          top: 24.h,
+          child: GestureDetector(
+            onTap: () {},
+            child: Icon(
+              isFavorited ? Icons.favorite : Icons.favorite_outline,
+              color: isFavorited ? Colors.red : Colors.grey[400],
+              size: 20.sp,
+            ),
+          ),
+        ),
+        // Product Details
+        Positioned(
+          left: 163.w,
+          top: 12.h,
+          right: 12.w,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 205.w,
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color: const Color(0xFF1C1C1E),
+                    fontSize: 14.sp,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w400,
+                    height: 1.56,
+                  ),
+                ),
+              ),
+
+              Text(
+                price,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24.sp,
+                  fontFamily: 'Helvetica Neue',
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+
+              Row(
+                children: [
+                  Container(
+                    height: 32.h,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 28.w,
+                      vertical: 5.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF060017),
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Buy Now',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.sp,
+                          fontFamily: 'Helvetica Neue',
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                     ),
-                    SizedBox(width: 8.w),
-                    Container(
-                      width: 28.w,
-                      height: 28.h,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF4F4F4),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Icon(
-                        Icons.shopping_cart_outlined,
-                        size: 20.sp,
-                        color: Colors.black54,
-                      ),
+                  ),
+                  SizedBox(width: 8.w),
+                  Container(
+                    width: 28.w,
+                    height: 28.h,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF4F4F4),
+                      borderRadius: BorderRadius.circular(8.r),
                     ),
-                  ],
-                ),
-              ],
-            ),
+                    child: Icon(
+                      Icons.shopping_cart_outlined,
+                      size: 20.sp,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
 }
+

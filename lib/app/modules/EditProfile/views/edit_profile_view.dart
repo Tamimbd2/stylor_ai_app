@@ -1,16 +1,26 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/color.dart';
 import '../../personalize/controllers/personalize_controller.dart';
 import '../controllers/edit_profile_controller.dart';
 
-class EditProfileView extends GetView<EditProfileController> {
+class EditProfileView extends StatefulWidget {
   EditProfileView({super.key});
-  
-  final PersonalizeController personalizeController = Get.put(PersonalizeController());
+  @override
+  State<EditProfileView> createState() => _EditProfileViewState();
+}
+
+class _EditProfileViewState extends State<EditProfileView> {
+  final PersonalizeController personalizeController = Get.put(
+    PersonalizeController(),
+  );
+  File? _profileImage;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +52,10 @@ class EditProfileView extends GetView<EditProfileController> {
                             height: 80.w,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 3.w),
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 3.w,
+                              ),
                               boxShadow: const [
                                 BoxShadow(
                                   color: Color(0x19101828),
@@ -50,19 +63,52 @@ class EditProfileView extends GetView<EditProfileController> {
                                   offset: Offset(0, 4),
                                 ),
                               ],
-                              image: const DecorationImage(
-                                image: AssetImage('assets/image/profilef.jpg'),
+                              image: DecorationImage(
+                                image: _profileImage != null
+                                    ? FileImage(_profileImage!)
+                                    : const AssetImage(
+                                            'assets/image/profilef.jpg',
+                                          )
+                                          as ImageProvider,
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
+                          // Upload image icon (camera)
                           Positioned(
-                            bottom: -2,
-                            right: -2,
-                            child: Image.asset(
-                              'assets/icons/Verified tick.png',
-                              width: 24.w,
-                              height: 24.w,
+                            bottom: -6,
+                            right: 2.w,
+                            child: GestureDetector(
+                              onTap: () async {
+                                final ImagePicker picker = ImagePicker();
+                                final XFile? image = await picker.pickImage(
+                                  source: ImageSource.gallery,
+                                );
+                                if (image != null) {
+                                  setState(() {
+                                    _profileImage = File(image.path);
+                                  });
+                                }
+                              },
+                              child: Container(
+                                width: 28.w,
+                                height: 28.w,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      blurRadius: 4,
+                                    ),
+                                  ],
+                                ),
+                                child: Icon(
+                                  Icons.camera_alt,
+                                  size: 18.w,
+                                  color: Colors.black,
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -256,14 +302,15 @@ class EditProfileView extends GetView<EditProfileController> {
         ),
         child: Row(
           children: [
-            Icon(Icons.calendar_today_outlined, size: 20.sp, color: AppColors.neutral700),
+            Icon(
+              Icons.calendar_today_outlined,
+              size: 20.sp,
+              color: AppColors.neutral700,
+            ),
             SizedBox(width: 12.w),
             Text(
               personalizeController.getFormattedDate(),
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: AppColors.neutral900,
-              ),
+              style: TextStyle(fontSize: 16.sp, color: AppColors.neutral900),
             ),
           ],
         ),
@@ -276,7 +323,9 @@ class EditProfileView extends GetView<EditProfileController> {
       children: [
         Expanded(child: _buildGenderButton('Male', 'assets/image/man.svg')),
         SizedBox(width: 12.w),
-        Expanded(child: _buildGenderButton('Female', 'assets/image/female.svg')),
+        Expanded(
+          child: _buildGenderButton('Female', 'assets/image/female.svg'),
+        ),
         SizedBox(width: 12.w),
         Expanded(child: _buildGenderButton('Other', 'assets/image/others.svg')),
       ],
@@ -291,7 +340,9 @@ class EditProfileView extends GetView<EditProfileController> {
         height: 48.h,
         decoration: BoxDecoration(
           color: isSelected ? AppColors.primaryDark : Colors.white,
-          border: Border.all(color: isSelected ? AppColors.primaryDark : AppColors.neutral200),
+          border: Border.all(
+            color: isSelected ? AppColors.primaryDark : AppColors.neutral200,
+          ),
           borderRadius: BorderRadius.circular(12.r),
         ),
         child: Row(
@@ -360,50 +411,93 @@ class EditProfileView extends GetView<EditProfileController> {
     return Wrap(
       spacing: 12.w,
       runSpacing: 12.h,
-      children: seasons.map((season) => _buildChipButton(
-        season,
-        isSelected: personalizeController.selectedSeason.value == season,
-        onTap: () => personalizeController.selectedSeason.value = season,
-      )).toList(),
+      children: seasons
+          .map(
+            (season) => _buildChipButton(
+              season,
+              isSelected: personalizeController.selectedSeason.value == season,
+              onTap: () => personalizeController.selectedSeason.value = season,
+            ),
+          )
+          .toList(),
     );
   }
 
   Widget _buildStyleButtons() {
-    final styles = ['Casual', 'Smart Casual', 'Formal', 'Streetwear', 'Minimalist', 'Party', 'Artistic', 'Vintage', 'Sporty'];
+    final styles = [
+      'Casual',
+      'Smart Casual',
+      'Formal',
+      'Streetwear',
+      'Minimalist',
+      'Party',
+      'Artistic',
+      'Vintage',
+      'Sporty',
+    ];
     return Wrap(
       spacing: 12.w,
       runSpacing: 12.h,
-      children: styles.map((style) => _buildChipButton(
-        style,
-        isSelected: personalizeController.selectedStyle.value == style,
-        onTap: () => personalizeController.selectedStyle.value = style,
-      )).toList(),
+      children: styles
+          .map(
+            (style) => _buildChipButton(
+              style,
+              isSelected: personalizeController.selectedStyle.value == style,
+              onTap: () => personalizeController.selectedStyle.value = style,
+            ),
+          )
+          .toList(),
     );
   }
 
   Widget _buildPreferencesColorButtons() {
-    final colors = ['Neutrals', 'Warm Tones', 'Cool Tones', 'Earthy Tones', 'Pastels', 'Vibrant', 'Monochrome', 'Jewel Tones', 'Metallics'];
+    final colors = [
+      'Neutrals',
+      'Warm Tones',
+      'Cool Tones',
+      'Earthy Tones',
+      'Pastels',
+      'Vibrant',
+      'Monochrome',
+      'Jewel Tones',
+      'Metallics',
+    ];
     return Wrap(
       spacing: 12.w,
       runSpacing: 12.h,
-      children: colors.map((color) => _buildChipButton(
-        color,
-        isSelected: personalizeController.selectedColor.value == color,
-        onTap: () => personalizeController.selectedColor.value = color,
-      )).toList(),
+      children: colors
+          .map(
+            (color) => _buildChipButton(
+              color,
+              isSelected: personalizeController.selectedColor.value == color,
+              onTap: () => personalizeController.selectedColor.value = color,
+            ),
+          )
+          .toList(),
     );
   }
 
   Widget _buildBodyTypeButtons() {
-    final bodyTypes = ['Curvy', 'Athletic', 'Slim', 'Pear', 'Rectangle', 'Round'];
+    final bodyTypes = [
+      'Curvy',
+      'Athletic',
+      'Slim',
+      'Pear',
+      'Rectangle',
+      'Round',
+    ];
     return Wrap(
       spacing: 12.w,
       runSpacing: 12.h,
-      children: bodyTypes.map((type) => _buildChipButton(
-        type,
-        isSelected: personalizeController.selectedBodyType.value == type,
-        onTap: () => personalizeController.selectedBodyType.value = type,
-      )).toList(),
+      children: bodyTypes
+          .map(
+            (type) => _buildChipButton(
+              type,
+              isSelected: personalizeController.selectedBodyType.value == type,
+              onTap: () => personalizeController.selectedBodyType.value = type,
+            ),
+          )
+          .toList(),
     );
   }
 
@@ -412,15 +506,23 @@ class EditProfileView extends GetView<EditProfileController> {
     return Wrap(
       spacing: 12.w,
       runSpacing: 12.h,
-      children: skinTones.map((tone) => _buildChipButton(
-        tone,
-        isSelected: personalizeController.selectedSkinTone.value == tone,
-        onTap: () => personalizeController.selectedSkinTone.value = tone,
-      )).toList(),
+      children: skinTones
+          .map(
+            (tone) => _buildChipButton(
+              tone,
+              isSelected: personalizeController.selectedSkinTone.value == tone,
+              onTap: () => personalizeController.selectedSkinTone.value = tone,
+            ),
+          )
+          .toList(),
     );
   }
 
-  Widget _buildChipButton(String text, {required bool isSelected, required VoidCallback onTap}) {
+  Widget _buildChipButton(
+    String text, {
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -444,7 +546,8 @@ class EditProfileView extends GetView<EditProfileController> {
   void _showDatePicker(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: personalizeController.selectedDate.value ?? DateTime(2000, 4, 22),
+      initialDate:
+          personalizeController.selectedDate.value ?? DateTime(2000, 4, 22),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
