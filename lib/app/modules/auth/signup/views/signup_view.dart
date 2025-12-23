@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/color.dart';
@@ -284,6 +285,25 @@ class _SignupViewState extends State<SignupView> {
                                     ..onTap = () {
                                       Get.toNamed('/privacy-policy');
                                     },
+
+
+                                ),
+                                const TextSpan(
+                                  text: ' and ',
+                                ),
+                                TextSpan(
+                                  text: 'Terms and condition',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    decoration: TextDecoration.underline,
+                                    color: Colors.black87,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Get.toNamed('/terms-and-conditions');
+                                    },
+
+
                                 ),
                               ],
                             ),
@@ -350,23 +370,23 @@ class _SignupViewState extends State<SignupView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _buildSocialButton(
-                        icon: Image.asset(
-                          'assets/icons/google.png',
+                        icon: SvgPicture.asset(
+                          'assets/svg/google.svg',
                           width: 22.w,
                           height: 22.w,
                         ),
                         label: 'Google',
-                        onTap: () {},
+                        onTap: () => (){},
                       ),
                       SizedBox(width: 16.w),
                       _buildSocialButton(
-                        icon: Image.asset(
-                          'assets/icons/apple.png',
+                        icon: SvgPicture.asset(
+                          'assets/svg/apple.svg',
                           width: 22.w,
                           height: 22.w,
                         ),
                         label: 'Apple',
-                        onTap: () {},
+                        onTap: () => (){},
                       ),
                     ],
                   ),
@@ -474,8 +494,8 @@ class _SignupViewState extends State<SignupView> {
           if (value == null || value.isEmpty) {
             return 'Please enter your password';
           }
-          if (value.length < 6) {
-            return 'Password must be at least 6 characters';
+          if (value.length < 8) {
+            return 'Password must be at least 8 characters';
           }
           return null;
         },

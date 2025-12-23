@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/color.dart';
@@ -234,8 +235,8 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         _buildSocialButton(
-                          icon: Image.asset(
-                            'assets/icons/google.png',
+                          icon: SvgPicture.asset(
+                            'assets/svg/google.svg',
                             width: 22.w,
                             height: 22.w,
                           ),
@@ -244,8 +245,8 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                         ),
                         SizedBox(width: 16.w),
                         _buildSocialButton(
-                          icon: Image.asset(
-                            'assets/icons/apple.png',
+                          icon: SvgPicture.asset(
+                            'assets/svg/apple.svg',
                             width: 22.w,
                             height: 22.w,
                           ),
@@ -380,9 +381,9 @@ class _AuthLoginViewState extends State<AuthLoginView> {
         _passwordError = 'Password is required';
       });
       isValid = false;
-    } else if (password.length < 6) {
+    } else if (password.length < 8) {
       setState(() {
-        _passwordError = 'Password must be at least 6 characters';
+        _passwordError = 'Password must be at least 8 characters';
       });
       isValid = false;
     }
