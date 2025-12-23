@@ -8,6 +8,10 @@ import '../modules/auth/forgot_password/bindings/forgot_password_binding.dart';
 import '../modules/auth/forgot_password/views/forgot_password_view.dart';
 import '../modules/auth/login/bindings/auth_login_binding.dart';
 import '../modules/auth/login/views/auth_login_view.dart';
+import '../modules/auth/otp/bindings/otp_binding.dart';
+import '../modules/auth/otp/views/otp_view.dart';
+import '../modules/auth/reset_password/bindings/reset_password_binding.dart';
+import '../modules/auth/reset_password/views/reset_password_view.dart';
 import '../modules/auth/signup/bindings/signup_binding.dart';
 import '../modules/auth/signup/views/signup_view.dart';
 import '../modules/cart/bindings/cart_binding.dart';
@@ -161,8 +165,18 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.FORGOT_PASSWORD,
-      page: () =>  ForgotPasswordView(),
+      page: () => ForgotPasswordView(),
       binding: ForgotPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.OTP,
+      page: () => OtpView(),
+      binding: OtpBinding(),
+    ),
+    GetPage(
+      name: _Paths.RESET_PASSWORD,
+      page: () =>  ResetPasswordView(),
+      binding: ResetPasswordBinding(),
     ),
   ];
 }

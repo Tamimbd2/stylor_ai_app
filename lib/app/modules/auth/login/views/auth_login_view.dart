@@ -187,7 +187,9 @@ class _AuthLoginViewState extends State<AuthLoginView> {
 
                     Center(
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/forgot-password');
+                        },
                         child: Text(
                           'Forgot Password?',
                           style: TextStyle(

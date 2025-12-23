@@ -1,23 +1,21 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+/// Controller (create this file separately)
 class ForgotPasswordController extends GetxController {
-  //TODO: Implement ForgotPasswordController
+  final emailController = TextEditingController();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
+  void sendOtp() {
+    // Implement your OTP sending logic here
+    if (emailController.text.isNotEmpty) {
+      // Add your API call or navigation logic
+      print('Sending OTP to: ${emailController.text}');
+    }
   }
 
   @override
   void onClose() {
+    emailController.dispose();
     super.onClose();
   }
-
-  void increment() => count.value++;
 }

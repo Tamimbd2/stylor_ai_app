@@ -23,6 +23,8 @@ abstract class Routes {
   static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
   static const WARDROP_DETAILS = _Paths.WARDROP_DETAILS;
   static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
+  static const OTP = _Paths.OTP;
+  static const RESET_PASSWORD = _Paths.RESET_PASSWORD;
 }
 
 abstract class _Paths {
@@ -47,4 +49,6 @@ abstract class _Paths {
   static const EDIT_PROFILE = '/edit-profile';
   static const WARDROP_DETAILS = '/wardrop-details';
   static const FORGOT_PASSWORD = '/forgot-password';
+  static const OTP = '/otp';
+  static const RESET_PASSWORD = '/reset-password';
 }
