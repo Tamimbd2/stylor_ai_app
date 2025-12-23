@@ -1,23 +1,197 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
+import '../../../../../widgets/primary_button.dart';
 import '../controllers/otp_controller.dart';
 
 class OtpView extends GetView<OtpController> {
   const OtpView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('OtpView'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'OtpView is working',
-          style: TextStyle(fontSize: 20),
+      backgroundColor: const Color(0xFFF9F9F9),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 24.h),
+
+              /// LOGO
+              Center(child: Image.asset('assets/logo/logo.png', height: 50.h)),
+
+              SizedBox(height: 40.h),
+
+              /// TITLE
+              Text(
+                'Enter Verification Code',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: const Color(0xFF1C1C1E),
+                  fontSize: 24.sp,
+                  fontFamily: 'Helvetica Neue',
+                  fontWeight: FontWeight.w700,
+                  height: 1.40,
+                ),
+              ),
+
+              SizedBox(height: 8.h),
+
+              /// SUBTITLE
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  style: TextStyle(
+                    color: const Color(0xFF101C2C),
+                    fontSize: 14.sp,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w400,
+                    height: 1.56,
+                  ),
+                  children: [
+                    const TextSpan(text: 'We have sent a code to '),
+                    TextSpan(
+                      text: 'youremail123@gmail.com',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF1C1C1E),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: 40.h),
+
+              /// OTP INPUT FIELDS
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: OtpTextField(
+                      numberOfFields: 4,
+                      borderColor: Color(0xFF1C1C1E),
+                      focusedBorderColor: Color(0xFF1C1C1E),
+                      showFieldAsBox: true,
+                      fieldWidth: 76.w,
+                      fieldHeight: 48.h,
+                      borderRadius: BorderRadius.circular(8.r),
+                      textStyle: TextStyle(
+                        color: Color(0xFF1C1C1E),
+                        fontSize: 16.sp,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                      ),
+                      cursorColor: Colors.black,
+                      onCodeChanged: (String code) {},
+                      onSubmit: (String verificationCode) {
+                        controller.verifyOtp();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 300.h),
+
+              /// RESEND CODE
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Didn't Receive any code? ",
+                    style: TextStyle(
+                      color: const Color(0xFF101C2C),
+                      fontSize: 14.sp,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      controller.resendCode();
+                    },
+                    child: Text(
+                      'Resend Code',
+                      style: TextStyle(
+                        color: const Color(0xFF1C1C1E),
+                        fontSize: 14.sp,
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 20.h),
+
+              /// VERIFY BUTTON
+              AppButton(
+                text: "Verify Now",
+                textColor: Colors.white,
+                backgroundColor: const Color(0xFF060017),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/reset-password');
+                  controller.verifyOtp();
+                },
+              ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+}
+
+/// OTP Input Field Widget
+class _OtpInputField extends StatelessWidget {
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final Function(String) onChanged;
+
+  const _OtpInputField({
+    required this.controller,
+    required this.focusNode,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 76.w,
+      height: 48.h,
+      decoration: ShapeDecoration(
+        color: Colors.white,
+        shape: RoundedRectangleBorder(
+          side: const BorderSide(width: 1, color: Color(0xFF1C1C1E)),
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+      ),
+      child: TextField(
+        controller: controller,
+        focusNode: focusNode,
+        textAlign: TextAlign.center,
+        keyboardType: TextInputType.number,
+        maxLength: 1,
+        style: TextStyle(
+          color: const Color(0xFF1C1C1E),
+          fontSize: 20.sp,
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w600,
+        ),
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        decoration: const InputDecoration(
+          counterText: '',
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.zero,
+        ),
+        onChanged: onChanged,
       ),
     );
   }

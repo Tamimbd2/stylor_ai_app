@@ -9,6 +9,7 @@ class ForgotPasswordController extends GetxController {
     // Implement your OTP sending logic here
     if (emailController.text.isNotEmpty) {
       // Add your API call or navigation logic
+
       print('Sending OTP to: ${emailController.text}');
     }
   }

@@ -4,11 +4,17 @@ import 'package:get/get.dart';
 import '../../../../../widgets/primary_button.dart';
 import '../controllers/forgot_password_controller.dart';
 
-class ForgotPasswordView extends GetView<ForgotPasswordController> {
+class ForgotPasswordView extends StatefulWidget {
   ForgotPasswordView({super.key});
+  @override
+  State<ForgotPasswordView> createState() => _ForgotPasswordViewState();
+}
+
+class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   final ForgotPasswordController controller = Get.put(
     ForgotPasswordController(),
   );
+  String? errorText;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,7 +112,7 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                               height: 1.56,
                             ),
                             decoration: const InputDecoration(
-                              hintText: 'olivia@untitledui.com',
+                              hintText: 'Enter your email',
                               border: InputBorder.none,
                               contentPadding: EdgeInsets.zero,
                               isDense: true,
@@ -116,6 +122,14 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                       ],
                     ),
                   ),
+                  if (errorText != null)
+                    Padding(
+                      padding: EdgeInsets.only(top: 6.h, left: 4.w),
+                      child: Text(
+                        errorText!,
+                        style: TextStyle(color: Colors.red, fontSize: 12.sp),
+                      ),
+                    ),
                 ],
               ),
 
@@ -127,7 +141,15 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
                 textColor: Colors.white,
                 backgroundColor: const Color(0xFF060017),
                 onPressed: () {
-                  controller.sendOtp();
+                  setState(() {
+                    if (controller.emailController.text.isEmpty) {
+                      errorText = 'Please enter your email address';
+                    } else {
+                      errorText = null;
+                      controller.sendOtp();
+                      Navigator.pushNamed(context, '/otp');
+                    }
+                  });
                 },
               ),
 
@@ -150,6 +172,3 @@ class ForgotPasswordView extends GetView<ForgotPasswordController> {
     );
   }
 }
-
-
-
