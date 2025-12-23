@@ -17,249 +17,259 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF9F9F9),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 24.h),
-              // Header
-              Center(
-                child: Text(
-                  'Today\'s outfits',
-                  style: TextStyle(
-                    color: const Color(0xFF1C1C1E),
-                    fontSize: 24.sp,
-                    fontFamily: 'Helvetica Neue',
-                    fontWeight: FontWeight.w700,
-                    height: 1.40,
+    return WillPopScope(
+      onWillPop: () async {
+        Get.back();
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF9F9F9),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 24.h),
+                // Header
+                Center(
+                  child: Text(
+                    'Today\'s outfits',
+                    style: TextStyle(
+                      color: const Color(0xFF1C1C1E),
+                      fontSize: 24.sp,
+                      fontFamily: 'Helvetica Neue',
+                      fontWeight: FontWeight.w700,
+                      height: 1.40,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 6.h),
-              Center(
-                child: Text(
-                  'Your choices shape your AI style feed.',
-                  style: TextStyle(
-                    color: const Color(0xFF101C2C),
-                    fontSize: 14.sp,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
-                    height: 1.56,
+                SizedBox(height: 6.h),
+                Center(
+                  child: Text(
+                    'Your choices shape your AI style feed.',
+                    style: TextStyle(
+                      color: const Color(0xFF101C2C),
+                      fontSize: 14.sp,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w400,
+                      height: 1.56,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 40.h),
+                SizedBox(height: 40.h),
 
-              // Featured Outfit Card
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 21.w),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20.r),
-                    border: Border.all(color: const Color(0xFFF4F4F4)),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x0F101828),
-                        blurRadius: 64,
-                        offset: Offset(0, 32),
-                        spreadRadius: -12,
-                      ),
-                    ],
-                  ),
-                  child: Stack(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(26.w),
-                        child: Column(
-                          children: [
-                            // Outfit Image
-                            Center(
-                              child: Image.asset(
-                                'assets/image/dress.png',
-                                width: 135.w,
-                                height: 181.h,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            SizedBox(height: 24.h),
-                            const Divider(color: Color(0xFFF4F4F4)),
-                            SizedBox(height: 16.h),
-                            // Description
-                            Text(
-                              'This is really white shirt and black pant black show which show for this wither. it will match very good for this session  ',
-                              style: TextStyle(
-                                color: const Color(0xFF49494B),
-                                fontSize: 14.sp,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w400,
-                                height: 1.43,
-                              ),
-                            ),
-                          ],
+                // Featured Outfit Card
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 21.w),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20.r),
+                      border: Border.all(color: const Color(0xFFF4F4F4)),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x0F101828),
+                          blurRadius: 64,
+                          offset: Offset(0, 32),
+                          spreadRadius: -12,
                         ),
-                      ),
-                      // Heart Icon (top right)
-                      Positioned(
-                        right: 24.w,
-                        top: 24.h,
-                        child: Obx(
-                          () => GestureDetector(
-                            onTap: () => controller.toggleFeaturedFavorite(),
-                            child: Container(
-                              width: 56.w,
-                              height: 56.h,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: const Color(0xFFF4F4F4),
+                      ],
+                    ),
+                    child: Stack(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(26.w),
+                          child: Column(
+                            children: [
+                              // Outfit Image
+                              Center(
+                                child: Image.asset(
+                                  'assets/image/dress.png',
+                                  width: 135.w,
+                                  height: 181.h,
+                                  fit: BoxFit.cover,
                                 ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0x0F101828),
-                                    blurRadius: 64,
-                                    offset: Offset(0, 32),
-                                    spreadRadius: -12,
-                                  ),
-                                ],
                               ),
-                              child: Icon(
-                                controller.isFeaturedOutfitFavorited.value
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color:
-                                    controller.isFeaturedOutfitFavorited.value
-                                    ? Colors.red
-                                    : const Color(0xFF1C1C1E),
-                                size: 24.sp,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      // Share Icon (middle right)
-                      Positioned(
-                        right: 24.w,
-                        top: 155.h,
-                        child: Container(
-                          width: 56.w,
-                          height: 56.h,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: const Color(0xFFF4F4F4)),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0x0F101828),
-                                blurRadius: 64,
-                                offset: Offset(0, 32),
-                                spreadRadius: -12,
+                              SizedBox(height: 24.h),
+                              const Divider(color: Color(0xFFF4F4F4)),
+                              SizedBox(height: 16.h),
+                              // Description
+                              Text(
+                                'This is really white shirt and black pant black show which show for this wither. it will match very good for this session  ',
+                                style: TextStyle(
+                                  color: const Color(0xFF49494B),
+                                  fontSize: 14.sp,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w400,
+                                  height: 1.43,
+                                ),
                               ),
                             ],
                           ),
-                          child: Icon(
-                            Icons.share_outlined,
-                            color: const Color(0xFF1C1C1E),
-                            size: 24.sp,
+                        ),
+                        // Heart Icon (top right)
+                        Positioned(
+                          right: 24.w,
+                          top: 24.h,
+                          child: Obx(
+                            () => GestureDetector(
+                              onTap: () => controller.toggleFeaturedFavorite(),
+                              child: Container(
+                                width: 56.w,
+                                height: 56.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: const Color(0xFFF4F4F4),
+                                  ),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color(0x0F101828),
+                                      blurRadius: 64,
+                                      offset: Offset(0, 32),
+                                      spreadRadius: -12,
+                                    ),
+                                  ],
+                                ),
+                                child: Icon(
+                                  controller.isFeaturedOutfitFavorited.value
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color:
+                                      controller.isFeaturedOutfitFavorited.value
+                                      ? Colors.red
+                                      : const Color(0xFF1C1C1E),
+                                  size: 24.sp,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Share Icon (middle right)
+                        Positioned(
+                          right: 24.w,
+                          top: 155.h,
+                          child: Container(
+                            width: 56.w,
+                            height: 56.h,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: const Color(0xFFF4F4F4),
+                              ),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color(0x0F101828),
+                                  blurRadius: 64,
+                                  offset: Offset(0, 32),
+                                  spreadRadius: -12,
+                                ),
+                              ],
+                            ),
+                            child: Icon(
+                              Icons.share_outlined,
+                              color: const Color(0xFF1C1C1E),
+                              size: 24.sp,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 24.h),
+
+                // Try form section
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Text(
+                    'Try form',
+                    style: TextStyle(
+                      color: const Color(0xFF1C1C1E),
+                      fontSize: 20.sp,
+                      fontFamily: 'Helvetica Neue',
+                      fontWeight: FontWeight.w700,
+                      height: 1.40,
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 16.h),
+
+                // Category Filter Chips
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Obx(
+                    () => Row(
+                      children: [
+                        _buildChip(
+                          'All',
+                          isSelected: controller.selectedChip.value == 'All',
+                        ),
+                        SizedBox(width: 8.w),
+                        _buildChip(
+                          'Top',
+                          isSelected: controller.selectedChip.value == 'Top',
+                        ),
+                        SizedBox(width: 8.w),
+                        _buildChip(
+                          'bottoms',
+                          isSelected:
+                              controller.selectedChip.value == 'bottoms',
+                        ),
+                        SizedBox(width: 8.w),
+                        _buildChip(
+                          'Sunglass',
+                          isSelected:
+                              controller.selectedChip.value == 'Sunglass',
+                        ),
+                        SizedBox(width: 8.w),
+                        _buildChip(
+                          'Bag',
+                          isSelected: controller.selectedChip.value == 'Bag',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 16.h),
+
+                // Product List
+                Obx(() {
+                  final products = controller.filteredProducts;
+                  if (products.isEmpty) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 40.h),
+                      child: Center(
+                        child: Text(
+                          'No products in this category',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                            fontSize: 16.sp,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
+                    );
+                  }
 
-              SizedBox(height: 24.h),
-
-              // Try form section
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Text(
-                  'Try form',
-                  style: TextStyle(
-                    color: const Color(0xFF1C1C1E),
-                    fontSize: 20.sp,
-                    fontFamily: 'Helvetica Neue',
-                    fontWeight: FontWeight.w700,
-                    height: 1.40,
-                  ),
-                ),
-              ),
-
-              SizedBox(height: 16.h),
-
-              // Category Filter Chips
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: Obx(
-                  () => Row(
-                    children: [
-                      _buildChip(
-                        'All',
-                        isSelected: controller.selectedChip.value == 'All',
-                      ),
-                      SizedBox(width: 8.w),
-                      _buildChip(
-                        'Top',
-                        isSelected: controller.selectedChip.value == 'Top',
-                      ),
-                      SizedBox(width: 8.w),
-                      _buildChip(
-                        'bottoms',
-                        isSelected: controller.selectedChip.value == 'bottoms',
-                      ),
-                      SizedBox(width: 8.w),
-                      _buildChip(
-                        'Sunglass',
-                        isSelected: controller.selectedChip.value == 'Sunglass',
-                      ),
-                      SizedBox(width: 8.w),
-                      _buildChip(
-                        'Bag',
-                        isSelected: controller.selectedChip.value == 'Bag',
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              SizedBox(height: 16.h),
-
-              // Product List
-              Obx(() {
-                final products = controller.filteredProducts;
-                if (products.isEmpty) {
-                  return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 40.h),
-                    child: Center(
-                      child: Text(
-                        'No products in this category',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 16.sp,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
+                  return Column(
+                    children: products.asMap().entries.map((entry) {
+                      return _buildProductCard(entry.value, index: entry.key);
+                    }).toList(),
                   );
-                }
+                }),
 
-                return Column(
-                  children: products.asMap().entries.map((entry) {
-                    return _buildProductCard(entry.value, index: entry.key);
-                  }).toList(),
-                );
-              }),
-
-              SizedBox(height: 20.h),
-            ],
+                SizedBox(height: 20.h),
+              ],
+            ),
           ),
         ),
       ),
