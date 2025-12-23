@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/color.dart';
@@ -135,25 +136,31 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                     SizedBox(height: 8.h),
 
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Checkbox(
-                          value: _rememberMe,
-                          onChanged: (value) {
-                            setState(() => _rememberMe = value ?? false);
-                          },
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4.r),
+                        Transform.translate(
+                          offset: const Offset(-5, 0), // থাকবে
+                          child: Checkbox(
+                            value: _rememberMe,
+                            onChanged: (value) {
+                              setState(() => _rememberMe = value ?? false);
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4.r),
+                            ),
+                            fillColor: WidgetStateProperty.resolveWith((states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return Colors.black;
+                              }
+                              return Colors.transparent;
+                            }),
+                            checkColor: Colors.white,
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            visualDensity: VisualDensity.compact,
                           ),
-                          fillColor: WidgetStateProperty.resolveWith((
-                            states,
-                          ) {
-                            if (states.contains(WidgetState.selected)) {
-                              return Colors.black;
-                            }
-                            return Colors.transparent;
-                          }),
-                          checkColor: Colors.white,
                         ),
+                        SizedBox(width: 1.w),
                         Text(
                           'Remember me',
                           style: TextStyle(
@@ -163,6 +170,9 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                         ),
                       ],
                     ),
+
+
+
 
                     SizedBox(height: 16.h),
 
@@ -186,7 +196,9 @@ class _AuthLoginViewState extends State<AuthLoginView> {
 
                     Center(
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/forgot-password');
+                        },
                         child: Text(
                           'Forgot Password?',
                           style: TextStyle(
@@ -234,8 +246,8 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         _buildSocialButton(
-                          icon: Image.asset(
-                            'assets/icons/google.png',
+                          icon: SvgPicture.asset(
+                            'assets/svg/google.svg',
                             width: 22.w,
                             height: 22.w,
                           ),
@@ -244,8 +256,8 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                         ),
                         SizedBox(width: 16.w),
                         _buildSocialButton(
-                          icon: Image.asset(
-                            'assets/icons/apple.png',
+                          icon: SvgPicture.asset(
+                            'assets/svg/apple.svg',
                             width: 22.w,
                             height: 22.w,
                           ),
@@ -380,9 +392,9 @@ class _AuthLoginViewState extends State<AuthLoginView> {
         _passwordError = 'Password is required';
       });
       isValid = false;
-    } else if (password.length < 6) {
+    } else if (password.length < 8) {
       setState(() {
-        _passwordError = 'Password must be at least 6 characters';
+        _passwordError = 'Password must be at least 8 characters';
       });
       isValid = false;
     }

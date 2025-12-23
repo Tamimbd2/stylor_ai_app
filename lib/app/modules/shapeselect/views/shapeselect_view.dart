@@ -47,20 +47,20 @@ class _ShapeselectViewState extends State<ShapeselectView> {
                   child: Column(
                     children: [
                       const HeaderSection(),
-                      SizedBox(height: 12.h),
+                      // SizedBox(height: 8.h),
                       OutfitCardSection(
                         key: _cardSectionKey,
                         onDetailsPressed: () =>
                             controller.toggleOutfitDetails(),
                       ),
-                      SizedBox(height: 12.h),
+                      SizedBox(height: 0.h),
                       ActionButtonsSection(
                         onCancel: () =>
                             _cardSectionKey.currentState?.swipeLeft(),
                         onLike: () =>
                             _cardSectionKey.currentState?.swipeRight(),
                       ),
-                      SizedBox(height: 12.h),
+                      SizedBox(height: 0.h),
                       StyleSelectorSection(
                         selectedStyle: _selectedStyle,
                         onStyleChanged: (style) {

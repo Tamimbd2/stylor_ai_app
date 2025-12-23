@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/color.dart';
@@ -39,7 +40,12 @@ class _WeatherLocationCardState extends State<WeatherLocationCard> {
       ),
       child: Row(
         children: [
-          const IconImage('assets/icons/temperature.png'),
+        SvgPicture.asset(
+        'assets/svg/temp.svg',
+        width: 24,
+        height: 20,
+        fit: BoxFit.contain,
+      ),
           SizedBox(width: 6.w),
           Obx(
             () => _isEditing.value
@@ -81,7 +87,12 @@ class _WeatherLocationCardState extends State<WeatherLocationCard> {
             margin: EdgeInsets.symmetric(horizontal: 8.w),
             color: AppColors.neutral200,
           ),
-          const IconImage('assets/icons/location.png'),
+          SvgPicture.asset(
+            'assets/svg/location.svg',
+            width: 24,
+            height: 20,
+            fit: BoxFit.contain,
+          ),
           SizedBox(width: 6.w),
           Expanded(
             child: Text(
@@ -119,13 +130,16 @@ class _WeatherLocationCardState extends State<WeatherLocationCard> {
                       ? AppColors.primaryDark
                       : Colors.transparent,
                 ),
-                child: Image.asset(
+                child: SvgPicture.asset(
                   _isEditing.value
-                      ? 'assets/icons/saved.png'
-                      : 'assets/icons/edit.png',
+                      ? 'assets/svg/saved.svg'
+                      : 'assets/svg/edit.svg',
                   width: 14.w,
                   height: 14.h,
-                  color: _isEditing.value ? Colors.white : AppColors.neutral700,
+                  colorFilter: ColorFilter.mode(
+                    _isEditing.value ? Colors.white : AppColors.neutral700,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
             ),

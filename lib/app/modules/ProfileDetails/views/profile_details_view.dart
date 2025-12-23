@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../../../core/color.dart';
 import '../../EditProfile/views/edit_profile_view.dart';
@@ -115,7 +116,7 @@ class ProfileDetailsView extends StatelessWidget {
               /// Switch Account
               /// ======================
               _listTileCard(
-                iconPath: 'assets/icons/switchAccount.png',
+                iconPath: 'assets/svg/sw.svg',
                 title: 'Switch Account',
                 hasTrailing: true,
               ),
@@ -139,7 +140,7 @@ class ProfileDetailsView extends StatelessWidget {
                       text: '22 / 04 / 2000',
                     ),
                     Divider(height: 1, color: AppColors.neutral100),
-                    _InfoRow(iconPath: 'assets/icons/males.png', text: 'Female'),
+                    _InfoRow(iconPath: 'assets/svg/female.svg', text: 'Female'),
                   ],
                 ),
               ),
@@ -273,7 +274,7 @@ class ProfileDetailsView extends StatelessWidget {
     return Container(
       decoration: _cardDecoration(),
       child: ListTile(
-        leading: Image.asset(iconPath, width: 20.w, height: 20.h),
+        leading: SvgPicture.asset(iconPath, width: 20.w, height: 20.h),
         title: Text(
           title,
           style: TextStyle(fontSize: 14.sp, color: AppColors.neutral700),
@@ -304,7 +305,7 @@ class _InfoRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: iconPath != null
-          ? Image.asset(iconPath!, width: 20.w, height: 20.h)
+          ? SvgPicture.asset(iconPath!, width: 20.w, height: 20.h)
           : Icon(icon, color: AppColors.neutral700, size: 20.sp),
       title: Text(
         text,

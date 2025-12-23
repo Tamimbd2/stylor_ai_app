@@ -4,8 +4,14 @@ import '../modules/EditProfile/bindings/edit_profile_binding.dart';
 import '../modules/EditProfile/views/edit_profile_view.dart';
 import '../modules/ProfileDetails/bindings/profile_details_binding.dart';
 import '../modules/ProfileDetails/views/profile_details_view.dart';
+import '../modules/auth/forgot_password/bindings/forgot_password_binding.dart';
+import '../modules/auth/forgot_password/views/forgot_password_view.dart';
 import '../modules/auth/login/bindings/auth_login_binding.dart';
 import '../modules/auth/login/views/auth_login_view.dart';
+import '../modules/auth/otp/bindings/otp_binding.dart';
+import '../modules/auth/otp/views/otp_view.dart';
+import '../modules/auth/reset_password/bindings/reset_password_binding.dart';
+import '../modules/auth/reset_password/views/reset_password_view.dart';
 import '../modules/auth/signup/bindings/signup_binding.dart';
 import '../modules/auth/signup/views/signup_view.dart';
 import '../modules/cart/bindings/cart_binding.dart';
@@ -156,6 +162,21 @@ class AppPages {
       name: _Paths.WARDROP_DETAILS,
       page: () => const WardropDetailsView(),
       binding: WardropDetailsBinding(),
+    ),
+    GetPage(
+      name: _Paths.FORGOT_PASSWORD,
+      page: () => ForgotPasswordView(),
+      binding: ForgotPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.OTP,
+      page: () => OtpView(),
+      binding: OtpBinding(),
+    ),
+    GetPage(
+      name: _Paths.RESET_PASSWORD,
+      page: () =>  ResetPasswordView(),
+      binding: ResetPasswordBinding(),
     ),
   ];
 }

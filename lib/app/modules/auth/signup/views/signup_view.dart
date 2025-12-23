@@ -1,11 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../../../../../core/color.dart';
 import '../../../../../widgets/primary_button.dart';
 import '../../../personalize/views/personalize_view.dart';
+import '../../login/views/auth_login_view.dart';
 import '../controllers/signup_controller.dart';
 
 class SignupView extends StatefulWidget {
@@ -24,13 +26,17 @@ class _SignupViewState extends State<SignupView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   final FocusNode _nameFocus = FocusNode();
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _phoneFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
+  final FocusNode _confirmPasswordFocus = FocusNode();
 
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
   bool _acceptPrivacy = false;
   bool _isLoading = false;
 
@@ -38,6 +44,7 @@ class _SignupViewState extends State<SignupView> {
   String? _emailError;
   String? _phoneError;
   String? _passwordError;
+  String? _confirmPasswordError;
   String? _privacyError;
 
   @override
@@ -46,10 +53,12 @@ class _SignupViewState extends State<SignupView> {
     _emailController.dispose();
     _phoneController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     _nameFocus.dispose();
     _emailFocus.dispose();
     _phoneFocus.dispose();
     _passwordFocus.dispose();
+    _confirmPasswordFocus.dispose();
     super.dispose();
   }
 
@@ -173,45 +182,6 @@ class _SignupViewState extends State<SignupView> {
                   SizedBox(height: 16.h),
 
                   Text(
-                    'Phone Number',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 6.h),
-
-                  _buildInputField(
-                    controller: _phoneController,
-                    focusNode: _phoneFocus,
-                    nextFocus: _passwordFocus,
-                    prefixIcon: Icons.phone_outlined,
-                    hintText: '5645511123',
-                    keyboardType: TextInputType.phone,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your phone number';
-                      }
-                      if (value.length < 10) {
-                        return 'Please enter a valid phone number';
-                      }
-                      return null;
-                    },
-                  ),
-
-                  if (_phoneError != null)
-                    Padding(
-                      padding: EdgeInsets.only(top: 6.h),
-                      child: Text(
-                        _phoneError!,
-                        style: TextStyle(fontSize: 12.sp, color: Colors.red),
-                      ),
-                    ),
-
-                  SizedBox(height: 16.h),
-
-                  Text(
                     'Password',
                     style: TextStyle(
                       fontSize: 14.sp,
@@ -222,12 +192,33 @@ class _SignupViewState extends State<SignupView> {
                   SizedBox(height: 6.h),
 
                   _buildPasswordField(),
+                  SizedBox(height: 16.h),
+
+                  Text(
+                    'Confirm Password',
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: 6.h),
+
+                  _buildConfirmPasswordField(),
 
                   if (_passwordError != null)
                     Padding(
                       padding: EdgeInsets.only(top: 6.h),
                       child: Text(
                         _passwordError!,
+                        style: TextStyle(fontSize: 12.sp, color: Colors.red),
+                      ),
+                    ),
+                  if (_confirmPasswordError != null)
+                    Padding(
+                      padding: EdgeInsets.only(top: 6.h),
+                      child: Text(
+                        _confirmPasswordError!,
                         style: TextStyle(fontSize: 12.sp, color: Colors.red),
                       ),
                     ),
@@ -270,19 +261,30 @@ class _SignupViewState extends State<SignupView> {
                                 color: Colors.black87,
                               ),
                               children: [
-                                const TextSpan(
-                                  text: 'By continuing you accept our ',
-                                ),
+                                const TextSpan(text: 'I agree to the '),
                                 TextSpan(
                                   text: 'Privacy Policy',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
-                                    decoration: TextDecoration.underline,
+                                    // decoration: TextDecoration.underline,
                                     color: Colors.black87,
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       Get.toNamed('/privacy-policy');
+                                    },
+                                ),
+                                const TextSpan(text: ' and '),
+                                TextSpan(
+                                  text: 'Terms of use',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    // decoration: TextDecoration.underline,
+                                    color: Colors.black87,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Get.toNamed('/terms-and-conditions');
                                     },
                                 ),
                               ],
@@ -309,6 +311,7 @@ class _SignupViewState extends State<SignupView> {
                     textColor: AppColors.primaryLight,
                     backgroundColor: AppColors.primaryDark,
                     onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> AuthLoginView()));
                       if (!_isLoading) {
                         _handleSignUp();
                       }
@@ -350,23 +353,23 @@ class _SignupViewState extends State<SignupView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _buildSocialButton(
-                        icon: Image.asset(
-                          'assets/icons/google.png',
+                        icon: SvgPicture.asset(
+                          'assets/svg/google.svg',
                           width: 22.w,
                           height: 22.w,
                         ),
                         label: 'Google',
-                        onTap: () {},
+                        onTap: () => () {},
                       ),
                       SizedBox(width: 16.w),
                       _buildSocialButton(
-                        icon: Image.asset(
-                          'assets/icons/apple.png',
+                        icon: SvgPicture.asset(
+                          'assets/svg/apple.svg',
                           width: 22.w,
                           height: 22.w,
                         ),
                         label: 'Apple',
-                        onTap: () {},
+                        onTap: () => () {},
                       ),
                     ],
                   ),
@@ -469,13 +472,13 @@ class _SignupViewState extends State<SignupView> {
         controller: _passwordController,
         focusNode: _passwordFocus,
         obscureText: _obscurePassword,
-        textInputAction: TextInputAction.done,
+        textInputAction: TextInputAction.next,
         validator: (value) {
           if (value == null || value.isEmpty) {
             return 'Please enter your password';
           }
-          if (value.length < 6) {
-            return 'Password must be at least 6 characters';
+          if (value.length < 8) {
+            return 'Password must be at least 8 characters';
           }
           return null;
         },
@@ -493,6 +496,55 @@ class _SignupViewState extends State<SignupView> {
             },
           ),
           hintText: '12345678',
+          hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14.sp),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 16.w,
+            vertical: 12.h,
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// CONFIRM PASSWORD FIELD
+  Widget _buildConfirmPasswordField() {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.primaryLight,
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: AppColors.neutral100),
+      ),
+      child: TextFormField(
+        controller: _confirmPasswordController,
+        focusNode: _confirmPasswordFocus,
+        obscureText: _obscureConfirmPassword,
+        textInputAction: TextInputAction.done,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please confirm your password';
+          }
+          if (value != _passwordController.text) {
+            return 'Passwords do not match';
+          }
+          return null;
+        },
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.lock_outline, color: AppColors.neutral900),
+          suffixIcon: IconButton(
+            icon: Icon(
+              _obscureConfirmPassword
+                  ? Icons.visibility_off_outlined
+                  : Icons.visibility_outlined,
+              color: Colors.grey[600],
+            ),
+            onPressed: () {
+              setState(
+                () => _obscureConfirmPassword = !_obscureConfirmPassword,
+              );
+            },
+          ),
+          hintText: 'Re-enter password',
           hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14.sp),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(
@@ -566,8 +618,8 @@ class _SignupViewState extends State<SignupView> {
     if (password.isEmpty) {
       setState(() => _passwordError = 'Please enter your password');
       isValid = false;
-    } else if (password.length < 6) {
-      setState(() => _passwordError = 'Password must be at least 6 characters');
+    } else if (password.length < 8) {
+      setState(() => _passwordError = 'Password must be at least 8 characters');
       isValid = false;
     }
 

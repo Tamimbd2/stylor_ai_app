@@ -1,7 +1,9 @@
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../wardrobe/controllers/wardrobe_controller.dart';
 import '../controllers/take_photo_controller.dart';
@@ -26,7 +28,11 @@ class TakePhotoView extends GetView<TakePhotoController> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.close, color: Color(0xFF1C1C1E), size: 24.sp),
+                    icon: Icon(
+                      Icons.close,
+                      color: Color(0xFF1C1C1E),
+                      size: 24.sp,
+                    ),
                     onPressed: () => Get.back(),
                     padding: EdgeInsets.zero,
                   ),
@@ -49,12 +55,8 @@ class TakePhotoView extends GetView<TakePhotoController> {
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Container(
                   decoration: BoxDecoration(
-
-
-
                     color: Colors.black.withAlpha(48),
                     borderRadius: BorderRadius.circular(24),
-
                   ),
                   clipBehavior: Clip.antiAlias,
                   child: Obx(() {
@@ -75,7 +77,10 @@ class TakePhotoView extends GetView<TakePhotoController> {
                       return Center(
                         child: Text(
                           'Camera not available',
-                          style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.sp,
+                          ),
                         ),
                       );
                     }
@@ -98,7 +103,7 @@ class TakePhotoView extends GetView<TakePhotoController> {
                   onTap: controller.retakePhoto,
                   child: Container(
                     width: 206.w,
-                    height: 56.h,
+                    height: 45.h,
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.48),
                       borderRadius: BorderRadius.circular(12.r),
@@ -106,11 +111,7 @@ class TakePhotoView extends GetView<TakePhotoController> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.refresh,
-                          color: Colors.white,
-                          size: 24.sp,
-                        ),
+                        Icon(Icons.refresh, color: Colors.white, size: 24.sp),
                         SizedBox(width: 12.w),
                         Text(
                           'Retake photo',
@@ -141,8 +142,11 @@ class TakePhotoView extends GetView<TakePhotoController> {
                       // Navigate to WardrobeView and start analyzing
                       if (controller.capturedImage.value != null) {
                         Get.back();
-                        final wardrobeController = Get.find<WardrobeController>();
-                        wardrobeController.startAnalyzing(controller.capturedImage.value!);
+                        final wardrobeController =
+                            Get.find<WardrobeController>();
+                        wardrobeController.startAnalyzing(
+                          controller.capturedImage.value!,
+                        );
                       }
                     },
                     child: Container(
@@ -177,17 +181,31 @@ class TakePhotoView extends GetView<TakePhotoController> {
                     /// Gallery Button
                     _buildControlButton(
                       icon: Icons.photo_library_outlined,
-                      onTap: () {},
+                      onTap: () async {
+                        final ImagePicker picker = ImagePicker();
+                        final XFile? image = await picker.pickImage(
+                          source: ImageSource.gallery,
+                        );
+                        if (image != null) {
+                          // Set the picked image as capturedImage so 'Use this photo' button appears
+                          controller.capturedImage.value = File(image.path);
+                        }
+                      },
                     ),
 
                     /// Photo Count
                     _buildControlButton(
-                      child: Text(
-                        '${controller.photoCount.value}',
-                        style: TextStyle(
-                          color: Color(0xFF060017),
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w400,
+                      child: Obx(
+                        () => Center(
+                          child: Text(
+                            '${controller.photoCount.value}',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: const Color(0xFF060017),
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ),
                       onTap: () {},
