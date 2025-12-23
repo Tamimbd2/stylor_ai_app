@@ -23,9 +23,6 @@ class OutfitCardSectionState extends State<OutfitCardSection> {
     'assets/image/dress.png',
     'assets/image/dress.png',
     'assets/image/dress.png',
-    'assets/image/dress.png',
-    'assets/image/dress.png',
-    'assets/image/dress.png',
   ];
 
   @override

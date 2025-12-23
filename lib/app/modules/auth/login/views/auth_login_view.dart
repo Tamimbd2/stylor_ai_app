@@ -136,25 +136,31 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                     SizedBox(height: 8.h),
 
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Checkbox(
-                          value: _rememberMe,
-                          onChanged: (value) {
-                            setState(() => _rememberMe = value ?? false);
-                          },
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4.r),
+                        Transform.translate(
+                          offset: const Offset(-5, 0), // থাকবে
+                          child: Checkbox(
+                            value: _rememberMe,
+                            onChanged: (value) {
+                              setState(() => _rememberMe = value ?? false);
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4.r),
+                            ),
+                            fillColor: WidgetStateProperty.resolveWith((states) {
+                              if (states.contains(WidgetState.selected)) {
+                                return Colors.black;
+                              }
+                              return Colors.transparent;
+                            }),
+                            checkColor: Colors.white,
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            visualDensity: VisualDensity.compact,
                           ),
-                          fillColor: WidgetStateProperty.resolveWith((
-                            states,
-                          ) {
-                            if (states.contains(WidgetState.selected)) {
-                              return Colors.black;
-                            }
-                            return Colors.transparent;
-                          }),
-                          checkColor: Colors.white,
                         ),
+                        SizedBox(width: 1.w),
                         Text(
                           'Remember me',
                           style: TextStyle(
@@ -164,6 +170,9 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                         ),
                       ],
                     ),
+
+
+
 
                     SizedBox(height: 16.h),
 
