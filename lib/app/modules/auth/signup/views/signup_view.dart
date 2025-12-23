@@ -174,7 +174,7 @@ class _SignupViewState extends State<SignupView> {
                   SizedBox(height: 16.h),
 
                   Text(
-                    'Phone Number',
+                    'Password',
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
@@ -183,37 +183,11 @@ class _SignupViewState extends State<SignupView> {
                   ),
                   SizedBox(height: 6.h),
 
-                  _buildInputField(
-                    controller: _phoneController,
-                    focusNode: _phoneFocus,
-                    nextFocus: _passwordFocus,
-                    prefixIcon: Icons.phone_outlined,
-                    hintText: '5645511123',
-                    keyboardType: TextInputType.phone,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your phone number';
-                      }
-                      if (value.length < 10) {
-                        return 'Please enter a valid phone number';
-                      }
-                      return null;
-                    },
-                  ),
-
-                  if (_phoneError != null)
-                    Padding(
-                      padding: EdgeInsets.only(top: 6.h),
-                      child: Text(
-                        _phoneError!,
-                        style: TextStyle(fontSize: 12.sp, color: Colors.red),
-                      ),
-                    ),
-
+                  _buildPasswordField(),
                   SizedBox(height: 16.h),
 
                   Text(
-                    'Password',
+                    'Confirm Password',
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
@@ -272,13 +246,13 @@ class _SignupViewState extends State<SignupView> {
                               ),
                               children: [
                                 const TextSpan(
-                                  text: 'By continuing you accept our ',
+                                  text: 'I agree to the ',
                                 ),
                                 TextSpan(
                                   text: 'Privacy Policy',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
-                                    decoration: TextDecoration.underline,
+                                    // decoration: TextDecoration.underline,
                                     color: Colors.black87,
                                   ),
                                   recognizer: TapGestureRecognizer()
@@ -292,10 +266,10 @@ class _SignupViewState extends State<SignupView> {
                                   text: ' and ',
                                 ),
                                 TextSpan(
-                                  text: 'Terms and condition',
+                                  text: 'Terms of use',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
-                                    decoration: TextDecoration.underline,
+                                    // decoration: TextDecoration.underline,
                                     color: Colors.black87,
                                   ),
                                   recognizer: TapGestureRecognizer()
