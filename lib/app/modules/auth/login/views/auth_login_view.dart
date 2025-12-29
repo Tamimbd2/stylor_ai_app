@@ -180,14 +180,24 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                       text: "Sign In",
                       textColor: AppColors.primaryLight,
                       backgroundColor: AppColors.primaryDark,
-                      onPressed: () {
+                      onPressed: () async {
                         if (_validateForm()) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PersonalizeView(),
-                            ),
+                          setState(() => _isLoading = true);
+                          final success = await controller.login(
+                            _emailController.text.trim(),
+                            _passwordController.text,
                           );
+                          if (mounted) {
+                            setState(() => _isLoading = false);
+                            if (success) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PersonalizeView(),
+                                ),
+                              );
+                            }
+                          }
                         }
                       },
                     ),
@@ -332,7 +342,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                         child: const CircularProgressIndicator(
                           strokeWidth: 4,
                           valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.black54,
+                            Colors.black,
                           ),
                         ),
                       ),

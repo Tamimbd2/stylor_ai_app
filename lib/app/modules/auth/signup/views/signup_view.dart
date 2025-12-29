@@ -311,7 +311,6 @@ class _SignupViewState extends State<SignupView> {
                     textColor: AppColors.primaryLight,
                     backgroundColor: AppColors.primaryDark,
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> AuthLoginView()));
                       if (!_isLoading) {
                         _handleSignUp();
                       }
@@ -607,11 +606,7 @@ class _SignupViewState extends State<SignupView> {
       isValid = false;
     }
 
-    // Phone validation
-    if (_phoneController.text.trim().isEmpty) {
-      setState(() => _phoneError = 'Please enter your phone number');
-      isValid = false;
-    }
+
 
     // Password validation
     String password = _passwordController.text;
@@ -620,6 +615,12 @@ class _SignupViewState extends State<SignupView> {
       isValid = false;
     } else if (password.length < 8) {
       setState(() => _passwordError = 'Password must be at least 8 characters');
+      isValid = false;
+    }
+
+    // Confirm Password
+    if (_confirmPasswordController.text != password) {
+      setState(() => _confirmPasswordError = 'Passwords do not match');
       isValid = false;
     }
 
@@ -638,28 +639,32 @@ class _SignupViewState extends State<SignupView> {
     // Show loading
     setState(() => _isLoading = true);
 
-    // Simulate sign up delay
-    await Future.delayed(const Duration(seconds: 2));
+    final success = await controller.register(
+      _nameController.text.trim(),
+      email,
+      password,
+    );
 
     if (mounted) {
       setState(() => _isLoading = false);
 
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Sign Up Successful!'),
-          backgroundColor: AppColors.primaryDark,
-          duration: const Duration(seconds: 2),
-        ),
-      );
-
-      // Navigate after delay
-      await Future.delayed(const Duration(milliseconds: 500));
-      if (mounted) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => PersonalizeView()),
+      if (success) {
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Sign Up Successful!'),
+            backgroundColor: Colors.black, // Black styling as requested before
+          ),
         );
+
+        // Navigate after delay
+        await Future.delayed(const Duration(milliseconds: 500));
+        if (mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PersonalizeView()),
+          );
+        }
       }
     }
   }
