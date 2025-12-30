@@ -159,12 +159,43 @@ class ProfileDetailsView extends StatelessWidget {
                       text: userController.user.value?.email ?? 'Example@gmail.com',
                     )),
                     Divider(height: 1, color: AppColors.neutral100),
-                    _InfoRow(
-                      icon: Icons.calendar_month_outlined,
-                      text: '22 / 04 / 2000', // Consider adding date to User model if dynamic
-                    ),
+                    Obx(() {
+                      final bDay = userController.user.value?.birthdate;
+                      String formattedDate = 'DD / MM / YYYY';
+                      if (bDay != null) {
+                         try {
+                           final date = DateTime.parse(bDay);
+                           // Format: 22 / 04 / 2000
+                           // You might need to import 'package:intl/intl.dart';
+                           // Since I can't see imports, I'll use manual formatting or assume intl is there.
+                           // Actually, let's just show string if parse fails, or format it.
+                           // Let's use basic string manipulation for safety if intl not guaranteed imported in this view, 
+                           // but I should probably import intl.
+                           // Or simpler:
+                           formattedDate = "${date.day.toString().padLeft(2,'0')} / ${date.month.toString().padLeft(2,'0')} / ${date.year}";
+                         } catch (e) {
+                           formattedDate = bDay;
+                         }
+                      }
+                      return _InfoRow(
+                        icon: Icons.calendar_month_outlined,
+                        text: formattedDate,
+                      );
+                    }),
                     Divider(height: 1, color: AppColors.neutral100),
-                    _InfoRow(iconPath: 'assets/svg/female.svg', text: 'Female'),
+                    Obx(() {
+                      final gender = userController.user.value?.gender ?? 'Female';
+                      String iconPath = 'assets/svg/female.svg';
+                      if (gender.toLowerCase() == 'male') {
+                        iconPath = 'assets/svg/male.svg';
+                      } else if (gender.toLowerCase() == 'other') {
+                         iconPath = 'assets/svg/othersgender.svg';
+                      }
+                      return _InfoRow(
+                        iconPath: iconPath, 
+                        text: gender
+                      );
+                    }),
                   ],
                 ),
               ),
