@@ -35,8 +35,8 @@ class ProfileDetailsView extends StatelessWidget {
                     Stack(
                       children: [
                         Container(
-                          width: 120.w,
-                          height: 90.h,
+                          width: 70.w,
+                          height: 70.w,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(color: Colors.white, width: 3),
@@ -73,15 +73,15 @@ class ProfileDetailsView extends StatelessWidget {
                             }),
                           ),
                         ),
-                        Positioned(
-                          bottom: 5,
-                          right: 12,
-                          child: Image.asset(
-                            'assets/icons/Verified tick.png',
-                            width: 24.w,
-                            height: 24.h,
-                          ),
-                        ),
+                        // Positioned(
+                        //   bottom: 5,
+                        //   right: 0,
+                        //   child: Image.asset(
+                        //     'assets/icons/Verified tick.png',
+                        //     width: 24.w,
+                        //     height: 24.h,
+                        //   ),
+                        // ),
                       ],
                     ),
 
