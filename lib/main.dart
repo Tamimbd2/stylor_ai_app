@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
+import 'app/controllers/user_controller.dart';
 import 'app/routes/app_pages.dart';
 import 'app/translations/app_translations.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
+  Get.put(UserController(), permanent: true);
   runApp(const MyApp());
 }
 

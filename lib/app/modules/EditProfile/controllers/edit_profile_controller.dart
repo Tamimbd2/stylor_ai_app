@@ -1,7 +1,19 @@
+import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import '../../../../service/apiservice.dart';
+import '../../../controllers/user_controller.dart';
 
 class EditProfileController extends GetxController {
+  final ApiService _apiService = Get.find<ApiService>();
+  final UserController _userController = Get.find<UserController>();
+
+  // Profile Image
+  final selectedImage = Rx<File?>(null);
+  final isUploading = false.obs;
+
   // Date
   final selectedDate = DateTime.now().obs;
 
@@ -11,31 +23,64 @@ class EditProfileController extends GetxController {
   // Country
   final selectedCountry = 'Belgium'.obs;
 
-  // Season
+  // Season, Style, Color, BodyType, SkinTone
   final selectedSeason = ''.obs;
-  void selectSeason(String season) => selectedSeason.value = season;
-
-  // Style
   final selectedStyle = ''.obs;
-  void selectStyle(String style) => selectedStyle.value = style;
-
-  // Color Preferences
   final selectedColor = ''.obs;
-  void selectColor(String color) => selectedColor.value = color;
-
-  // Body Type
   final selectedBodyType = ''.obs;
-  void selectBodyType(String bodyType) => selectedBodyType.value = bodyType;
-
-  // Skin Tone
   final selectedSkinTone = ''.obs;
-  void selectSkinTone(String skinTone) => selectedSkinTone.value = skinTone;
+  
+  // Setters
+  void selectSeason(String v) => selectedSeason.value = v;
+  void selectStyle(String v) => selectedStyle.value = v;
+  void selectColor(String v) => selectedColor.value = v;
+  void selectBodyType(String v) => selectedBodyType.value = v;
+  void selectSkinTone(String v) => selectedSkinTone.value = v;
 
-  // Get formatted date
   String getFormattedDate() {
     return DateFormat('dd / MM / yyyy').format(selectedDate.value);
   }
 
+  // Pick Image
+  Future<void> pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      selectedImage.value = File(image.path);
+      // Automatically upload when picked? Or wait for save?
+      // User request implies "profile photo update kora jabe" -> usually implies immediate or on save.
+      // Let's do it immediately for better UX feedback or on separate button? 
+      // The current UI has a camera icon on the profile picture.
+      // Let's upload immediately as it is a common pattern for profile pictures, 
+      // OR specifically on a "Check" button.
+      // Given the UI structure, uploading immediately after pick is easiest to ensure "full app" sync instantly.
+      
+      await uploadProfileImage();
+    }
+  }
 
-
+  // Upload Image
+  Future<void> uploadProfileImage() async {
+    if (selectedImage.value == null) return;
+    
+    try {
+      isUploading.value = true;
+      Get.snackbar('Uploading', 'Updating profile picture...', 
+        backgroundColor: Colors.black, colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
+      
+      final newUrl = await _apiService.uploadAvatar(selectedImage.value!);
+      
+      if (newUrl != null) {
+        _userController.updateAvatar(newUrl);
+        Get.snackbar('Success', 'Profile picture updated!', 
+          backgroundColor: Colors.black, colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to upload image', 
+        backgroundColor: Colors.red, colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isUploading.value = false;
+    }
+  }
 }
+

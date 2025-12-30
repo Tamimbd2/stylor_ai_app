@@ -8,11 +8,16 @@ import '../../privacyPolicy/views/privacy_policy_view.dart';
 import '../../termsAndConditions/views/terms_and_conditions_view.dart';
 import '../../ProfileDetails/views/profile_details_view.dart';
 import '../controllers/profile_controller.dart';
+import '../../../controllers/user_controller.dart';
 
 class ProfileView extends GetView<ProfileController> {
   ProfileView({super.key});
   @override
   final ProfileController controller = Get.put(ProfileController());
+  
+  // Get User Controller
+  final UserController userController = Get.find<UserController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,12 +33,7 @@ class ProfileView extends GetView<ProfileController> {
                 // Profile Card
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfileDetailsView(),
-                      ),
-                    );
+                    Get.toNamed(Routes.PROFILE_DETAILS);
                   },
                   child: Container(
                     width: double.infinity,
@@ -75,19 +75,26 @@ class ProfileView extends GetView<ProfileController> {
                             ],
                           ),
                           child: ClipOval(
-                            child: Image.asset(
-                              'assets/image/profilef.jpg',
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  color: const Color(0xFFE8E8E8),
-                                  child: Icon(
-                                    Icons.person,
-                                    size: 40.sp,
-                                    color: AppColors.neutral700,
-                                  ),
+                            child: Obx(() {
+                              final user = userController.user.value;
+                              if (user?.avatar != null && user!.avatar!.isNotEmpty) {
+                                return Image.network(
+                                  user.avatar!,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                     return Image.asset(
+                                      'assets/image/profilef.jpg',
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
                                 );
-                              },
-                            ),
+                              } else {
+                                return Image.asset(
+                                  'assets/image/profilef.jpg',
+                                  fit: BoxFit.cover,
+                                );
+                              }
+                            }),
                           ),
                         ),
                         SizedBox(width: 12.w),
@@ -96,8 +103,8 @@ class ProfileView extends GetView<ProfileController> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Sarah Ali Khan',
+                              Obx(() => Text(
+                                userController.user.value?.name ?? 'Sara Ali Khan',
                                 style: TextStyle(
                                   color: AppColors.neutral900,
                                   fontSize: 16.sp,
@@ -105,7 +112,7 @@ class ProfileView extends GetView<ProfileController> {
                                   fontWeight: FontWeight.w700,
                                   height: 1.50,
                                 ),
-                              ),
+                              )),
                               SizedBox(height: 2.h),
                               Text(
                                 'account_details'.tr,

@@ -24,6 +24,7 @@ dependencies:
   camera: ^0.10.5+5
   url_launcher: ^6.3.2
   google_sign_in: ^6.2.1
+  get_storage: ^2.1.1
 
 dev_dependencies:
   flutter_test:

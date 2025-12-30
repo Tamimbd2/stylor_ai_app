@@ -3,10 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../../../core/color.dart';
+import '../../../routes/app_pages.dart';
 import '../../EditProfile/views/edit_profile_view.dart';
+import '../../../controllers/user_controller.dart';
 
 class ProfileDetailsView extends StatelessWidget {
-  const ProfileDetailsView({super.key});
+  ProfileDetailsView({super.key});
+  
+  final UserController userController = Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +48,29 @@ class ProfileDetailsView extends StatelessWidget {
                               ),
                             ],
                             image: const DecorationImage(
-                              image: AssetImage('assets/image/profilef.jpg'),
+                              image: AssetImage('assets/image/profilef.jpg'), // Placeholder for initial load
                               fit: BoxFit.cover,
                             ),
+                          ),
+                          child: ClipOval(
+                            child: Obx(() {
+                                final user = userController.user.value;
+                                if (user?.avatar != null && user!.avatar!.isNotEmpty) {
+                                  return Image.network(
+                                    user.avatar!,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) => Image.asset(
+                                      'assets/image/profilef.jpg',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  );
+                                } else {
+                                  return Image.asset(
+                                    'assets/image/profilef.jpg',
+                                    fit: BoxFit.cover,
+                                  );
+                                }
+                            }),
                           ),
                         ),
                         Positioned(
@@ -68,20 +92,20 @@ class ProfileDetailsView extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Sara Rahman',
+                          Obx(() => Text(
+                            userController.user.value?.name ?? 'Sara Rahman',
                             style: TextStyle(
                               fontSize: 20.sp,
                               fontWeight: FontWeight.w500,
                               color: AppColors.neutral900,
                             ),
-                          ),
+                          )),
                           SizedBox(height: 8.h),
                           SizedBox(
                             height: 28.h,
                             child: ElevatedButton.icon(
                               onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=>EditProfileView()));
+                                Get.toNamed(Routes.EDIT_PROFILE);
                               },
                               icon: Image.asset(
                                 'assets/icons/edit-05.png',
@@ -130,14 +154,14 @@ class ProfileDetailsView extends StatelessWidget {
                 decoration: _cardDecoration(),
                 child: Column(
                   children: [
-                    _InfoRow(
+                    Obx(() => _InfoRow(
                       icon: Icons.email_outlined,
-                      text: 'Example@gmail.com',
-                    ),
+                      text: userController.user.value?.email ?? 'Example@gmail.com',
+                    )),
                     Divider(height: 1, color: AppColors.neutral100),
                     _InfoRow(
                       icon: Icons.calendar_month_outlined,
-                      text: '22 / 04 / 2000',
+                      text: '22 / 04 / 2000', // Consider adding date to User model if dynamic
                     ),
                     Divider(height: 1, color: AppColors.neutral100),
                     _InfoRow(iconPath: 'assets/svg/female.svg', text: 'Female'),

@@ -1,29 +1,22 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/color.dart';
-import '../../personalize/controllers/personalize_controller.dart';
+import '../../../controllers/user_controller.dart';
 import '../controllers/edit_profile_controller.dart';
 
-class EditProfileView extends StatefulWidget {
-  EditProfileView({super.key});
-  @override
-  State<EditProfileView> createState() => _EditProfileViewState();
-}
-
-class _EditProfileViewState extends State<EditProfileView> {
-  final PersonalizeController personalizeController = Get.put(
-    PersonalizeController(),
-  );
-  File? _profileImage;
+class EditProfileView extends GetView<EditProfileController> {
+  const EditProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Ensure controller is loaded if not already
+    // Bindings should handle this, but lazyPut might require find if GetView acts up?
+    // GetView calls Get.find internally.
+    final userController = Get.find<UserController>();
+
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9F9),
       body: SafeArea(
@@ -47,49 +40,58 @@ class _EditProfileViewState extends State<EditProfileView> {
                       Stack(
                         clipBehavior: Clip.none,
                         children: [
-                          Container(
-                            width: 80.w,
-                            height: 80.w,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 3.w,
-                              ),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color(0x19101828),
-                                  blurRadius: 8,
-                                  offset: Offset(0, 4),
+                          Obx(() {
+                            final localFile = controller.selectedImage.value;
+                            final user = userController.user.value;
+
+                            ImageProvider? imageProvider;
+
+                            if (localFile != null) {
+                              imageProvider = FileImage(localFile);
+                            } else if (user?.avatar != null && user!.avatar!.isNotEmpty) {
+                              // If avatar is a full URL, use it. If relative, prepend base URL?
+                              // Usually network images need full URL.
+                              // Assuming backend returns full URL or handled.
+                              // For now assuming full URL or accessible URL.
+                              imageProvider = NetworkImage(user.avatar!);
+                            } else {
+                              imageProvider = const AssetImage('assets/image/profilef.jpg');
+                            }
+
+                            return Container(
+                              width: 80.w,
+                              height: 80.w,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 3.w,
                                 ),
-                              ],
-                              image: DecorationImage(
-                                image: _profileImage != null
-                                    ? FileImage(_profileImage!)
-                                    : const AssetImage(
-                                            'assets/image/profilef.jpg',
-                                          )
-                                          as ImageProvider,
-                                fit: BoxFit.cover,
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color(0x19101828),
+                                    blurRadius: 8,
+                                    offset: Offset(0, 4),
+                                  ),
+                                ],
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
+                                  onError: (exception, stackTrace) {
+                                      // Fallback on error
+                                      // print("Error loading image: $exception");
+                                  },
+                                ),
                               ),
-                            ),
-                          ),
+                            );
+                          }),
+
                           // Upload image icon (camera)
                           Positioned(
                             bottom: -6,
                             right: 2.w,
                             child: GestureDetector(
-                              onTap: () async {
-                                final ImagePicker picker = ImagePicker();
-                                final XFile? image = await picker.pickImage(
-                                  source: ImageSource.gallery,
-                                );
-                                if (image != null) {
-                                  setState(() {
-                                    _profileImage = File(image.path);
-                                  });
-                                }
-                              },
+                              onTap: () => controller.pickImage(),
                               child: Container(
                                 width: 28.w,
                                 height: 28.w,
@@ -121,14 +123,14 @@ class _EditProfileViewState extends State<EditProfileView> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Sara Ali Khan',
-                              style: TextStyle(
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.neutral900,
-                              ),
-                            ),
+                            Obx(() => Text(
+                                  userController.user.value?.name ?? 'Sara Ali Khan',
+                                  style: TextStyle(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.neutral900,
+                                  ),
+                                )),
                             SizedBox(height: 8.h),
                             // SizedBox(
                             //   height: 28.h,
@@ -242,6 +244,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                   height: 56.h,
                   child: ElevatedButton(
                     onPressed: () {
+                      Get.back();
                       Get.snackbar(
                         'Saved',
                         'Your profile has been updated successfully',
@@ -257,12 +260,15 @@ class _EditProfileViewState extends State<EditProfileView> {
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                     ),
-                    child: Text(
-                      'Save as',
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
+                    child: Obx(() => controller.isUploading.value
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : Text(
+                        'save_as'.tr,
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -309,7 +315,7 @@ class _EditProfileViewState extends State<EditProfileView> {
             ),
             SizedBox(width: 12.w),
             Text(
-              personalizeController.getFormattedDate(),
+              controller.getFormattedDate(),
               style: TextStyle(fontSize: 16.sp, color: AppColors.neutral900),
             ),
           ],
@@ -333,9 +339,9 @@ class _EditProfileViewState extends State<EditProfileView> {
   }
 
   Widget _buildGenderButton(String gender, String iconPath) {
-    final isSelected = personalizeController.selectedGender.value == gender;
+    final isSelected = controller.selectedGender.value == gender;
     return GestureDetector(
-      onTap: () => personalizeController.selectedGender.value = gender,
+      onTap: () => controller.selectedGender.value = gender,
       child: Container(
         height: 48.h,
         decoration: BoxDecoration(
@@ -384,10 +390,10 @@ class _EditProfileViewState extends State<EditProfileView> {
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          value: personalizeController.selectedCountry.value,
+          value: controller.selectedCountry.value,
           isExpanded: true,
           icon: Icon(Icons.keyboard_arrow_down, color: AppColors.neutral700),
-          items: personalizeController.countries.map((String country) {
+          items: ['Belgium', 'USA', 'France', 'UK', 'Canada'].map((String country) { // Re-added hardcoded list or need source
             return DropdownMenuItem<String>(
               value: country,
               child: Text(
@@ -398,7 +404,7 @@ class _EditProfileViewState extends State<EditProfileView> {
           }).toList(),
           onChanged: (String? newValue) {
             if (newValue != null) {
-              personalizeController.selectedCountry.value = newValue;
+              controller.selectedCountry.value = newValue;
             }
           },
         ),
@@ -415,8 +421,8 @@ class _EditProfileViewState extends State<EditProfileView> {
           .map(
             (season) => _buildChipButton(
               season,
-              isSelected: personalizeController.selectedSeason.value == season,
-              onTap: () => personalizeController.selectedSeason.value = season,
+              isSelected: controller.selectedSeason.value == season,
+              onTap: () => controller.selectedSeason.value = season,
             ),
           )
           .toList(),
@@ -442,8 +448,8 @@ class _EditProfileViewState extends State<EditProfileView> {
           .map(
             (style) => _buildChipButton(
               style,
-              isSelected: personalizeController.selectedStyle.value == style,
-              onTap: () => personalizeController.selectedStyle.value = style,
+              isSelected: controller.selectedStyle.value == style,
+              onTap: () => controller.selectedStyle.value = style,
             ),
           )
           .toList(),
@@ -469,8 +475,8 @@ class _EditProfileViewState extends State<EditProfileView> {
           .map(
             (color) => _buildChipButton(
               color,
-              isSelected: personalizeController.selectedColor.value == color,
-              onTap: () => personalizeController.selectedColor.value = color,
+              isSelected: controller.selectedColor.value == color,
+              onTap: () => controller.selectedColor.value = color,
             ),
           )
           .toList(),
@@ -493,8 +499,8 @@ class _EditProfileViewState extends State<EditProfileView> {
           .map(
             (type) => _buildChipButton(
               type,
-              isSelected: personalizeController.selectedBodyType.value == type,
-              onTap: () => personalizeController.selectedBodyType.value = type,
+              isSelected: controller.selectedBodyType.value == type,
+              onTap: () => controller.selectedBodyType.value = type,
             ),
           )
           .toList(),
@@ -510,8 +516,8 @@ class _EditProfileViewState extends State<EditProfileView> {
           .map(
             (tone) => _buildChipButton(
               tone,
-              isSelected: personalizeController.selectedSkinTone.value == tone,
-              onTap: () => personalizeController.selectedSkinTone.value = tone,
+              isSelected: controller.selectedSkinTone.value == tone,
+              onTap: () => controller.selectedSkinTone.value = tone,
             ),
           )
           .toList(),
@@ -547,12 +553,12 @@ class _EditProfileViewState extends State<EditProfileView> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate:
-          personalizeController.selectedDate.value ?? DateTime(2000, 4, 22),
+          controller.selectedDate.value ?? DateTime(2000, 4, 22),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
     if (picked != null) {
-      personalizeController.selectedDate.value = picked;
+      controller.selectedDate.value = picked;
     }
   }
 
