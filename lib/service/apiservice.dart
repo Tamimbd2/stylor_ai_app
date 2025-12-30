@@ -22,6 +22,19 @@ class ApiService extends GetConnect {
     super.onInit();
   }
 
+  // Helper to fix avatar URL
+  User _fixUserAvatar(User user) {
+    if (user.avatar != null && user.avatar!.startsWith('/')) {
+       // Ensure no double slash if baseUrl ends with /
+       if (baseUrl != null && baseUrl!.endsWith('/')) {
+          user.avatar = '${baseUrl!.substring(0, baseUrl!.length - 1)}${user.avatar}';
+       } else {
+          user.avatar = '$baseUrl${user.avatar}';
+       }
+    }
+    return user;
+  }
+
   Future<LoginResponse?> login(String email, String password) async {
     final response = await post('/auth/login', {
       'email': email,
@@ -29,12 +42,15 @@ class ApiService extends GetConnect {
     });
 
     if (response.status.hasError) {
-      // Print error for debugging
       print('API Error: ${response.statusCode} - ${response.statusText}');
       print('API Body: ${response.body}');
       return Future.error(response.statusText ?? 'Unknown Error');
     } else {
-      return LoginResponse.fromJson(response.body);
+      final loginResponse = LoginResponse.fromJson(response.body);
+      if (loginResponse.user != null) {
+        _fixUserAvatar(loginResponse.user!);
+      }
+      return loginResponse;
     }
   }
 
@@ -47,12 +63,15 @@ class ApiService extends GetConnect {
     });
 
     if (response.status.hasError) {
-      // Print error for debugging
       print('API Error: ${response.statusCode} - ${response.statusText}');
       print('API Body: ${response.body}');
       return Future.error(response.statusText ?? 'Unknown Error');
     } else {
-      return LoginResponse.fromJson(response.body);
+      final loginResponse = LoginResponse.fromJson(response.body);
+      if (loginResponse.user != null) {
+        _fixUserAvatar(loginResponse.user!);
+      }
+      return loginResponse;
     }
   }
 
@@ -67,7 +86,11 @@ class ApiService extends GetConnect {
       print('API Body: ${response.body}');
       return Future.error(response.statusText ?? 'Unknown Error');
     } else {
-      return LoginResponse.fromJson(response.body);
+      final loginResponse = LoginResponse.fromJson(response.body);
+      if (loginResponse.user != null) {
+        _fixUserAvatar(loginResponse.user!);
+      }
+      return loginResponse;
     }
   }
 
@@ -131,9 +154,6 @@ class ApiService extends GetConnect {
         if (relativeUrl != null) {
           // If relative path, prepend base url
           if (relativeUrl.startsWith('/')) {
-             // Remove trailing slash from base if exists? (GetConnect base usually doesn't have it if I set it manually)
-             // My baseUrl set in onInit is 'http://10.0.2.2:3000' or 'http://localhost:3000'
-             // So simply concatenating is fine.
              return '$baseUrl$relativeUrl';
           }
           return relativeUrl;
@@ -143,6 +163,86 @@ class ApiService extends GetConnect {
       }
     } catch (e) {
       print('Exception during upload: $e');
+      return null;
+    }
+  }
+
+  // Update User Profile
+  Future<User?> updateUserProfile({
+    required String birthdate,
+    required String gender,
+    required String country,
+    required Map<String, dynamic> fashionPreferences,
+  }) async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      return Future.error('Not authenticated');
+    }
+
+    final response = await post(
+      '/user/profile/update',
+      {
+        'birthdate': birthdate,
+        'gender': gender,
+        'country': country,
+        // 'avatar': ...
+        'fashionPreferences': fashionPreferences,
+      },
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.status.hasError) {
+      print('Update Profile Error: ${response.statusCode} - ${response.statusText}');
+      print('Update Profile Body: ${response.body}');
+      return Future.error(response.statusText ?? 'Update Failed');
+    } else {
+      print('Update Profile Success: ${response.body}');
+      try {
+        if (response.body is Map && response.body['user'] != null) {
+          final user = User.fromJson(response.body['user']);
+          return _fixUserAvatar(user);
+        }
+      } catch (e) {
+        print("Error parsing user: $e");
+      }
+      return null;
+    }
+  }
+
+  // Get Me
+  Future<User?> getMe() async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      return null;
+    }
+
+    final response = await get(
+      '/auth/me',
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.status.hasError) {
+      print('Get Me Error: ${response.statusCode} - ${response.statusText}');
+      print('Get Me Body: ${response.body}');
+      return null;
+    } else {
+      print('Get Me Success: ${response.body}');
+      try {
+        if (response.body is Map && response.body['user'] != null) {
+           final user = User.fromJson(response.body['user']);
+           return _fixUserAvatar(user);
+        }
+      } catch (e) {
+        print("Error parsing user me: $e");
+      }
       return null;
     }
   }

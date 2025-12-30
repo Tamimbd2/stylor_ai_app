@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import '../../service/apiservice.dart';
 import '../models/user_model.dart';
 
 class UserController extends GetxController {
@@ -44,6 +45,28 @@ class UserController extends GetxController {
       user.value!.avatar = newAvatarUrl;
       user.refresh();
       _storage.write('user', user.value!.toJson());
+    }
+  }
+
+  Future<void> fetchUser() async {
+    try {
+      if (Get.isRegistered<ApiService>()) {
+          final apiService = Get.find<ApiService>();
+          final fetchedUser = await apiService.getMe();
+          if (fetchedUser != null) {
+            updateUser(fetchedUser);
+          }
+      } else {
+        // Fallback or lazy put
+        Get.put(ApiService());
+        final apiService = Get.find<ApiService>();
+          final fetchedUser = await apiService.getMe();
+          if (fetchedUser != null) {
+            updateUser(fetchedUser);
+          }
+      }
+    } catch (e) {
+      print('Fetch user error: $e');
     }
   }
 }

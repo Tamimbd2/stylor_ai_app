@@ -31,6 +31,10 @@ class User {
   String? avatar;
   String? appleId;
   String? createdAt;
+  String? birthdate;
+  String? gender;
+  String? country;
+  FashionPreferences? fashionPreferences;
 
   User({
     this.id,
@@ -41,6 +45,10 @@ class User {
     this.avatar,
     this.appleId,
     this.createdAt,
+    this.birthdate,
+    this.gender,
+    this.country,
+    this.fashionPreferences,
   });
 
   User.fromJson(Map<String, dynamic> json) {
@@ -52,6 +60,12 @@ class User {
     avatar = json['avatar'];
     appleId = json['apple_id'];
     createdAt = json['created_at'];
+    birthdate = json['birthdate'];
+    gender = json['gender'];
+    country = json['country'];
+    fashionPreferences = json['fashionPreferences'] != null
+        ? FashionPreferences.fromJson(json['fashionPreferences'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -64,6 +78,62 @@ class User {
     data['avatar'] = avatar;
     data['apple_id'] = appleId;
     data['created_at'] = createdAt;
+    data['birthdate'] = birthdate;
+    data['gender'] = gender;
+    data['country'] = country;
+    if (fashionPreferences != null) {
+      data['fashionPreferences'] = fashionPreferences!.toJson();
+    }
+    return data;
+  }
+}
+
+class FashionPreferences {
+  int? id;
+  int? userId;
+  String? season;
+  String? style;
+  String? preferencesColor;
+  String? bodyType;
+  String? skinTone;
+  String? createdAt;
+  String? updatedAt;
+
+  FashionPreferences({
+    this.id,
+    this.userId,
+    this.season,
+    this.style,
+    this.preferencesColor,
+    this.bodyType,
+    this.skinTone,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  FashionPreferences.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    season = json['season'];
+    style = json['style'];
+    preferencesColor = json['preferences_color']; // Snake_case in DB/Response
+    bodyType = json['body_type'];
+    skinTone = json['skin_tone'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['season'] = season;
+    data['style'] = style;
+    data['preferences_color'] = preferencesColor;
+    data['body_type'] = bodyType;
+    data['skin_tone'] = skinTone;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

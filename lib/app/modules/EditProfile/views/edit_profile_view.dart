@@ -244,15 +244,7 @@ class EditProfileView extends GetView<EditProfileController> {
                   height: 56.h,
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.back();
-                      Get.snackbar(
-                        'Saved',
-                        'Your profile has been updated successfully',
-                        snackPosition: SnackPosition.BOTTOM,
-                        backgroundColor: AppColors.primaryDark,
-                        colorText: Colors.white,
-                        margin: EdgeInsets.all(16.w),
-                      );
+                      controller.saveProfile();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryDark,

@@ -10,6 +10,39 @@ class EditProfileController extends GetxController {
   final ApiService _apiService = Get.find<ApiService>();
   final UserController _userController = Get.find<UserController>();
 
+  @override
+  void onInit() {
+    super.onInit();
+    _loadUserProfile();
+    // Fetch latest data from API
+    _userController.fetchUser().then((_) {
+      _loadUserProfile(); // Reload if updated
+    });
+  }
+
+  void _loadUserProfile() {
+    final user = _userController.user.value;
+    if (user != null) {
+      if (user.birthdate != null) {
+        try {
+          // Assuming format yyyy-MM-dd from API/User model
+          selectedDate.value = DateTime.parse(user.birthdate!);
+        } catch (_) {}
+      }
+      if (user.gender != null) selectedGender.value = user.gender!;
+      if (user.country != null) selectedCountry.value = user.country!;
+      
+      final em = user.fashionPreferences;
+      if (em != null) {
+        if (em.season != null) selectedSeason.value = em.season!;
+        if (em.style != null) selectedStyle.value = em.style!;
+        if (em.preferencesColor != null) selectedColor.value = em.preferencesColor!;
+        if (em.bodyType != null) selectedBodyType.value = em.bodyType!;
+        if (em.skinTone != null) selectedSkinTone.value = em.skinTone!;
+      }
+    }
+  }
+
   // Profile Image
   final selectedImage = Rx<File?>(null);
   final isUploading = false.obs;
@@ -77,6 +110,42 @@ class EditProfileController extends GetxController {
       }
     } catch (e) {
       Get.snackbar('Error', 'Failed to upload image', 
+        backgroundColor: Colors.red, colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isUploading.value = false;
+    }
+  }
+  Future<void> saveProfile() async {
+    try {
+      isUploading.value = true;
+      Get.snackbar('Saving', 'Updating profile...', 
+        backgroundColor: Colors.black, colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
+
+      String birthDateStr = DateFormat('yyyy-MM-dd').format(selectedDate.value);
+      
+      final fashionPreferences = {
+        'season': selectedSeason.value,
+        'style': selectedStyle.value,
+        'preferencesColor': selectedColor.value,
+        'bodyType': selectedBodyType.value,
+        'skinTone': selectedSkinTone.value,
+      };
+
+      final updatedUser = await _apiService.updateUserProfile(
+        birthdate: birthDateStr,
+        gender: selectedGender.value,
+        country: selectedCountry.value,
+        fashionPreferences: fashionPreferences,
+      );
+
+      if (updatedUser != null) {
+        _userController.updateUser(updatedUser);
+        Get.back();
+        Get.snackbar('Success', 'Profile updated successfully!', 
+          backgroundColor: Colors.black, colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to update profile', 
         backgroundColor: Colors.red, colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
     } finally {
       isUploading.value = false;
