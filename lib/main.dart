@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'app/routes/app_pages.dart';
+import 'app/translations/app_translations.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +23,11 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           title: 'Outfit App',
           debugShowCheckedModeBanner: false,
+
+          // Localization Configuration
+          translations: AppTranslations(),
+          locale: const Locale('en', 'US'),
+          fallbackLocale: const Locale('en', 'US'),
 
           theme: ThemeData(
             fontFamily: "Poppins",

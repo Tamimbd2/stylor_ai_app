@@ -65,7 +65,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
 
                     Center(
                       child: Text(
-                        'Welcome Back',
+                        'welcome_back'.tr,
                         style: TextStyle(
                           fontSize: 24.sp,
                           fontWeight: FontWeight.w600,
@@ -78,7 +78,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
 
                     Center(
                       child: Text(
-                        'Login to access your account',
+                        'login_subtitle'.tr,
                         style: TextStyle(fontSize: 14.sp, color: Colors.black),
                       ),
                     ),
@@ -508,6 +508,23 @@ class _AuthLoginViewState extends State<AuthLoginView> {
 
   /// HANDLE SOCIAL SIGN IN
   void _handleSocialSignIn(String provider) async {
+    if (provider == 'Google') {
+      setState(() => _isLoading = true);
+      final success = await controller.handleGoogleSignIn();
+      if (mounted) {
+        setState(() => _isLoading = false);
+        if (success) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PersonalizeView(),
+            ),
+          );
+        }
+      }
+      return;
+    }
+
     setState(() => _isLoading = true);
 
     // Simulate loading delay

@@ -130,7 +130,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.LANGUAGE,
-      page: () => const LanguageView(),
+      page: () =>  LanguageView(),
       binding: LanguageBinding(),
     ),
     GetPage(

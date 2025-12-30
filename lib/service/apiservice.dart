@@ -54,4 +54,19 @@ class ApiService extends GetConnect {
       return LoginResponse.fromJson(response.body);
     }
   }
+
+  // Google Login
+  Future<LoginResponse?> googleLogin(String idToken) async {
+    final response = await post('/auth/google/mobile', {
+      'idToken': idToken,
+    });
+
+    if (response.status.hasError) {
+      print('API Error: ${response.statusCode} - ${response.statusText}');
+      print('API Body: ${response.body}');
+      return Future.error(response.statusText ?? 'Unknown Error');
+    } else {
+      return LoginResponse.fromJson(response.body);
+    }
+  }
 }

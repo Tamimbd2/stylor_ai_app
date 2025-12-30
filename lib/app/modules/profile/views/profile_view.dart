@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../core/color.dart';
+import '../../../routes/app_pages.dart';
 import '../../language/views/language_view.dart';
 import '../../privacyPolicy/views/privacy_policy_view.dart';
 import '../../termsAndConditions/views/terms_and_conditions_view.dart';
@@ -107,7 +108,7 @@ class ProfileView extends GetView<ProfileController> {
                               ),
                               SizedBox(height: 2.h),
                               Text(
-                                'Your account Details',
+                                'account_details'.tr,
                                 style: TextStyle(
                                   color: AppColors.neutral700,
                                   fontSize: 14.sp,
@@ -131,7 +132,7 @@ class ProfileView extends GetView<ProfileController> {
                 SizedBox(height: 32.h),
                 // Settings Title
                 Text(
-                  'Settings',
+                  'settings'.tr,
                   style: TextStyle(
                     color: AppColors.neutral900,
                     fontSize: 20.sp,
@@ -161,7 +162,7 @@ class ProfileView extends GetView<ProfileController> {
                       Obx(
                         () => _buildSettingItem(
                           icon: Icons.notifications_outlined,
-                          title: 'Notification',
+                          title: 'notification'.tr,
                           hasSwitch: true,
                           switchValue: controller.isNotificationEnabled.value,
                           onTap: () => controller.toggleNotification(
@@ -172,7 +173,7 @@ class ProfileView extends GetView<ProfileController> {
                       _buildDivider(),
                       _buildSettingItem(
                         icon: Icons.lock_outline,
-                        title: 'Privacy',
+                        title: 'privacy'.tr,
                         hasArrow: true,
                         onTap: () {
                           Navigator.push(
@@ -187,23 +188,17 @@ class ProfileView extends GetView<ProfileController> {
                       _buildDivider(),
                       _buildSettingItem(
                         icon: Icons.language,
-                        title: 'Language',
-                        trailingText: 'English',
+                        title: 'language'.tr,
+                        trailingText: 'English', // You might want dynamic language name here too
                         hasArrow: true,
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LanguageView(),
-                            ),
-                          );
-                          // Navigate to Language selection
+                          Get.toNamed(Routes.LANGUAGE);
                         },
                       ),
                       _buildDivider(),
                       _buildSettingItem(
                         icon: Icons.description_outlined,
-                        title: 'Terms and condition',
+                        title: 'terms_and_condition'.tr,
                         hasArrow: true,
                         onTap: () {
                           Navigator.push(
@@ -218,7 +213,7 @@ class ProfileView extends GetView<ProfileController> {
                       _buildDivider(),
                       _buildSettingItem(
                         icon: Icons.share_outlined,
-                        title: 'Share The app',
+                        title: 'share_the_app'.tr,
                         hasArrow: true,
                         onTap: () {
                           print('Share The app tapped');
@@ -246,7 +241,7 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                     ),
                     child: Text(
-                      'Log Out',
+                      'log_out'.tr,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: AppColors.primaryDark,
