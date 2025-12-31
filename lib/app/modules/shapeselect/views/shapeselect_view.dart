@@ -21,7 +21,7 @@ class ShapeselectView extends StatefulWidget {
 
 class _ShapeselectViewState extends State<ShapeselectView> {
   final ShapeselectController controller = Get.put(ShapeselectController());
-  String _selectedStyle = 'Casual Outing';
+  String _selectedStyle = 'Casual';
   final GlobalKey<OutfitCardSectionState> _cardSectionKey =
       GlobalKey<OutfitCardSectionState>();
 

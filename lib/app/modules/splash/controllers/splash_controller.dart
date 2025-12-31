@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import '../../../controllers/user_controller.dart';
+import '../../../routes/app_pages.dart';
 
 class SplashController extends GetxController {
   @override
@@ -9,7 +11,11 @@ class SplashController extends GetxController {
 
   void _navigateToNext() {
     Future.delayed(const Duration(seconds: 3), () {
-      Get.offNamed('/onboarding');
+      if (Get.find<UserController>().isLoggedIn) {
+        Get.offNamed(Routes.SHAPESELECT);
+      } else {
+        Get.offNamed(Routes.ONBOARDING);
+      }
     });
   }
 }

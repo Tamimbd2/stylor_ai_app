@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import '../../modules/shapeselect/controllers/shapeselect_controller.dart';
 import '../../../core/color.dart';
 
 class StyleSelectorSection extends StatelessWidget {
@@ -55,16 +58,15 @@ class StyleSelectorSection extends StatelessWidget {
 
   void _showStyleSelector(BuildContext context) {
     final styles = [
-      'Casual Outing',
-      'Formal Occasion',
-      'Business Meeting',
-      'Date Night',
-      'Wedding',
-      'Workout',
-      'Travel',
-      'Festival',
-      'Beach Day',
-      'Winter Outdoor',
+      'Casual',
+      'Smart Casual',
+      'Formal',
+      'Streetwear',
+      'Minimalist',
+      'Party',
+      'Artistic',
+      'Vintage',
+      'Sporty'
     ];
 
     showModalBottomSheet(
@@ -82,6 +84,7 @@ class StyleSelectorSection extends StatelessWidget {
           selectedStyle: selectedStyle,
           onStyleSelected: (style) {
             onStyleChanged(style);
+            Get.find<ShapeselectController>().updateStyle(style);
             Navigator.pop(context);
           },
         );

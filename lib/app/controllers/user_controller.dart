@@ -7,12 +7,14 @@ class UserController extends GetxController {
   final _storage = GetStorage();
   final Rx<User?> user = Rx<User?>(null);
   final RxString token = ''.obs;
+  final RxString refreshToken = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
     // Load from storage
     token.value = _storage.read('token') ?? '';
+    refreshToken.value = _storage.read('refreshToken') ?? '';
     final userData = _storage.read('user');
     if (userData != null) {
       user.value = User.fromJson(userData);
@@ -21,17 +23,23 @@ class UserController extends GetxController {
 
   bool get isLoggedIn => token.isNotEmpty;
 
-  void login(String newToken, User newUser) {
+  void login(String newToken, String newRefreshToken, User newUser) {
     token.value = newToken;
+    refreshToken.value = newRefreshToken;
     user.value = newUser;
+    
     _storage.write('token', newToken);
+    _storage.write('refreshToken', newRefreshToken);
     _storage.write('user', newUser.toJson());
   }
 
   void logout() {
     token.value = '';
+    refreshToken.value = '';
     user.value = null;
+    
     _storage.remove('token');
+    _storage.remove('refreshToken');
     _storage.remove('user');
   }
 

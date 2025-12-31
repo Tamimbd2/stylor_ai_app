@@ -217,6 +217,44 @@ class ApiService extends GetConnect {
     }
   }
 
+  // Generate Fashion Outfit
+  Future<Map<String, dynamic>?> generateFashion({
+    required String option,
+    required double temperature,
+  }) async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      return Future.error('Not authenticated');
+    }
+
+    final body = {
+      'option': option,
+      'temperature': temperature,
+    };
+
+    final response = await post(
+      '/fashion/generate',
+      body,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.status.hasError) {
+      print('Generate Fashion Error: ${response.statusCode} - ${response.statusText}');
+      print('Generate Fashion Body: ${response.body}');
+      return Future.error(response.statusText ?? 'Generation Failed');
+    } else {
+      print('Generate Fashion Success: ${response.body}');
+      if (response.body is Map<String, dynamic>) {
+        return response.body; 
+      }
+      return null;
+    }
+  }
+
   // Get Me
   Future<User?> getMe() async {
     final userController = Get.find<UserController>();

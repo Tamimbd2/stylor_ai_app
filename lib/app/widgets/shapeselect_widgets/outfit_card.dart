@@ -13,10 +13,12 @@ class OutfitCard extends StatelessWidget {
   final Color? backgroundColor;
   final Color? borderColor;
   final BoxShadow? shadow;
+  final String? networkImageUrl; // Optional network image URL
   final BoxFit imageFit;
 
   const OutfitCard({super.key, 
     required this.imagePath,
+    this.networkImageUrl,
     required this.imageWidth,
     required this.imageHeight,
     this.width,
@@ -51,12 +53,25 @@ class OutfitCard extends StatelessWidget {
       child: ClipRRect(
         borderRadius: borderRadius ?? BorderRadius.circular(20.r),
         child: Center(
-          child: Image.asset(
-            imagePath,
-            width: imageWidth,
-            height: imageHeight,
-            fit: imageFit,
-          ),
+          child: networkImageUrl != null && networkImageUrl!.isNotEmpty
+              ? Image.network(
+                  networkImageUrl!,
+                  width: imageWidth,
+                  height: imageHeight,
+                  fit: imageFit,
+                  errorBuilder: (context, error, stackTrace) => Image.asset(
+                    imagePath,
+                    width: imageWidth,
+                    height: imageHeight,
+                    fit: imageFit,
+                  ),
+                )
+              : Image.asset(
+                  imagePath,
+                  width: imageWidth,
+                  height: imageHeight,
+                  fit: imageFit,
+                ),
         ),
       ),
     );

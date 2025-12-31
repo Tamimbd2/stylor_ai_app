@@ -7,7 +7,7 @@ import '../../../../service/apiservice.dart';
 import '../../../controllers/user_controller.dart';
 
 class EditProfileController extends GetxController {
-  final ApiService _apiService = Get.find<ApiService>();
+  final ApiService _apiService = Get.put(ApiService());
   final UserController _userController = Get.find<UserController>();
 
   @override

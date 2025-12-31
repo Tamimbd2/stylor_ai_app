@@ -30,8 +30,14 @@ class _AuthLoginViewState extends State<AuthLoginView> {
   @override
   void initState() {
     super.initState();
-    _emailController.text = '';
-    _passwordController.text = '';
+    if (controller.isRememberMe.value) {
+      _emailController.text = controller.savedEmail.value;
+      _passwordController.text = controller.savedPassword.value;
+      _rememberMe = true;
+    } else {
+      _emailController.text = '';
+      _passwordController.text = '';
+    }
   }
 
   @override
@@ -186,6 +192,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                           final success = await controller.login(
                             _emailController.text.trim(),
                             _passwordController.text,
+                            rememberMe: _rememberMe,
                           );
                           if (mounted) {
                             setState(() => _isLoading = false);

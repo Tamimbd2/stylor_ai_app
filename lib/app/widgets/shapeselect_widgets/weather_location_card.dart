@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../modules/shapeselect/controllers/shapeselect_controller.dart';
 import '../../../core/color.dart';
 
 class WeatherLocationCard extends StatefulWidget {
@@ -111,6 +112,20 @@ class _WeatherLocationCardState extends State<WeatherLocationCard> {
               onTap: () {
                 if (_isEditing.value) {
                   _isEditing.value = false;
+                  // Update controller
+                  final tempString = _tempController.text;
+                  // Extract number from string if possible, or just parse directly
+                  // Assuming user enters just a number or we parse it.
+                  // For simplicity, let's try to parse the first number found
+                  final RegExp regExp = RegExp(r'(\d+(\.\d+)?)');
+                  final match = regExp.firstMatch(tempString);
+                  if (match != null) {
+                     final val = double.tryParse(match.group(0)!);
+                     if (val != null) {
+                       Get.find<ShapeselectController>().updateTemperature(val);
+                     }
+                  }
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: const Text('Temperature updated!'),
