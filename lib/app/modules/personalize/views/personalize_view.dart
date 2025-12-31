@@ -248,19 +248,14 @@ class PersonalizeView extends GetView<PersonalizeController> {
                 ),
                 SizedBox(height: 200.h),
                 // Next Button
-                AppButton(
-                  text: "Next",
+                Obx(() => AppButton(
+                  text: controller.isLoading.value ? "Processing..." : "Next",
                   textColor: Colors.white,
                   backgroundColor: AppColors.primaryDark,
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FilterScreenView(),
-                      ),
-                    );
-                  },
-                ),
+                  onPressed: controller.isLoading.value 
+                    ? () {} 
+                    : () => controller.updateProfile(),
+                )),
                 SizedBox(height: 20.h),
               ],
             ),

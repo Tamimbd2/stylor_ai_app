@@ -196,7 +196,7 @@ class EditProfileView extends GetView<EditProfileController> {
                 /// ======================
                 _buildLabel('Season'),
                 SizedBox(height: 8.h),
-                Obx(() => _buildSeasonButtons()),
+                _buildSeasonButtons(),
 
                 SizedBox(height: 20.h),
 
@@ -205,7 +205,7 @@ class EditProfileView extends GetView<EditProfileController> {
                 /// ======================
                 _buildLabel('Style'),
                 SizedBox(height: 8.h),
-                Obx(() => _buildStyleButtons()),
+                _buildStyleButtons(),
 
                 SizedBox(height: 20.h),
 
@@ -214,7 +214,7 @@ class EditProfileView extends GetView<EditProfileController> {
                 /// ======================
                 _buildLabel('Preferences Color'),
                 SizedBox(height: 8.h),
-                Obx(() => _buildPreferencesColorButtons()),
+                _buildPreferencesColorButtons(),
 
                 SizedBox(height: 20.h),
 
@@ -385,12 +385,21 @@ class EditProfileView extends GetView<EditProfileController> {
           value: controller.selectedCountry.value,
           isExpanded: true,
           icon: Icon(Icons.keyboard_arrow_down, color: AppColors.neutral700),
-          items: ['Belgium', 'USA', 'France', 'UK', 'Canada'].map((String country) { // Re-added hardcoded list or need source
+          items: controller.countries.map((String country) {
             return DropdownMenuItem<String>(
               value: country,
-              child: Text(
-                country,
-                style: TextStyle(fontSize: 16.sp, color: AppColors.neutral900),
+              child: Row(
+                children: [
+                   Text(
+                    controller.getCountryFlag(country),
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  SizedBox(width: 8.w),
+                  Text(
+                    country,
+                    style: TextStyle(fontSize: 16.sp, color: AppColors.neutral900),
+                  ),
+                ],
               ),
             );
           }).toList(),
@@ -411,11 +420,11 @@ class EditProfileView extends GetView<EditProfileController> {
       runSpacing: 12.h,
       children: seasons
           .map(
-            (season) => _buildChipButton(
+            (season) => Obx(() => _buildChipButton(
               season,
-              isSelected: controller.selectedSeason.value == season,
-              onTap: () => controller.selectedSeason.value = season,
-            ),
+              isSelected: controller.selectedSeason.contains(season),
+              onTap: () => controller.toggleSeason(season),
+            )),
           )
           .toList(),
     );
@@ -438,11 +447,11 @@ class EditProfileView extends GetView<EditProfileController> {
       runSpacing: 12.h,
       children: styles
           .map(
-            (style) => _buildChipButton(
+            (style) => Obx(() => _buildChipButton(
               style,
-              isSelected: controller.selectedStyle.value == style,
-              onTap: () => controller.selectedStyle.value = style,
-            ),
+              isSelected: controller.selectedStyle.contains(style),
+              onTap: () => controller.toggleStyle(style),
+            )),
           )
           .toList(),
     );
@@ -465,11 +474,11 @@ class EditProfileView extends GetView<EditProfileController> {
       runSpacing: 12.h,
       children: colors
           .map(
-            (color) => _buildChipButton(
+            (color) => Obx(() => _buildChipButton(
               color,
-              isSelected: controller.selectedColor.value == color,
-              onTap: () => controller.selectedColor.value = color,
-            ),
+              isSelected: controller.selectedColor.contains(color),
+              onTap: () => controller.toggleColor(color),
+            )),
           )
           .toList(),
     );

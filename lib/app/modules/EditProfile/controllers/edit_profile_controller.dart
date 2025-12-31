@@ -34,9 +34,30 @@ class EditProfileController extends GetxController {
       
       final em = user.fashionPreferences;
       if (em != null) {
-        if (em.season != null) selectedSeason.value = em.season!;
-        if (em.style != null) selectedStyle.value = em.style!;
-        if (em.preferencesColor != null) selectedColor.value = em.preferencesColor!;
+        if (em.season != null) {
+          if (em.season is List) {
+            selectedSeason.assignAll((em.season as List).map((e) => e.toString()).toList());
+          } else {
+            selectedSeason.assignAll([em.season.toString()]);
+          }
+        }
+        
+        if (em.style != null) {
+           if (em.style is List) {
+            selectedStyle.assignAll((em.style as List).map((e) => e.toString()).toList());
+          } else {
+            selectedStyle.assignAll([em.style.toString()]);
+          }
+        }
+        
+        if (em.preferencesColor != null) {
+           if (em.preferencesColor is List) {
+            selectedColor.assignAll((em.preferencesColor as List).map((e) => e.toString()).toList());
+          } else {
+            selectedColor.assignAll([em.preferencesColor.toString()]);
+          }
+        }
+
         if (em.bodyType != null) selectedBodyType.value = em.bodyType!;
         if (em.skinTone != null) selectedSkinTone.value = em.skinTone!;
       }
@@ -56,19 +77,108 @@ class EditProfileController extends GetxController {
   // Country
   final selectedCountry = 'Belgium'.obs;
 
-  // Season, Style, Color, BodyType, SkinTone
-  final selectedSeason = ''.obs;
-  final selectedStyle = ''.obs;
-  final selectedColor = ''.obs;
+  // Season, Style, Color (Multi)
+  final selectedSeason = <String>[].obs;
+  final selectedStyle = <String>[].obs;
+  final selectedColor = <String>[].obs;
+
+  // BodyType, SkinTone (Single)
   final selectedBodyType = ''.obs;
   final selectedSkinTone = ''.obs;
+
+  // List of countries
+  final countries = <String>[
+    'United Kingdom',
+    'Austria',
+    'Belgium',
+    'Bulgaria',
+    'Croatia',
+    'Cyprus',
+    'Czech Republic',
+    'Denmark',
+    'Estonia',
+    'Finland',
+    'France',
+    'Germany',
+    'Greece',
+    'Hungary',
+    'Ireland',
+    'Italy',
+    'Latvia',
+    'Lithuania',
+    'Luxembourg',
+    'Malta',
+    'Netherlands',
+    'Poland',
+    'Portugal',
+    'Romania',
+    'Slovakia',
+    'Slovenia',
+    'Spain',
+    'Sweden',
+  ].obs;
   
   // Setters
-  void selectSeason(String v) => selectedSeason.value = v;
-  void selectStyle(String v) => selectedStyle.value = v;
-  void selectColor(String v) => selectedColor.value = v;
+  // Setters
+  void toggleSeason(String v) {
+    if (selectedSeason.contains(v)) {
+      selectedSeason.remove(v);
+    } else {
+      selectedSeason.add(v);
+    }
+  }
+
+  void toggleStyle(String v) {
+    if (selectedStyle.contains(v)) {
+      selectedStyle.remove(v);
+    } else {
+      selectedStyle.add(v);
+    }
+  }
+
+  void toggleColor(String v) {
+    if (selectedColor.contains(v)) {
+      selectedColor.remove(v);
+    } else {
+      selectedColor.add(v);
+    }
+  }
   void selectBodyType(String v) => selectedBodyType.value = v;
   void selectSkinTone(String v) => selectedSkinTone.value = v;
+
+  String getCountryFlag(String country) {
+    const countryFlags = {
+      'United Kingdom': '🇬🇧',
+      'Austria': '🇦🇹',
+      'Belgium': '🇧🇪',
+      'Bulgaria': '🇧🇬',
+      'Croatia': '🇭🇷',
+      'Cyprus': '🇨🇾',
+      'Czech Republic': '🇨🇿',
+      'Denmark': '🇩🇰',
+      'Estonia': '🇪🇪',
+      'Finland': '🇫🇮',
+      'France': '🇫🇷',
+      'Germany': '🇩🇪',
+      'Greece': '🇬🇷',
+      'Hungary': '🇭🇺',
+      'Ireland': '🇮🇪',
+      'Italy': '🇮🇹',
+      'Latvia': '🇱🇻',
+      'Lithuania': '🇱🇹',
+      'Luxembourg': '🇱🇺',
+      'Malta': '🇲🇹',
+      'Netherlands': '🇳🇱',
+      'Poland': '🇵🇱',
+      'Portugal': '🇵🇹',
+      'Romania': '🇷🇴',
+      'Slovakia': '🇸🇰',
+      'Slovenia': '🇸🇮',
+      'Spain': '🇪🇸',
+      'Sweden': '🇸🇪',
+    };
+    return countryFlags[country] ?? '🌍';
+  }
 
   String getFormattedDate() {
     return DateFormat('dd / MM / yyyy').format(selectedDate.value);
@@ -124,9 +234,9 @@ class EditProfileController extends GetxController {
       String birthDateStr = DateFormat('yyyy-MM-dd').format(selectedDate.value);
       
       final fashionPreferences = {
-        'season': selectedSeason.value,
-        'style': selectedStyle.value,
-        'preferencesColor': selectedColor.value,
+        'season': selectedSeason.toList(),
+        'style': selectedStyle.toList(),
+        'preferencesColor': selectedColor.toList(),
         'bodyType': selectedBodyType.value,
         'skinTone': selectedSkinTone.value,
       };

@@ -172,7 +172,7 @@ class ApiService extends GetConnect {
     required String birthdate,
     required String gender,
     required String country,
-    required Map<String, dynamic> fashionPreferences,
+    Map<String, dynamic>? fashionPreferences,
   }) async {
     final userController = Get.find<UserController>();
     final token = userController.token.value;
@@ -181,15 +181,19 @@ class ApiService extends GetConnect {
       return Future.error('Not authenticated');
     }
 
+    final Map<String, dynamic> body = {
+      'birthdate': birthdate,
+      'gender': gender,
+      'country': country,
+    };
+
+    if (fashionPreferences != null) {
+      body['fashionPreferences'] = fashionPreferences;
+    }
+
     final response = await post(
       '/user/profile/update',
-      {
-        'birthdate': birthdate,
-        'gender': gender,
-        'country': country,
-        // 'avatar': ...
-        'fashionPreferences': fashionPreferences,
-      },
+      body,
       headers: {
         'Authorization': 'Bearer $token',
       },

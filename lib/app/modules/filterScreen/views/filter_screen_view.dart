@@ -66,23 +66,23 @@ class FilterScreenView extends GetView<FilterScreenController> {
                     children: [
                       _FilterChip(
                         label: 'Spring',
-                        isSelected: controller.selectedSeason.value == 'Spring',
-                        onTap: () => controller.selectSeason('Spring'),
+                        isSelected: controller.selectedSeason.contains('Spring'),
+                        onTap: () => controller.toggleSeason('Spring'),
                       ),
                       _FilterChip(
                         label: 'Summer',
-                        isSelected: controller.selectedSeason.value == 'Summer',
-                        onTap: () => controller.selectSeason('Summer'),
+                        isSelected: controller.selectedSeason.contains('Summer'),
+                        onTap: () => controller.toggleSeason('Summer'),
                       ),
                       _FilterChip(
                         label: 'Winter',
-                        isSelected: controller.selectedSeason.value == 'Winter',
-                        onTap: () => controller.selectSeason('Winter'),
+                        isSelected: controller.selectedSeason.contains('Winter'),
+                        onTap: () => controller.toggleSeason('Winter'),
                       ),
                       _FilterChip(
                         label: 'Autumn',
-                        isSelected: controller.selectedSeason.value == 'Autumn',
-                        onTap: () => controller.selectSeason('Autumn'),
+                        isSelected: controller.selectedSeason.contains('Autumn'),
+                        onTap: () => controller.toggleSeason('Autumn'),
                       ),
                     ],
                   ),
@@ -102,52 +102,52 @@ class FilterScreenView extends GetView<FilterScreenController> {
                     children: [
                       _FilterChip(
                         label: 'Casual',
-                        isSelected: controller.selectedStyle.value == 'Casual',
-                        onTap: () => controller.selectStyle('Casual'),
+                        isSelected: controller.selectedStyle.contains('Casual'),
+                        onTap: () => controller.toggleStyle('Casual'),
                       ),
                       _FilterChip(
                         label: 'Smart Casual',
                         isSelected:
-                            controller.selectedStyle.value == 'Smart Casual',
-                        onTap: () => controller.selectStyle('Smart Casual'),
+                            controller.selectedStyle.contains('Smart Casual'),
+                        onTap: () => controller.toggleStyle('Smart Casual'),
                       ),
                       _FilterChip(
                         label: 'Formal',
-                        isSelected: controller.selectedStyle.value == 'Formal',
-                        onTap: () => controller.selectStyle('Formal'),
+                        isSelected: controller.selectedStyle.contains('Formal'),
+                        onTap: () => controller.toggleStyle('Formal'),
                       ),
                       _FilterChip(
                         label: 'Streetwear',
                         isSelected:
-                            controller.selectedStyle.value == 'Streetwear',
-                        onTap: () => controller.selectStyle('Streetwear'),
+                            controller.selectedStyle.contains('Streetwear'),
+                        onTap: () => controller.toggleStyle('Streetwear'),
                       ),
                       _FilterChip(
                         label: 'Minimalist',
                         isSelected:
-                            controller.selectedStyle.value == 'Minimalist',
-                        onTap: () => controller.selectStyle('Minimalist'),
+                            controller.selectedStyle.contains('Minimalist'),
+                        onTap: () => controller.toggleStyle('Minimalist'),
                       ),
                       _FilterChip(
                         label: 'Party',
-                        isSelected: controller.selectedStyle.value == 'Party',
-                        onTap: () => controller.selectStyle('Party'),
+                        isSelected: controller.selectedStyle.contains('Party'),
+                        onTap: () => controller.toggleStyle('Party'),
                       ),
                       _FilterChip(
                         label: 'Artistic',
                         isSelected:
-                            controller.selectedStyle.value == 'Artistic',
-                        onTap: () => controller.selectStyle('Artistic'),
+                            controller.selectedStyle.contains('Artistic'),
+                        onTap: () => controller.toggleStyle('Artistic'),
                       ),
                       _FilterChip(
                         label: 'Vintage',
-                        isSelected: controller.selectedStyle.value == 'Vintage',
-                        onTap: () => controller.selectStyle('Vintage'),
+                        isSelected: controller.selectedStyle.contains('Vintage'),
+                        onTap: () => controller.toggleStyle('Vintage'),
                       ),
                       _FilterChip(
                         label: 'Sporty',
-                        isSelected: controller.selectedStyle.value == 'Sporty',
-                        onTap: () => controller.selectStyle('Sporty'),
+                        isSelected: controller.selectedStyle.contains('Sporty'),
+                        onTap: () => controller.toggleStyle('Sporty'),
                       ),
                     ],
                   ),
@@ -168,54 +168,54 @@ class FilterScreenView extends GetView<FilterScreenController> {
                       _FilterChip(
                         label: 'Neutrals',
                         isSelected:
-                            controller.selectedColor.value == 'Neutrals',
-                        onTap: () => controller.selectColor('Neutrals'),
+                            controller.selectedColor.contains('Neutrals'),
+                        onTap: () => controller.toggleColor('Neutrals'),
                       ),
                       _FilterChip(
                         label: 'Warm Tones',
                         isSelected:
-                            controller.selectedColor.value == 'Warm Tones',
-                        onTap: () => controller.selectColor('Warm Tones'),
+                            controller.selectedColor.contains('Warm Tones'),
+                        onTap: () => controller.toggleColor('Warm Tones'),
                       ),
                       _FilterChip(
                         label: 'Cool Tones',
                         isSelected:
-                            controller.selectedColor.value == 'Cool Tones',
-                        onTap: () => controller.selectColor('Cool Tones'),
+                            controller.selectedColor.contains('Cool Tones'),
+                        onTap: () => controller.toggleColor('Cool Tones'),
                       ),
                       _FilterChip(
                         label: 'Earthy Tones',
                         isSelected:
-                            controller.selectedColor.value == 'Earthy Tones',
-                        onTap: () => controller.selectColor('Earthy Tones'),
+                            controller.selectedColor.contains('Earthy Tones'),
+                        onTap: () => controller.toggleColor('Earthy Tones'),
                       ),
                       _FilterChip(
                         label: 'Pastels',
-                        isSelected: controller.selectedColor.value == 'Pastels',
-                        onTap: () => controller.selectColor('Pastels'),
+                        isSelected: controller.selectedColor.contains('Pastels'),
+                        onTap: () => controller.toggleColor('Pastels'),
                       ),
                       _FilterChip(
                         label: 'Vibrant',
-                        isSelected: controller.selectedColor.value == 'Vibrant',
-                        onTap: () => controller.selectColor('Vibrant'),
+                        isSelected: controller.selectedColor.contains('Vibrant'),
+                        onTap: () => controller.toggleColor('Vibrant'),
                       ),
                       _FilterChip(
                         label: 'Monochrome',
                         isSelected:
-                            controller.selectedColor.value == 'Monochrome',
-                        onTap: () => controller.selectColor('Monochrome'),
+                            controller.selectedColor.contains('Monochrome'),
+                        onTap: () => controller.toggleColor('Monochrome'),
                       ),
                       _FilterChip(
                         label: 'Jewel Tones',
                         isSelected:
-                            controller.selectedColor.value == 'Jewel Tones',
-                        onTap: () => controller.selectColor('Jewel Tones'),
+                            controller.selectedColor.contains('Jewel Tones'),
+                        onTap: () => controller.toggleColor('Jewel Tones'),
                       ),
                       _FilterChip(
                         label: 'Metallics',
                         isSelected:
-                            controller.selectedColor.value == 'Metallics',
-                        onTap: () => controller.selectColor('Metallics'),
+                            controller.selectedColor.contains('Metallics'),
+                        onTap: () => controller.toggleColor('Metallics'),
                       ),
                     ],
                   ),
@@ -316,19 +316,14 @@ class FilterScreenView extends GetView<FilterScreenController> {
                 ),
                 SizedBox(height: 40.h),
                 // See Outfit Matches Button
-                AppButton(
-                  text: "See Outfit Matches",
+                Obx(() => AppButton(
+                  text: controller.isLoading.value ? "Processing..." : "See Outfit Matches",
                   textColor: Colors.white,
                   backgroundColor: AppColors.primaryDark,
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MainNavigationView(),
-                      ),
-                    );
-                  },
-                ),
+                  onPressed: controller.isLoading.value 
+                    ? () {} 
+                    : () => controller.submitPreferences(),
+                )),
                 SizedBox(height: 20.h),
               ],
             ),
