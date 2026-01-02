@@ -136,22 +136,24 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               SizedBox(height: 280.h),
 
               /// CONTINUE BUTTON
-              AppButton(
-                text: "Continue",
+              /// CONTINUE BUTTON
+              Obx(() => AppButton(
+                text: controller.isLoading.value ? "Processing..." : "Continue",
                 textColor: Colors.white,
                 backgroundColor: const Color(0xFF060017),
-                onPressed: () {
-                  setState(() {
-                    if (controller.emailController.text.isEmpty) {
-                      errorText = 'Please enter your email address';
-                    } else {
-                      errorText = null;
-                      controller.sendOtp();
-                      Navigator.pushNamed(context, '/otp');
-                    }
-                  });
-                },
-              ),
+                onPressed: controller.isLoading.value
+                    ? () {}
+                    : () {
+                        setState(() {
+                          if (controller.emailController.text.isEmpty) {
+                            errorText = 'Please enter your email address';
+                          } else {
+                            errorText = null;
+                            controller.sendOtp();
+                          }
+                        });
+                      },
+              )),
 
               SizedBox(height: 12.h),
 

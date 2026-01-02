@@ -334,4 +334,51 @@ class ApiService extends GetConnect {
       return null;
     }
   }
+  // Request Password Reset
+  Future<bool> requestPasswordReset(String email) async {
+    final response = await post('/auth/password-reset/request', {
+      'email': email,
+    });
+
+    if (response.status.hasError) {
+      print('Password Reset Request Error: ${response.statusCode} - ${response.statusText}');
+      print('Password Reset Request Body: ${response.body}');
+      return false; // Or throw error
+    } else {
+      print('Password Reset Request Success: ${response.body}');
+      return true;
+    }
+  }
+  // Verify OTP
+  Future<bool> verifyOtp(String email, dynamic otp) async {
+    final response = await post('/auth/password-reset/verify-otp', {
+      'email': email,
+      'otp': otp.toString(),
+    });
+
+    if (response.status.hasError) {
+      print('Verify OTP Error: ${response.statusCode} - ${response.statusText}');
+      print('Verify OTP Body: ${response.body}');
+      return false; 
+    } else {
+      print('Verify OTP Success: ${response.body}');
+      return true;
+    }
+  }
+  Future<bool> resetPassword(String email, String otp, String newPassword) async {
+    final response = await post('/auth/password-reset/reset', {
+      'email': email,
+      'otp': otp,
+      'newPassword': newPassword,
+    });
+
+    if (response.status.hasError) {
+      print('Reset Password Error: ${response.statusCode} - ${response.statusText}');
+      print('Reset Password Body: ${response.body}');
+      return false; 
+    } else {
+      print('Reset Password Success: ${response.body}');
+      return true;
+    }
+  }
 }

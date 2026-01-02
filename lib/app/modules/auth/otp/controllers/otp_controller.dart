@@ -1,54 +1,173 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+// import 'package:fluttertoast/fluttertoast.dart'; // Commented out to prevent MissingPluginException
+import '../../../../../service/apiservice.dart';
 
 class OtpController extends GetxController {
-  final List<TextEditingController> otpControllers = List.generate(
-    4,
-        (index) => TextEditingController(),
-  );
+  
+  var email = ''.obs;
+  var otpString = '';
 
-  final List<FocusNode> focusNodes = List.generate(
-    4,
-        (index) => FocusNode(),
-  );
-
-  String get otpCode {
-    return otpControllers.map((controller) => controller.text).join();
+  @override
+  void onInit() {
+    super.onInit();
+    if (Get.arguments != null && Get.arguments is Map) {
+      email.value = Get.arguments['email'] ?? '';
+    }
   }
 
-  void verifyOtp() {
-    if (otpCode.length == 4) {
-      // Implement your OTP verification logic here
-      print('Verifying OTP: $otpCode');
-      // Add your API call or navigation logic
+  String get otpCode => otpString;
+
+  void setOtp(String code) {
+    print('OTP Code Updated: $code');
+    otpString = code;
+  }
+
+  Future<void> verifyOtp() async {
+    print('Attempting to verify OTP...'); // Console log
+    if (otpCode.length == 6) {
+      if (email.value.isEmpty) {
+        print('Error: Email not found');
+        Get.snackbar(
+          'Error',
+          'Email not found. Please go back.',
+          backgroundColor: Colors.black, // Toast black color
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.all(10),
+          borderRadius: 8,
+        );
+        return;
+      }
+
+      isVerifying.value = true;
+      try {
+        final apiService = Get.find<ApiService>();
+        
+        final success = await apiService.verifyOtp(email.value, otpCode);
+        
+        if (success) {
+          print('OTP Verified Successfully'); // Console log
+          Get.snackbar(
+            'Success', 
+            'OTP Verified Successfully',
+            backgroundColor: Colors.black, // Toast black color
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: const EdgeInsets.all(10),
+            borderRadius: 8,
+          );
+          // Navigate to Reset Password Screen with email and otp
+          Get.toNamed('/reset-password', arguments: {'email': email.value, 'otp': otpCode});
+        } else {
+          print('Error: Invalid OTP');
+          Get.snackbar(
+            'Error', 
+            'Invalid OTP. Please try again.',
+            backgroundColor: Colors.black, // Toast black color
+            colorText: Colors.white,
+            snackPosition: SnackPosition.BOTTOM,
+            margin: const EdgeInsets.all(10),
+            borderRadius: 8,
+          );
+        }
+      } catch (e) {
+        print("Error verifyOtp: $e");
+        Get.snackbar(
+          'Error', 
+          'An unexpected error occurred',
+          backgroundColor: Colors.black, // Toast black color
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.all(10),
+          borderRadius: 8,
+        );
+      } finally {
+        isVerifying.value = false;
+      }
+
     } else {
+      print('Error: Incomplete OTP code');
       Get.snackbar(
-        'Error',
+        'Error', 
         'Please enter complete OTP code',
+        backgroundColor: Colors.black, // Toast black color
+        colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(10),
+        borderRadius: 8,
       );
     }
   }
 
-  void resendCode() {
-    // Implement resend OTP logic here
-    print('Resending OTP code');
-    // Clear existing OTP
-    for (var controller in otpControllers) {
-      controller.clear();
+  final isVerifying = false.obs;
+  final isResending = false.obs;
+
+  Future<void> resendCode() async {
+    print('Attempting to resend code...'); // Console log
+    if (email.value.isEmpty) {
+      print('Error: Email not found for resend');
+      Get.snackbar(
+        'Error', 
+        'Email not found. Please go back and try again.',
+        backgroundColor: Colors.black, // Toast black color
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(10),
+        borderRadius: 8,
+      );
+      return;
     }
-    // Focus first field
-    focusNodes[0].requestFocus();
+
+    isResending.value = true;
+    try {
+      final apiService = Get.find<ApiService>();
+      
+      final success = await apiService.requestPasswordReset(email.value);
+      
+      if (success) {
+        print('Verification code resent successfully'); // Console log
+        Get.snackbar(
+          'Success', 
+          'Verification code resent to your email',
+          backgroundColor: Colors.black, // Toast black color
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.all(10),
+          borderRadius: 8,
+        );
+        // Clear existing OTP
+        otpString = '';
+      } else {
+        print('Error: Failed to resend verification code');
+        Get.snackbar(
+          'Error', 
+          'Failed to resend verification code. Please try again.',
+          backgroundColor: Colors.black, // Toast black color
+          colorText: Colors.white,
+          snackPosition: SnackPosition.BOTTOM,
+          margin: const EdgeInsets.all(10),
+          borderRadius: 8,
+        );
+      }
+    } catch (e) {
+      print("Error in resendCode: $e");
+      Get.snackbar(
+        'Error', 
+        'An unexpected error occurred',
+        backgroundColor: Colors.black, // Toast black color
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(10),
+        borderRadius: 8,
+      );
+    } finally {
+      isResending.value = false;
+    }
   }
 
   @override
   void onClose() {
-    for (var controller in otpControllers) {
-      controller.dispose();
-    }
-    for (var focusNode in focusNodes) {
-      focusNode.dispose();
-    }
     super.onClose();
   }
 }

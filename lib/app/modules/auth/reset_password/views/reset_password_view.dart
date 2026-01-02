@@ -203,11 +203,12 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               SizedBox(height: 200.h),
 
               /// RESET PASSWORD BUTTON
-              AppButton(
-                text: "Reset Password",
+              /// RESET PASSWORD BUTTON
+              Obx(() => AppButton(
+                text: controller.isLoading.value ? "Resetting..." : "Reset Password",
                 textColor: Colors.white,
                 backgroundColor: const Color(0xFF060017),
-                onPressed: () {
+                onPressed: controller.isLoading.value ? () {} : () async {
                   setState(() {
                     final pwd = controller.newPasswordController.text;
                     final confirmPwd = controller.confirmPasswordController.text;
@@ -220,14 +221,19 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                       newPasswordError = 'Passwords do not match';
                     } else {
                       newPasswordError = null;
-                      // Call your controller method
-                      controller.resetPassword();
-                      // Show success dialog
-                      _showSuccessDialog();
                     }
                   });
+                  
+                  if (newPasswordError == null) {
+                      // Call your controller method
+                      bool success = await controller.resetPassword();
+                      if (success) {
+                        // Show success dialog
+                        _showSuccessDialog();
+                      }
+                  }
                 },
-              ),
+              )),
 
               SizedBox(height: 12.h),
 

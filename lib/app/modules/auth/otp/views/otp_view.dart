@@ -42,7 +42,7 @@ class OtpView extends GetView<OtpController> {
               SizedBox(height: 8.h),
 
               /// SUBTITLE
-              RichText(
+              Obx(() => RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
                   style: TextStyle(
@@ -55,7 +55,7 @@ class OtpView extends GetView<OtpController> {
                   children: [
                     const TextSpan(text: 'We have sent a code to '),
                     TextSpan(
-                      text: 'youremail123@gmail.com',
+                      text: controller.email.value.isNotEmpty ? controller.email.value : 'your email',
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: const Color(0xFF1C1C1E),
@@ -63,7 +63,7 @@ class OtpView extends GetView<OtpController> {
                     ),
                   ],
                 ),
-              ),
+              )),
 
               SizedBox(height: 40.h),
 
@@ -73,12 +73,12 @@ class OtpView extends GetView<OtpController> {
                 children: [
                   Center(
                     child: OtpTextField(
-                      numberOfFields: 4,
+                      numberOfFields: 6,
                       borderColor: Color(0xFF1C1C1E),
                       focusedBorderColor: Color(0xFF1C1C1E),
                       showFieldAsBox: true,
-                      fieldWidth: 76.w,
-                      fieldHeight: 48.h,
+                      fieldWidth: 45.w,
+                      fieldHeight: 52.h,
                       borderRadius: BorderRadius.circular(8.r),
                       textStyle: TextStyle(
                         color: Color(0xFF1C1C1E),
@@ -87,9 +87,11 @@ class OtpView extends GetView<OtpController> {
                         fontWeight: FontWeight.w600,
                       ),
                       cursorColor: Colors.black,
-                      onCodeChanged: (String code) {},
+                      onCodeChanged: (String code) {
+                        controller.setOtp(code);
+                      },
                       onSubmit: (String verificationCode) {
-                        controller.verifyOtp();
+                        controller.setOtp(verificationCode);
                       },
                     ),
                   ),
@@ -111,36 +113,36 @@ class OtpView extends GetView<OtpController> {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
+                  Obx(() => GestureDetector(
+                    onTap: controller.isResending.value ? null : () {
                       controller.resendCode();
                     },
                     child: Text(
-                      'Resend Code',
+                      controller.isResending.value ? 'Sending...' : 'Resend Code',
                       style: TextStyle(
-                        color: const Color(0xFF1C1C1E),
+                        color: controller.isResending.value ? Colors.grey : const Color(0xFF1C1C1E),
                         fontSize: 14.sp,
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w600,
                         decoration: TextDecoration.underline,
                       ),
                     ),
-                  ),
+                  )),
                 ],
               ),
 
               SizedBox(height: 20.h),
-
               /// VERIFY BUTTON
-              AppButton(
-                text: "Verify Now",
+              Obx(() => AppButton(
+                text: controller.isVerifying.value ? "Verifying..." : "Verify Now",
                 textColor: Colors.white,
                 backgroundColor: const Color(0xFF060017),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/reset-password');
-                  controller.verifyOtp();
-                },
-              ),
+                onPressed: controller.isVerifying.value
+                    ? () {}
+                    : () {
+                        controller.verifyOtp();
+                      },
+              )),
             ],
           ),
         ),

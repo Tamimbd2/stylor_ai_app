@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../../service/apiservice.dart';
 
 class ResetPasswordController extends GetxController {
   final newPasswordController = TextEditingController();
@@ -9,7 +10,20 @@ class ResetPasswordController extends GetxController {
   final isNewPasswordHidden = true.obs;
   final isConfirmPasswordHidden = true.obs;
 
-  void resetPassword() {
+  final isLoading = false.obs;
+  var email = ''.obs;
+  var otp = ''.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    if (Get.arguments != null && Get.arguments is Map) {
+      email.value = Get.arguments['email'] ?? '';
+      otp.value = Get.arguments['otp'] ?? '';
+    }
+  }
+
+  Future<bool> resetPassword() async { // Returns true on success
     String newPassword = newPasswordController.text;
     String confirmPassword = confirmPasswordController.text;
 
@@ -19,10 +33,12 @@ class ResetPasswordController extends GetxController {
         'Error',
         'Please fill all fields',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red.shade100,
-        colorText: Colors.red.shade900,
+        backgroundColor: Colors.black, // Black toast
+        colorText: Colors.white,
+        margin: const EdgeInsets.all(10),
+        borderRadius: 8,
       );
-      return;
+      return false;
     }
 
     if (newPassword.length < 8) {
@@ -30,10 +46,12 @@ class ResetPasswordController extends GetxController {
         'Error',
         'Password must be at least 8 characters',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red.shade100,
-        colorText: Colors.red.shade900,
+        backgroundColor: Colors.black, // Black toast
+        colorText: Colors.white,
+        margin: const EdgeInsets.all(10),
+        borderRadius: 8,
       );
-      return;
+      return false;
     }
 
     if (newPassword != confirmPassword) {
@@ -41,26 +59,65 @@ class ResetPasswordController extends GetxController {
         'Error',
         'Passwords do not match',
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red.shade100,
-        colorText: Colors.red.shade900,
+        backgroundColor: Colors.black, // Black toast
+        colorText: Colors.white,
+        margin: const EdgeInsets.all(10),
+        borderRadius: 8,
       );
-      return;
+      return false;
+    }
+    
+    if (email.value.isEmpty || otp.value.isEmpty) {
+       Get.snackbar(
+        'Error',
+        'Missing email or OTP information. Please restart process.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.black, // Black toast
+        colorText: Colors.white,
+        margin: const EdgeInsets.all(10),
+        borderRadius: 8,
+      );
+      return false;
     }
 
-    // Implement your password reset logic here
-    print('Resetting password: $newPassword');
+    isLoading.value = true;
+    try {
+      print('Resetting password for: ${email.value}');
+      final apiService = Get.find<ApiService>();
+      final success = await apiService.resetPassword(email.value, otp.value, newPassword);
 
-    // Show success message
-    Get.snackbar(
-      'Success',
-      'Password reset successfully',
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.green.shade100,
-      colorText: Colors.green.shade900,
-    );
+      if (success) {
+         // Show success message logic moved to view or here if just snackbar
+         // But user wants success dialog. Controller returns success status.
+         return true;
+      } else {
+         Get.snackbar(
+            'Error',
+            'Failed to reset password. Please try again.',
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.black, // Black toast
+            colorText: Colors.white,
+            margin: const EdgeInsets.all(10),
+            borderRadius: 8,
+          );
+          return false;
+      }
 
-    // Navigate to login or home screen
-    // Get.offAllNamed('/login');
+    } catch (e) {
+      print("Error resetPassword: $e");
+       Get.snackbar(
+          'Error',
+          'An unexpected error occurred',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.black, // Black toast
+          colorText: Colors.white,
+          margin: const EdgeInsets.all(10),
+          borderRadius: 8,
+        );
+        return false;
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   @override
