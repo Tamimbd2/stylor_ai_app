@@ -96,16 +96,21 @@ class _WeatherLocationCardState extends State<WeatherLocationCard> {
           ),
           SizedBox(width: 6.w),
           Expanded(
-            child: Text(
-              'Brussels, Belgium',
-              style: TextStyle(
-                color: AppColors.neutral700,
-                fontSize: 13.sp,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w400,
-                height: 1.4,
-              ),
-            ),
+            child: Obx(() {
+              final controller = Get.find<ShapeselectController>();
+              return Text(
+                controller.currentLocation.value,
+                style: TextStyle(
+                  color: AppColors.neutral700,
+                  fontSize: 13.sp,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w400,
+                  height: 1.4,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              );
+            }),
           ),
           Obx(
             () => GestureDetector(
