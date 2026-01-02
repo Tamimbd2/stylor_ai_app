@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import '../../../../service/apiservice.dart';
 
 class WardrobeController extends GetxController {
   //TODO: Implement WardrobeController
@@ -21,21 +22,40 @@ class WardrobeController extends GetxController {
     selectedFilter.value = filterLabel;
   }
 
-  void startAnalyzing(File capturedPhoto) {
+  Future<void> startAnalyzing(File capturedPhoto) async {
     analyzingImage.value = capturedPhoto;
     isAnalyzing.value = true;
     
-    // Simulate AI analysis for 3 seconds
-    Future.delayed(const Duration(seconds: 3), () {
+    try {
+      final apiService = Get.put(ApiService());
+      final response = await apiService.generateFlatLay(capturedPhoto);
+      
+      if (response != null && response['success'] == true && response['imageUrl'] != null) {
+         final imgData = response['imageUrl'];
+         final String remoteUrl = imgData['imageUrl'];
+         final String title = imgData['title'] ?? 'New Item';
+         
+         print('Generated Flat Lay URL: $remoteUrl');
+
+         // Add to wardrobe
+         wardrobeItems.insert(0, {
+            'image': remoteUrl,
+            'fit': BoxFit.cover,
+            'isAsset': false,
+            'title': title,
+            'originalImage': capturedPhoto.path  // Store the original captured photo path
+         });
+         Get.snackbar('Success', 'Item added to wardrobe!');
+      } else {
+         Get.snackbar('Error', 'Failed to analyze image');
+      }
+    } catch (e) {
+      print('Analysis error: $e');
+      Get.snackbar('Error', 'An error occurred during analysis: $e');
+    } finally {
       isAnalyzing.value = false;
-      // Add the new photo to wardrobe
-      wardrobeItems.insert(0, {
-        'image': capturedPhoto.path,
-        'fit': BoxFit.cover,
-        'isAsset': false,
-      });
       analyzingImage.value = null;
-    });
+    }
   }
 
   @override

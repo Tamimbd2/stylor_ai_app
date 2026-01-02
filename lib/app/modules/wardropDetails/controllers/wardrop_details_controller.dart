@@ -49,6 +49,28 @@ class WardropDetailsController extends GetxController {
   void onInit() {
     super.onInit();
     pageController = PageController(initialPage: selectedColorIndex.value);
+
+    // Initial setup from arguments if available
+    final args = Get.arguments as Map<String, dynamic>?;
+    if (args != null) {
+      colorVariants.clear();
+      
+      // Add the main image (likely generated flat lay or asset)
+      colorVariants.add({
+        'color': 0xFF000000, 
+        'image': args['image'] ?? '',
+        'isAsset': args['isAsset'] ?? true,
+      });
+
+      // If there is an original captured image, add it as the second option (swipe right)
+      if (args['originalImage'] != null) {
+        colorVariants.add({
+          'color': 0xFFCCCCCC,
+          'image': args['originalImage'],
+          'isAsset': false, // Captured photos are files
+        });
+      }
+    }
   }
 
   @override

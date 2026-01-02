@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/color.dart';
 import '../../takePhoto/views/take_photo_view.dart';
 import '../controllers/wardrobe_controller.dart';
+import '../../../widgets/fairy_effect_widget.dart';
 
 class WardrobeView extends GetView<WardrobeController> {
   WardrobeView({super.key});
@@ -113,17 +114,19 @@ class WardrobeView extends GetView<WardrobeController> {
                           child: Row(
                             children: [
                               // Photo Preview
-                              Container(
-                                width: 94.w,
-                                height: 94.h,
-                                decoration: BoxDecoration(
-                                  color: AppColors.neutral100,
-                                  borderRadius: BorderRadius.circular(8.r),
-                                ),
-                                clipBehavior: Clip.antiAlias,
-                                child: Image.file(
-                                  controller.analyzingImage.value!,
-                                  fit: BoxFit.cover,
+                              FairyEffectWidget(
+                                child: Container(
+                                  width: 94.w,
+                                  height: 94.h,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.neutral100,
+                                    borderRadius: BorderRadius.circular(8.r),
+                                  ),
+                                  clipBehavior: Clip.antiAlias,
+                                  child: Image.file(
+                                    controller.analyzingImage.value!,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                               SizedBox(width: 16.w),
@@ -319,23 +322,46 @@ class WardrobeView extends GetView<WardrobeController> {
                     fit: fit,
                     errorBuilder: (context, error, stackTrace) {
                       return Icon(
-                        Icons.image_outlined,
+                        Icons.broken_image,
                         size: 40.sp,
-                        color: AppColors.neutral100,
+                        color: AppColors.neutral300,
                       );
                     },
                   )
-                : Image.file(
-                    File(imagePath),
-                    fit: fit,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Icon(
-                        Icons.image_outlined,
-                        size: 40.sp,
-                        color: AppColors.neutral100,
-                      );
-                    },
-                  ),
+                : (imagePath.startsWith('http')
+                    ? Image.network(
+                        imagePath,
+                        fit: fit,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes != null
+                                  ? loadingProgress.cumulativeBytesLoaded /
+                                      loadingProgress.expectedTotalBytes!
+                                  : null,
+                            ),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.broken_image,
+                            size: 40.sp,
+                            color: AppColors.neutral300,
+                          );
+                        },
+                      )
+                    : Image.file(
+                        File(imagePath),
+                        fit: fit,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.broken_image,
+                            size: 40.sp,
+                            color: AppColors.neutral300,
+                          );
+                        },
+                      )),
           ),
         ),
       ),

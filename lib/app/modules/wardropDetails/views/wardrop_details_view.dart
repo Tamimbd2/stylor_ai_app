@@ -59,8 +59,8 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
 
                     /// 🔥 SWIPEABLE IMAGE
                     SizedBox(
-                      height: 157.h,
-                      width: 112.w,
+                      height: 170.h,
+                      width: 170.w,
                       child: PageView.builder(
                         controller: controller.pageController,
                         itemCount: controller.colorVariants.length,
@@ -72,13 +72,22 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
 
                           return isAsset
                               ? Image.asset(
-                            imagePath,
-                            fit: BoxFit.cover,
-                          )
-                              : Image.file(
-                            File(imagePath),
-                            fit: BoxFit.cover,
-                          );
+                                  imagePath,
+                                  fit: BoxFit.cover,
+                                )
+                              : (imagePath.startsWith('http')
+                                  ? Image.network(
+                                      imagePath,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder: (context, child, loadingProgress) {
+                                        if (loadingProgress == null) return child;
+                                        return Center(child: CircularProgressIndicator());
+                                      },
+                                    )
+                                  : Image.file(
+                                      File(imagePath),
+                                      fit: BoxFit.cover,
+                                    ));
                         },
                       ),
                     ),

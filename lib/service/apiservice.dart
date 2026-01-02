@@ -9,13 +9,13 @@ class ApiService extends GetConnect {
   void onInit() {
     // Select URL based on platform
     if (kIsWeb) {
-      baseUrl = 'http://localhost:3000';
+      baseUrl = 'https://api.stylorai.com';
     } else if (Platform.isAndroid) {
       // 10.0.2.2 is the special IP for Android Emulator to access host's localhost
-      baseUrl = 'http://10.0.2.2:3000'; 
+      baseUrl = 'https://api.stylorai.com';
     } else {
       // iOS, Windows, macOS
-      baseUrl = 'http://localhost:3000';
+      baseUrl = 'https://api.stylorai.com';
     }
     
     timeout = const Duration(seconds: 30);
@@ -248,6 +248,52 @@ class ApiService extends GetConnect {
       return Future.error(response.statusText ?? 'Generation Failed');
     } else {
       print('Generate Fashion Success: ${response.body}');
+      if (response.body is Map<String, dynamic>) {
+        return response.body; 
+      }
+      return null;
+    }
+  }
+
+  // Generate Flat Lay
+  Future<Map<String, dynamic>?> generateFlatLay(File file) async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      return Future.error('Not authenticated');
+    }
+
+    String fileName = file.path.split(Platform.pathSeparator).last;
+    String extension = fileName.split('.').last.toLowerCase();
+    String contentType = 'image/jpeg'; // default
+      
+    if (extension == 'png') {
+       contentType = 'image/png';
+    } else if (extension == 'webp') {
+       contentType = 'image/webp';
+    } else if (extension == 'gif') {
+       contentType = 'image/gif';
+    }
+
+    final form = FormData({
+      'file': MultipartFile(file, filename: fileName, contentType: contentType),
+    });
+
+    final response = await post(
+      '/fashion/generate-flat-lay',
+      form,
+      headers: {
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.status.hasError) {
+      print('Generate Flat Lay Error: ${response.statusCode} - ${response.statusText}');
+      print('Generate Flat Lay Body: ${response.body}');
+      return Future.error(response.statusText ?? 'Generation Failed');
+    } else {
+      print('Generate Flat Lay Success: ${response.body}');
       if (response.body is Map<String, dynamic>) {
         return response.body; 
       }
