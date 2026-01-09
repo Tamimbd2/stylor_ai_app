@@ -26,6 +26,7 @@ import '../modules/onboarding/bindings/onboarding_binding.dart';
 import '../modules/onboarding/views/onboarding_view.dart';
 import '../modules/output_outfit/bindings/output_outfit_binding.dart';
 import '../modules/output_outfit/views/output_outfit_view.dart';
+import '../modules/output_outfit/views/main_navigation_view.dart';
 import '../modules/personalize/bindings/personalize_binding.dart';
 import '../modules/personalize/views/personalize_view.dart';
 import '../modules/privacyPolicy/bindings/privacy_policy_binding.dart';
@@ -68,6 +69,12 @@ class AppPages {
       name: _Paths.ONBOARDING,
       page: () => const OnboardingView(),
       binding: OnboardingBinding(),
+    ),
+
+    // 🔥 Home (Main Navigation with Bottom Nav)
+    GetPage(
+      name: _Paths.HOME,
+      page: () => const MainNavigationView(),
     ),
 
     // 🔥 Auth Login

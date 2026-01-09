@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../onboarding/views/onboarding_view.dart'; // ← Add this import
+import '../controllers/splash_controller.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -36,11 +36,9 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
 
     // Start animation
     _animationController.forward();
-
-    // 🔥 3 sec delay then go to Onboarding screen
-    Future.delayed(const Duration(seconds: 3), () {
-      Get.off(() => const OnboardingView());
-    });
+    
+    // Initialize controller (navigation handled in controller)
+    Get.put(SplashController());
   }
 
   @override
@@ -64,3 +62,4 @@ class _SplashViewState extends State<SplashView> with TickerProviderStateMixin {
     );
   }
 }
+

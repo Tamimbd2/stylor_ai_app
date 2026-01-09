@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:outfit/service/apiservice.dart';
+import '../../../../controllers/user_controller.dart';
 
 class SignupController extends GetxController {
   final ApiService _apiService = Get.put(ApiService());
@@ -10,7 +11,17 @@ class SignupController extends GetxController {
     try {
       isLoading.value = true;
       final response = await _apiService.register(fullName, email, password);
-      return response != null;
+      
+      if (response != null && response.token != null && response.user != null) {
+        // Save to global user controller (now async)
+        await Get.find<UserController>().login(
+          response.token!, 
+          response.refreshToken ?? '', 
+          response.user!
+        );
+        return true;
+      }
+      return false;
     } catch (e) {
       Get.snackbar(
         'Registration Failed',

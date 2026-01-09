@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../../../core/color.dart';
 import '../../../../../widgets/primary_button.dart';
-import '../../../personalize/views/personalize_view.dart';
+import '../../../../routes/app_pages.dart';
 import '../controllers/auth_login_controller.dart';
 
 class AuthLoginView extends StatefulWidget {
@@ -197,12 +197,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                           if (mounted) {
                             setState(() => _isLoading = false);
                             if (success) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => PersonalizeView(),
-                                ),
-                              );
+                              Get.offAllNamed(Routes.HOME);
                             }
                           }
                         }
@@ -521,12 +516,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
       if (mounted) {
         setState(() => _isLoading = false);
         if (success) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PersonalizeView(),
-            ),
-          );
+          Get.offAllNamed(Routes.HOME);
         }
       }
       return;

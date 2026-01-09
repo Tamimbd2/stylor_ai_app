@@ -39,8 +39,8 @@ class AuthLoginController extends GetxController {
       final response = await _apiService.login(email, password);
       
       if(response != null && response.token != null && response.user != null){
-        // Save to global user controller
-        Get.find<UserController>().login(response.token!, response.refreshToken ?? '', response.user!);
+        // Save to global user controller (now async)
+        await Get.find<UserController>().login(response.token!, response.refreshToken ?? '', response.user!);
 
         if (rememberMe) {
           _storage.write('remember_me', true);
@@ -88,8 +88,8 @@ class AuthLoginController extends GetxController {
         print("Google ID Token: $idToken");
         final response = await _apiService.googleLogin(idToken);
         if (response != null && response.token != null && response.user != null) {
-          // Save to global user controller
-          Get.find<UserController>().login(response.token!, response.refreshToken ?? '', response.user!);
+          // Save to global user controller (now async)
+          await Get.find<UserController>().login(response.token!, response.refreshToken ?? '', response.user!);
           return true;
         }
       } else {
