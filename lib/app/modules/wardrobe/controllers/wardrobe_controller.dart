@@ -1,25 +1,126 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../service/apiservice.dart';
 
 class WardrobeController extends GetxController {
-  //TODO: Implement WardrobeController
-
-  final count = 0.obs;
+  final ApiService _apiService = Get.put(ApiService());
+  
   final selectedFilter = 'All'.obs;
   final isAnalyzing = false.obs;
+  final isLoading = false.obs;
   final analyzingImage = Rx<File?>(null);
-  final wardrobeItems = <Map<String, dynamic>>[
-    {'image': 'assets/image/clothes.png', 'fit': BoxFit.cover, 'isAsset': true},
-    {'image': 'assets/image/dress2.png', 'fit': BoxFit.cover, 'isAsset': true},
-    {'image': 'assets/image/shoe.png', 'fit': BoxFit.contain, 'isAsset': true},
-    {'image': 'assets/image/dreess1.png', 'fit': BoxFit.cover, 'isAsset': true},
-    {'image': 'assets/image/sunglass.png', 'fit': BoxFit.contain, 'isAsset': true},
-  ].obs;
+  final wardrobeItems = <Map<String, dynamic>>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchWardrobeItems();
+  }
 
   void selectFilter(String filterLabel) {
     selectedFilter.value = filterLabel;
+  }
+
+  // Get filtered items based on selected category
+  List<Map<String, dynamic>> get filteredItems {
+    if (selectedFilter.value == 'All') {
+      return wardrobeItems;
+    }
+    
+    return wardrobeItems.where((item) {
+      final category = item['category'] as String? ?? '';
+      return category.toLowerCase() == selectedFilter.value.toLowerCase();
+    }).toList();
+  }
+
+  // Detect category from title
+  String _detectCategory(String title) {
+    final titleLower = title.toLowerCase();
+    
+    // Top category keywords
+    if (titleLower.contains('shirt') || 
+        titleLower.contains('t-shirt') || 
+        titleLower.contains('tshirt') ||
+        titleLower.contains('blouse') || 
+        titleLower.contains('top') || 
+        titleLower.contains('jacket') || 
+        titleLower.contains('coat') ||
+        titleLower.contains('sweater') ||
+        titleLower.contains('hoodie') ||
+        titleLower.contains('dress')) {
+      return 'Top';
+    }
+    
+    // Bottom category keywords
+    if (titleLower.contains('pant') || 
+        titleLower.contains('trouser') || 
+        titleLower.contains('jeans') || 
+        titleLower.contains('short') || 
+        titleLower.contains('skirt') ||
+        titleLower.contains('underwear') ||
+        titleLower.contains('legging')) {
+      return 'bottoms';
+    }
+    
+    // Sunglass category keywords
+    if (titleLower.contains('sunglass') || 
+        titleLower.contains('glasses') || 
+        titleLower.contains('eyewear')) {
+      return 'Sunglass';
+    }
+    
+    // Bag category keywords
+    if (titleLower.contains('bag') || 
+        titleLower.contains('purse') || 
+        titleLower.contains('backpack') || 
+        titleLower.contains('handbag')) {
+      return 'Bag';
+    }
+    
+    // Default to Top if no match
+    return 'Top';
+  }
+
+  // Fetch wardrobe items from API
+  Future<void> fetchWardrobeItems() async {
+    try {
+      isLoading.value = true;
+      final items = await _apiService.getWardrobe();
+      
+      if (items != null) {
+        wardrobeItems.clear();
+        wardrobeItems.addAll(items.map((item) {
+          final title = item['title'] ?? 'Wardrobe Item';
+          return {
+            'id': item['id'],
+            'image': item['image_url'] ?? item['image_path'],
+            'title': title,
+            'category': _detectCategory(title),
+            'created_at': item['created_at'],
+            'fit': BoxFit.cover,
+            'isAsset': false,
+          };
+        }).toList());
+        print('Loaded ${wardrobeItems.length} wardrobe items');
+      }
+    } catch (e) {
+      print('Error fetching wardrobe items: $e');
+      Get.snackbar(
+        'Error',
+        'Failed to load wardrobe items',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // Refresh wardrobe items
+  Future<void> refreshWardrobe() async {
+    await fetchWardrobeItems();
   }
 
   Future<void> startAnalyzing(File capturedPhoto) async {
@@ -27,44 +128,42 @@ class WardrobeController extends GetxController {
     isAnalyzing.value = true;
     
     try {
-      final apiService = Get.put(ApiService());
-      final response = await apiService.generateFlatLay(capturedPhoto);
+      final response = await _apiService.generateFlatLay(capturedPhoto);
       
-      if (response != null && response['success'] == true && response['imageUrl'] != null) {
-         final imgData = response['imageUrl'];
-         final String remoteUrl = imgData['imageUrl'];
-         final String title = imgData['title'] ?? 'New Item';
+      if (response != null && response['success'] == true) {
+         print('Flat Lay Response: $response');
          
-         print('Generated Flat Lay URL: $remoteUrl');
-
-         // Add to wardrobe
-         wardrobeItems.insert(0, {
-            'image': remoteUrl,
-            'fit': BoxFit.cover,
-            'isAsset': false,
-            'title': title,
-            'originalImage': capturedPhoto.path  // Store the original captured photo path
-         });
-         Get.snackbar('Success', 'Item added to wardrobe!');
+         // Refresh wardrobe to get the newly added item
+         await fetchWardrobeItems();
+         
+         Get.snackbar(
+           'Success', 
+           'Item added to wardrobe!',
+           backgroundColor: Colors.black,
+           colorText: Colors.white,
+           snackPosition: SnackPosition.BOTTOM,
+         );
       } else {
-         Get.snackbar('Error', 'Failed to analyze image');
+         Get.snackbar(
+           'Error', 
+           'Failed to analyze image',
+           backgroundColor: Colors.red,
+           colorText: Colors.white,
+           snackPosition: SnackPosition.BOTTOM,
+         );
       }
     } catch (e) {
       print('Analysis error: $e');
-      Get.snackbar('Error', 'An error occurred during analysis: $e');
+      Get.snackbar(
+        'Error', 
+        'An error occurred during analysis',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
     } finally {
       isAnalyzing.value = false;
       analyzingImage.value = null;
     }
   }
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-
-
-
-  void increment() => count.value++;
 }

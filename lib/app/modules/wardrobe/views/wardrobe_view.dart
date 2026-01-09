@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import '../../../../core/color.dart';
 import '../../takePhoto/views/take_photo_view.dart';
 import '../controllers/wardrobe_controller.dart';
@@ -164,56 +165,96 @@ class WardrobeView extends GetView<WardrobeController> {
                         SizedBox(height: 24.h),
                         // Show existing items below
                         Expanded(
-                          child: GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  crossAxisSpacing: 16.w,
-                                  mainAxisSpacing: 16.h,
-                                  childAspectRatio: 119.0 / 126.0,
-                                ),
-                            itemCount: controller.wardrobeItems.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Get.toNamed(
-                                    '/wardrop-details',
-                                    arguments: controller.wardrobeItems[index],
-                                  );
-                                },
-                                child: _buildWardrobeItem(
-                                  controller.wardrobeItems[index],
-                                ),
-                              );
-                            },
-                          ),
+                          child: _buildItemsGrid(),
                         ),
                       ],
                     );
                   }
 
-                  // Show normal grid
-                  return GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 16.w,
-                      mainAxisSpacing: 16.h,
-                      childAspectRatio: 119.0 / 126.0,
-                    ),
-                    itemCount: controller.wardrobeItems.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Get.toNamed(
-                            '/wardrop-details',
-                            arguments: controller.wardrobeItems[index],
+                  // Show loading skeleton
+                  if (controller.isLoading.value) {
+                    return Skeletonizer(
+                      enabled: true,
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 16.w,
+                          mainAxisSpacing: 16.h,
+                          childAspectRatio: 119.0 / 126.0,
+                        ),
+                        itemCount: 9, // Show 9 skeleton items
+                        itemBuilder: (context, index) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.background,
+                              borderRadius: BorderRadius.circular(12.r),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0x0F101828),
+                                  blurRadius: 64,
+                                  offset: const Offset(0, 32),
+                                  spreadRadius: -12,
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12.r),
+                              child: Padding(
+                                padding: EdgeInsets.all(12.w),
+                                child: Center(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8.r),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           );
                         },
-                        child: _buildWardrobeItem(
-                          controller.wardrobeItems[index],
-                        ),
-                      );
-                    },
+                      ),
+                    );
+                  }
+
+                  // Show empty state
+                  if (controller.wardrobeItems.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.checkroom_outlined,
+                            size: 80.sp,
+                            color: AppColors.neutral300,
+                          ),
+                          SizedBox(height: 16.h),
+                          Text(
+                            'Your wardrobe is empty',
+                            style: TextStyle(
+                              color: AppColors.neutral900,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
+                          Text(
+                            'Add your first outfit to get started',
+                            style: TextStyle(
+                              color: AppColors.neutral700,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  // Show normal grid with pull-to-refresh
+                  return RefreshIndicator(
+                    onRefresh: controller.refreshWardrobe,
+                    color: AppColors.primaryDark,
+                    child: _buildItemsGrid(),
                   );
                 }),
               ),
@@ -293,6 +334,59 @@ class WardrobeView extends GetView<WardrobeController> {
     );
   }
 
+  Widget _buildItemsGrid() {
+    return Obx(() {
+      final items = controller.filteredItems;
+      
+      if (items.isEmpty && controller.selectedFilter.value != 'All') {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.filter_list_off,
+                size: 60.sp,
+                color: AppColors.neutral300,
+              ),
+              SizedBox(height: 16.h),
+              Text(
+                'No items in ${controller.selectedFilter.value}',
+                style: TextStyle(
+                  color: AppColors.neutral700,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+      
+      return GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 16.w,
+          mainAxisSpacing: 16.h,
+          childAspectRatio: 119.0 / 126.0,
+        ),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              Get.toNamed(
+                '/wardrop-details',
+                arguments: items[index],
+              );
+            },
+            child: _buildWardrobeItem(
+              items[index],
+            ),
+          );
+        },
+      );
+    });
+  }
+
   Widget _buildWardrobeItem(Map<String, dynamic> item) {
     final isAsset = item['isAsset'] as bool? ?? true;
     final imagePath = item['image'] as String;
@@ -300,7 +394,7 @@ class WardrobeView extends GetView<WardrobeController> {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.background,
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(
@@ -334,12 +428,13 @@ class WardrobeView extends GetView<WardrobeController> {
                         fit: fit,
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) return child;
-                          return Center(
-                            child: CircularProgressIndicator(
-                              value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded /
-                                      loadingProgress.expectedTotalBytes!
-                                  : null,
+                          return Skeletonizer(
+                            enabled: true,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
                             ),
                           );
                         },

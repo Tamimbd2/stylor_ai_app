@@ -59,7 +59,7 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
 
                     /// 🔥 SWIPEABLE IMAGE
                     SizedBox(
-                      height: 170.h,
+                      height: 170 .h,
                       width: 170.w,
                       child: PageView.builder(
                         controller: controller.pageController,

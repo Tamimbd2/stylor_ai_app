@@ -381,4 +381,47 @@ class ApiService extends GetConnect {
       return true;
     }
   }
+
+  // Get Wardrobe Items
+  Future<List<Map<String, dynamic>>?> getWardrobe() async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      return null;
+    }
+
+    final response = await get(
+      '/fashion/wardrobe',
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      },
+    );
+
+    if (response.status.hasError) {
+      print('Get Wardrobe Error: ${response.statusCode} - ${response.statusText}');
+      print('Get Wardrobe Body: ${response.body}');
+      return null;
+    } else {
+      print('Get Wardrobe Success: ${response.body}');
+      try {
+        if (response.body is Map && response.body['items'] != null) {
+          final items = response.body['items'] as List;
+          return items.map((item) {
+            // Fix image path to full URL
+            if (item['image_path'] != null && item['image_path'].startsWith('/')) {
+              item['image_url'] = '$baseUrl${item['image_path']}';
+            } else {
+              item['image_url'] = item['image_path'];
+            }
+            return item as Map<String, dynamic>;
+          }).toList();
+        }
+      } catch (e) {
+        print("Error parsing wardrobe items: $e");
+      }
+      return null;
+    }
+  }
 }
