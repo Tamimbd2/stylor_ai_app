@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../../core/color.dart';
 import '../../../routes/app_pages.dart';
 import '../../language/views/language_view.dart';
+import '../../language/controllers/language_controller.dart';
 import '../../privacyPolicy/views/privacy_policy_view.dart';
 import '../../termsAndConditions/views/terms_and_conditions_view.dart';
 import '../../ProfileDetails/views/profile_details_view.dart';
@@ -17,6 +18,9 @@ class ProfileView extends GetView<ProfileController> {
   
   // Get User Controller
   final UserController userController = Get.find<UserController>();
+  
+  // Get Language Controller
+  final LanguageController languageController = Get.put(LanguageController());
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +62,7 @@ class ProfileView extends GetView<ProfileController> {
                           height: 66.h,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
+                            color: AppColors.neutral100,
                             border: Border.all(color: Colors.white, width: 0),
                             boxShadow: [
                               BoxShadow(
@@ -74,28 +79,26 @@ class ProfileView extends GetView<ProfileController> {
                               ),
                             ],
                           ),
-                          child: ClipOval(
-                            child: Obx(() {
-                              final user = userController.user.value;
-                              if (user?.avatar != null && user!.avatar!.isNotEmpty) {
-                                return Image.network(
+                          child: Obx(() {
+                            final user = userController.user.value;
+                            
+                            // Show avatar if available
+                            if (user?.avatar != null && user!.avatar!.isNotEmpty) {
+                              return ClipOval(
+                                child: Image.network(
                                   user.avatar!,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
-                                     return Image.asset(
-                                      'assets/image/profilef.jpg',
-                                      fit: BoxFit.cover,
-                                    );
+                                    // On error, show gender icon
+                                    return _buildGenderIcon(user.gender);
                                   },
-                                );
-                              } else {
-                                return Image.asset(
-                                  'assets/image/profilef.jpg',
-                                  fit: BoxFit.cover,
-                                );
-                              }
-                            }),
-                          ),
+                                ),
+                              );
+                            } else {
+                              // No avatar, show gender-based icon
+                              return _buildGenderIcon(user?.gender);
+                            }
+                          }),
                         ),
                         SizedBox(width: 12.w),
                         // Name and Details
@@ -104,7 +107,7 @@ class ProfileView extends GetView<ProfileController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Obx(() => Text(
-                                userController.user.value?.name ?? 'Sara Ali Khan',
+                                userController.user.value?.name ?? 'User',
                                 style: TextStyle(
                                   color: AppColors.neutral900,
                                   fontSize: 16.sp,
@@ -193,15 +196,15 @@ class ProfileView extends GetView<ProfileController> {
                         },
                       ),
                       _buildDivider(),
-                      _buildSettingItem(
+                      Obx(() => _buildSettingItem(
                         icon: Icons.language,
                         title: 'language'.tr,
-                        trailingText: 'English', // You might want dynamic language name here too
+                        trailingText: languageController.currentLanguageName,
                         hasArrow: true,
                         onTap: () {
                           Get.toNamed(Routes.LANGUAGE);
                         },
-                      ),
+                      )),
                       _buildDivider(),
                       _buildSettingItem(
                         icon: Icons.description_outlined,
@@ -223,8 +226,7 @@ class ProfileView extends GetView<ProfileController> {
                         title: 'share_the_app'.tr,
                         hasArrow: true,
                         onTap: () {
-                          print('Share The app tapped');
-                          // Share app functionality
+                          controller.shareApp();
                         },
                       ),
                     ],
@@ -238,10 +240,12 @@ class ProfileView extends GetView<ProfileController> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12.r),
-                    border: Border.all(color: AppColors.neutral100, width: 1),
+                    border: Border.all(color: Colors.red, width: 1.5),
                   ),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      controller.logout();
+                    },
                     style: TextButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -251,10 +255,10 @@ class ProfileView extends GetView<ProfileController> {
                       'log_out'.tr,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: AppColors.primaryDark,
+                        color: Colors.red,
                         fontSize: 18.sp,
                         fontFamily: 'Helvetica Neue',
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w700,
                         height: 1.40,
                       ),
                     ),
@@ -335,6 +339,39 @@ class ProfileView extends GetView<ProfileController> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 12.w),
       child: Divider(height: 1, thickness: 1, color: AppColors.neutral100),
+    );
+  }
+
+  // Build gender-based icon when no avatar
+  Widget _buildGenderIcon(String? gender) {
+    IconData iconData;
+    Color iconColor = AppColors.neutral700;
+    
+    // Determine icon based on gender
+    if (gender?.toLowerCase() == 'male') {
+      iconData = Icons.person;
+      iconColor = Colors.blue[700]!;
+    } else if (gender?.toLowerCase() == 'female') {
+      iconData = Icons.person_outline;
+      iconColor = Colors.pink[400]!;
+    } else {
+      // Other or null
+      iconData = Icons.person_outline;
+      iconColor = AppColors.neutral600;
+    }
+    
+    return Container(
+      width: 66.w,
+      height: 66.h,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: AppColors.neutral100,
+      ),
+      child: Icon(
+        iconData,
+        size: 36.sp,
+        color: iconColor,
+      ),
     );
   }
 }

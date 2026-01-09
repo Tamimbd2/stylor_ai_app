@@ -30,6 +30,7 @@ dependencies:
   geocoding: ^4.0.0
   skeletonizer: ^2.1.2
   flutter_secure_storage: ^9.0.0
+  share_plus: ^7.2.2
 
 dev_dependencies:
   flutter_test:
