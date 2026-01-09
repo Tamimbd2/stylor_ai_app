@@ -18,7 +18,7 @@ class ApiService extends GetConnect {
       baseUrl = 'https://api.stylorai.com';
     }
     
-    timeout = const Duration(seconds: 30);
+    timeout = const Duration(seconds: 120); // Increased for AI generation
     super.onInit();
   }
 
@@ -226,31 +226,47 @@ class ApiService extends GetConnect {
     final token = userController.token.value;
 
     if (token.isEmpty) {
-      return Future.error('Not authenticated');
+      print('Generate Fashion Error: No token');
+      return null;
     }
 
-    final body = {
-      'option': option,
-      'temperature': temperature,
-    };
+    print('Generate Fashion Request: option=$option, temperature=$temperature');
 
-    final response = await post(
-      '/fashion/generate',
-      body,
-      headers: {
-        'Authorization': 'Bearer $token',
-      },
-    );
+    try {
+      final response = await post(
+        '/fashion/generate',
+        {
+          'option': option,
+          'temperature': temperature,
+        },
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      ).timeout(
+        const Duration(seconds: 200), // Increased timeout for AI generation
+        onTimeout: () {
+          print('Generate Fashion: Request timed out after 120 seconds');
+          return Response(
+            statusCode: 408,
+            statusText: 'Request Timeout',
+          );
+        },
+      );
 
-    if (response.status.hasError) {
-      print('Generate Fashion Error: ${response.statusCode} - ${response.statusText}');
-      print('Generate Fashion Body: ${response.body}');
-      return Future.error(response.statusText ?? 'Generation Failed');
-    } else {
-      print('Generate Fashion Success: ${response.body}');
-      if (response.body is Map<String, dynamic>) {
-        return response.body; 
+      if (response.status.hasError) {
+        print('Generate Fashion Error: ${response.statusCode} - ${response.statusText}');
+        print('Generate Fashion Body: ${response.body}');
+        return null;
+      } else {
+        print('Generate Fashion Success: ${response.body}');
+        if (response.body is Map<String, dynamic>) {
+          return response.body;
+        }
+        return null;
       }
+    } catch (e) {
+      print('Generate Fashion Exception: $e');
       return null;
     }
   }

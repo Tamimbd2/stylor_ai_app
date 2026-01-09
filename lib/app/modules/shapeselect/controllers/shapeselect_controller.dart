@@ -19,7 +19,7 @@ class ShapeselectController extends GetxController {
   void onInit() {
     super.onInit();
     getLocation(); // Fetch location on init
-    generateOutfit();
+    generateOutfit(); // Auto-generate on screen load
   }
   
   Future<void> getLocation() async {
@@ -98,34 +98,21 @@ class ShapeselectController extends GetxController {
       isLoading.value = true;
       generatedImages.clear(); 
 
-      // Create 5 future tasks
-      final displayFutures = List.generate(5, (_) => _apiService.generateFashion(
-        option: selectedStyle.value,
-        temperature: temperature.value,
-      ));
+      print('===== Generating Outfit =====');
+      print('Temperature: ${temperature.value}');
+      print('Style: ${selectedStyle.value}');
+      print('============================');
 
-      final results = await Future.wait(displayFutures);
-      
-      print('Full Response Count: ${results.length}');
-
-      for (var result in results) {
-         if (result != null) {
-          String? url;
-          if (result['generatedImage'] != null && result['generatedImage'] is Map) {
-             url = result['generatedImage']['url'];
-          } else if (result['imageUrl'] != null) {
-             url = result['imageUrl']; 
-          }
-
-          if (url != null) {
-            // Quick fix for localhost/emulator
-            if (url.startsWith('http://localhost') && GetPlatform.isAndroid) {
-              url = url.replaceFirst('http://localhost', 'http://10.0.2.2');
-            }
-            generatedImages.add(url);
-          }
-         }
+      // Generate 5 outfits but don't wait for all to complete
+      // Show each image as soon as it's ready
+      for (int i = 0; i < 5; i++) {
+        _generateSingleOutfit(temperature.value, i + 1);
       }
+
+      // Wait a bit to show loading state, then mark as not loading
+      // But images will continue to populate as they arrive
+      await Future.delayed(const Duration(milliseconds: 500));
+      isLoading.value = false;
 
     } catch (e) {
        print("Error generating outfit: $e");
@@ -136,8 +123,41 @@ class ShapeselectController extends GetxController {
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
-    } finally {
       isLoading.value = false;
+    }
+  }
+
+  // Helper method to generate a single outfit
+  Future<void> _generateSingleOutfit(double apiTemperature, int index) async {
+    try {
+      print('Starting generation $index...');
+      
+      final result = await _apiService.generateFashion(
+        option: selectedStyle.value,
+        temperature: apiTemperature,
+      );
+
+      if (result != null) {
+        String? url;
+        if (result['generatedImage'] != null && result['generatedImage'] is Map) {
+          url = result['generatedImage']['url'];
+        } else if (result['imageUrl'] != null) {
+          url = result['imageUrl']; 
+        }
+
+        if (url != null) {
+          // Quick fix for localhost/emulator
+          if (url.startsWith('http://localhost') && GetPlatform.isAndroid) {
+            url = url.replaceFirst('http://localhost', 'http://10.0.2.2');
+          }
+          
+          // Add instantly as it arrives
+          generatedImages.add(url);
+          print('✓ Image $index added instantly: ${generatedImages.length} total');
+        }
+      }
+    } catch (e) {
+      print('✗ Generation $index failed: $e');
     }
   }
 

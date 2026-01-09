@@ -3,6 +3,7 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:lottie/lottie.dart';
 import '../../modules/shapeselect/controllers/shapeselect_controller.dart';
 
 
@@ -54,19 +55,18 @@ class OutfitCardSectionState extends State<OutfitCardSection> {
           final generatedImages = controller.generatedImages;
           final isLoading = controller.isLoading.value;
 
-          if (isLoading) {
-            return const Center(
-                child: CircularProgressIndicator(color: Colors.black));
+          // Show loading card while generating or if empty
+          if (isLoading || generatedImages.isEmpty) {
+            return _buildLoadingCard();
           }
-          
-          if (generatedImages.isEmpty) {
-             return Center(child: Text("No outfits generated."));
-          }
+
+          // Show minimum of 3 or available images
+          final displayCount = generatedImages.length >= 3 ? 3 : generatedImages.length;
 
           return CardSwiper(
             controller: _controller,
             cardsCount: generatedImages.length,
-            numberOfCardsDisplayed: 3,
+            numberOfCardsDisplayed: displayCount,
             backCardOffset: const Offset(0, 20),
             padding: EdgeInsets.zero,
             onSwipe: _onSwipe,
@@ -135,5 +135,57 @@ class OutfitCardSectionState extends State<OutfitCardSection> {
 
   void swipeRight() {
     _controller.swipe(CardSwiperDirection.right);
+  }
+
+  // Loading card with Lottie animation
+  Widget _buildLoadingCard() {
+    return Container(
+      width: 335.w,
+      height: 375.h,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Lottie Animation
+          Lottie.asset(
+            'assets/lottie/Dress.json',
+            width: 200.w,
+            height: 200.h,
+            fit: BoxFit.contain,
+          ),
+          SizedBox(height: 24.h),
+          // Loading Text
+          Text(
+            'Outfit generating...',
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+              fontFamily: 'Helvetica Neue',
+            ),
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            'Creating your perfect look',
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w400,
+              color: Colors.grey[600],
+              fontFamily: 'Poppins',
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
