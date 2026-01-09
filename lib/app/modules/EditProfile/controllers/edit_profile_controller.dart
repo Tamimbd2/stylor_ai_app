@@ -10,58 +10,120 @@ class EditProfileController extends GetxController {
   final ApiService _apiService = Get.put(ApiService());
   final UserController _userController = Get.find<UserController>();
 
+  final isLoading = false.obs;
+
   @override
   void onInit() {
     super.onInit();
-    _loadUserProfile();
-    // Fetch latest data from API
-    _userController.fetchUser().then((_) {
-      _loadUserProfile(); // Reload if updated
-    });
+    // Fetch latest data from API first, then load profile
+    _fetchAndLoadProfile();
+  }
+
+  Future<void> _fetchAndLoadProfile() async {
+    try {
+      isLoading.value = true;
+      // Fetch latest user data from API
+      await _userController.fetchUser();
+      // Load profile after fetch completes
+      _loadUserProfile();
+    } catch (e) {
+      print('Error fetching user profile: $e');
+      // Still try to load from local storage
+      _loadUserProfile();
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   void _loadUserProfile() {
     final user = _userController.user.value;
-    if (user != null) {
-      if (user.birthdate != null) {
-        try {
-          // Assuming format yyyy-MM-dd from API/User model
-          selectedDate.value = DateTime.parse(user.birthdate!);
-        } catch (_) {}
-      }
-      if (user.gender != null) selectedGender.value = user.gender!;
-      if (user.country != null) selectedCountry.value = user.country!;
-      
-      final em = user.fashionPreferences;
-      if (em != null) {
-        if (em.season != null) {
-          if (em.season is List) {
-            selectedSeason.assignAll((em.season as List).map((e) => e.toString()).toList());
-          } else {
-            selectedSeason.assignAll([em.season.toString()]);
-          }
-        }
-        
-        if (em.style != null) {
-           if (em.style is List) {
-            selectedStyle.assignAll((em.style as List).map((e) => e.toString()).toList());
-          } else {
-            selectedStyle.assignAll([em.style.toString()]);
-          }
-        }
-        
-        if (em.preferencesColor != null) {
-           if (em.preferencesColor is List) {
-            selectedColor.assignAll((em.preferencesColor as List).map((e) => e.toString()).toList());
-          } else {
-            selectedColor.assignAll([em.preferencesColor.toString()]);
-          }
-        }
+    if (user == null) {
+      print('No user data found');
+      return;
+    }
 
-        if (em.bodyType != null) selectedBodyType.value = em.bodyType!;
-        if (em.skinTone != null) selectedSkinTone.value = em.skinTone!;
+    print('Loading user profile: ${user.name}');
+    
+    // Load birthdate
+    if (user.birthdate != null && user.birthdate!.isNotEmpty) {
+      try {
+        // Handle both formats: yyyy-MM-dd and ISO 8601
+        selectedDate.value = DateTime.parse(user.birthdate!);
+      } catch (e) {
+        print('Error parsing birthdate: $e');
+        selectedDate.value = DateTime(2000, 1, 1);
+      }
+    } else {
+      selectedDate.value = DateTime(2000, 1, 1);
+    }
+    
+    // Load gender
+    if (user.gender != null && user.gender!.isNotEmpty) {
+      selectedGender.value = user.gender!;
+    } else {
+      selectedGender.value = 'Male';
+    }
+    
+    // Load country with validation
+    if (user.country != null && user.country!.isNotEmpty) {
+      if (countries.contains(user.country!)) {
+        selectedCountry.value = user.country!;
+      } else {
+        print('Warning: User country "${user.country}" not in predefined list, defaulting to Belgium');
+        selectedCountry.value = 'Belgium';
+      }
+    } else {
+      selectedCountry.value = 'Belgium';
+    }
+    
+    // Load fashion preferences
+    final prefs = user.fashionPreferences;
+    if (prefs != null) {
+      // Load season (can be String or List)
+      if (prefs.season != null) {
+        selectedSeason.clear();
+        if (prefs.season is List) {
+          selectedSeason.addAll((prefs.season as List).map((e) => e.toString()));
+        } else {
+          selectedSeason.add(prefs.season.toString());
+        }
+      }
+      
+      // Load style (can be String or List)
+      if (prefs.style != null) {
+        selectedStyle.clear();
+        if (prefs.style is List) {
+          selectedStyle.addAll((prefs.style as List).map((e) => e.toString()));
+        } else {
+          selectedStyle.add(prefs.style.toString());
+        }
+      }
+      
+      // Load color preferences (can be String or List)
+      if (prefs.preferencesColor != null) {
+        selectedColor.clear();
+        if (prefs.preferencesColor is List) {
+          selectedColor.addAll((prefs.preferencesColor as List).map((e) => e.toString()));
+        } else {
+          selectedColor.add(prefs.preferencesColor.toString());
+        }
+      }
+
+      // Load body type
+      if (prefs.bodyType != null && prefs.bodyType!.isNotEmpty) {
+        selectedBodyType.value = prefs.bodyType!;
+      }
+      
+      // Load skin tone
+      if (prefs.skinTone != null && prefs.skinTone!.isNotEmpty) {
+        selectedSkinTone.value = prefs.skinTone!;
       }
     }
+    
+    print('Profile loaded successfully');
+    print('Season: ${selectedSeason.toList()}');
+    print('Style: ${selectedStyle.toList()}');
+    print('Color: ${selectedColor.toList()}');
   }
 
   // Profile Image
@@ -241,6 +303,13 @@ class EditProfileController extends GetxController {
         'skinTone': selectedSkinTone.value,
       };
 
+      print('===== Saving Profile =====');
+      print('Birthdate: $birthDateStr');
+      print('Gender: ${selectedGender.value}');
+      print('Country: ${selectedCountry.value}');
+      print('Fashion Preferences: $fashionPreferences');
+      print('=========================');
+
       final updatedUser = await _apiService.updateUserProfile(
         birthdate: birthDateStr,
         gender: selectedGender.value,
@@ -249,13 +318,17 @@ class EditProfileController extends GetxController {
       );
 
       if (updatedUser != null) {
-        _userController.updateUser(updatedUser);
+        await _userController.updateUser(updatedUser);
         Get.back();
         Get.snackbar('Success', 'Profile updated successfully!', 
           backgroundColor: Colors.black, colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
+      } else {
+        Get.snackbar('Error', 'No response from server', 
+          backgroundColor: Colors.red, colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
       }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to update profile', 
+      print('Error saving profile: $e');
+      Get.snackbar('Error', 'Failed to update profile: ${e.toString()}', 
         backgroundColor: Colors.red, colorText: Colors.white, snackPosition: SnackPosition.BOTTOM);
     } finally {
       isUploading.value = false;

@@ -91,9 +91,9 @@ class User {
 class FashionPreferences {
   int? id;
   int? userId;
-  String? season;
-  String? style;
-  String? preferencesColor;
+  dynamic season; // Can be String or List<String>
+  dynamic style; // Can be String or List<String>
+  dynamic preferencesColor; // Can be String or List<String>
   String? bodyType;
   String? skinTone;
   String? createdAt;
@@ -114,9 +114,9 @@ class FashionPreferences {
   FashionPreferences.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
-    season = json['season'];
-    style = json['style'];
-    preferencesColor = json['preferences_color']; // Snake_case in DB/Response
+    season = json['season']; // Keep as dynamic to handle both String and List
+    style = json['style']; // Keep as dynamic to handle both String and List
+    preferencesColor = json['preferences_color']; // Keep as dynamic
     bodyType = json['body_type'];
     skinTone = json['skin_tone'];
     createdAt = json['created_at'];

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 import '../../../../core/color.dart';
 import '../../../controllers/user_controller.dart';
@@ -19,8 +20,182 @@ class EditProfileView extends GetView<EditProfileController> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9F9),
-      body: SafeArea(
-        child: SingleChildScrollView(
+      body: Obx(() {
+        // Show skeleton while fetching
+        if (controller.isLoading.value) {
+          return SafeArea(
+            child: Skeletonizer(
+              enabled: true,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 24.h),
+                      
+                      /// Profile Card Skeleton
+                      Container(
+                        padding: EdgeInsets.all(16.w),
+                        decoration: _cardDecoration(),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 40.w,
+                              backgroundColor: Colors.grey[300],
+                            ),
+                            SizedBox(width: 16.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Bone.text(
+                                    words: 2,
+                                    fontSize: 20.sp,
+                                  ),
+                                  SizedBox(height: 8.h),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      SizedBox(height: 24.h),
+
+                      /// Birth Date Skeleton
+                      Bone.text(words: 2, fontSize: 16.sp),
+                      SizedBox(height: 8.h),
+                      Container(
+                        width: double.infinity,
+                        height: 48.h,
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: AppColors.neutral200),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Row(
+                          children: [
+                            Bone.icon(size: 20.sp),
+                            SizedBox(width: 12.w),
+                            Bone.text(words: 3),
+                          ],
+                        ),
+                      ),
+
+                      SizedBox(height: 20.h),
+
+                      /// Gender Skeleton
+                      Bone.text(words: 1, fontSize: 16.sp),
+                      SizedBox(height: 8.h),
+                      Row(
+                        children: List.generate(3, (index) {
+                          return Expanded(
+                            child: Container(
+                              height: 48.h,
+                              margin: EdgeInsets.only(right: index < 2 ? 12.w : 0),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: AppColors.neutral200),
+                                borderRadius: BorderRadius.circular(12.r),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Bone.icon(size: 20.w),
+                                  SizedBox(width: 8.w),
+                                  Bone.text(words: 1),
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
+                      ),
+
+                      SizedBox(height: 20.h),
+
+                      /// Country Skeleton
+                      Bone.text(words: 1, fontSize: 16.sp),
+                      SizedBox(height: 8.h),
+                      Container(
+                        width: double.infinity,
+                        height: 48.h,
+                        padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: AppColors.neutral200),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Row(
+                          children: [
+                            Bone.text(words: 1, fontSize: 20),
+                            SizedBox(width: 8.w),
+                            Bone.text(words: 2),
+                            Spacer(),
+                            Bone.icon(size: 20.sp),
+                          ],
+                        ),
+                      ),
+
+                      SizedBox(height: 20.h),
+
+                      /// Season/Style/Color Skeletons
+                      ...['Season', 'Style', 'Preferences Color', 'Body Type', 'Skin Tone'].map((label) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Bone.text(words: label.split(' ').length, fontSize: 16.sp),
+                            SizedBox(height: 8.h),
+                            Wrap(
+                              spacing: 12.w,
+                              runSpacing: 12.h,
+                              children: List.generate(
+                                label == 'Body Type' || label == 'Skin Tone' ? 5 : 4,
+                                (i) => Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.neutral100,
+                                    borderRadius: BorderRadius.circular(10.r),
+                                  ),
+                                  child: Bone.text(words: 1, fontSize: 14.sp),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 20.h),
+                          ],
+                        );
+                      }).toList(),
+
+                      SizedBox(height: 12.h),
+
+                      /// Save Button Skeleton
+                      Container(
+                        width: double.infinity,
+                        height: 56.h,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryDark,
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Center(
+                          child: Bone.text(
+                            words: 1,
+                            fontSize: 18.sp,
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: 32.h),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+        
+        return SafeArea(
+          child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Column(
@@ -271,7 +446,8 @@ class EditProfileView extends GetView<EditProfileController> {
             ),
           ),
         ),
-      ),
+      );
+      }),
     );
   }
 
@@ -371,6 +547,11 @@ class EditProfileView extends GetView<EditProfileController> {
   }
 
   Widget _buildCountryDropdown() {
+    // Ensure the selected country is in the list, otherwise use first country
+    final currentValue = controller.countries.contains(controller.selectedCountry.value)
+        ? controller.selectedCountry.value
+        : controller.countries.first;
+    
     return Container(
       width: double.infinity,
       height: 48.h,
@@ -382,7 +563,7 @@ class EditProfileView extends GetView<EditProfileController> {
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          value: controller.selectedCountry.value,
+          value: currentValue,
           isExpanded: true,
           icon: Icon(Icons.keyboard_arrow_down, color: AppColors.neutral700),
           items: controller.countries.map((String country) {
