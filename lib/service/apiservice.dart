@@ -19,6 +19,10 @@ class ApiService extends GetConnect {
     }
     
     timeout = const Duration(seconds: 120); // Increased for AI generation
+    
+    // Allow self-signed certificates for development
+    allowAutoSignedCert = true;
+    
     super.onInit();
   }
 
@@ -486,6 +490,101 @@ class ApiService extends GetConnect {
     } catch (e) {
       print('Search Products Exception: $e');
       return null;
+    }
+  }
+
+  // Add product to favorites
+  Future<Map<String, dynamic>?> addToFavorites({
+    required String productName,
+    required String productUrl,
+    required String imageUrl,
+    required String price,
+    required String searchQuery,
+  }) async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      print('Add to Favorites Error: No token');
+      return null;
+    }
+
+    final body = {
+      'product_name': productName,
+      'product_url': productUrl,
+      'image_url': imageUrl,
+      'price': price,
+      'search_query': searchQuery,
+    };
+
+    print('❤️ Adding to favorites: $productName');
+
+    try {
+      final response = await post(
+        '/fashion/favorite',
+        body,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.status.hasError) {
+        print('Add to Favorites Error: ${response.statusCode} - ${response.statusText}');
+        print('Add to Favorites Body: ${response.body}');
+        return null;
+      } else {
+        print('Add to Favorites Success: ${response.body}');
+        if (response.body is Map<String, dynamic>) {
+          return response.body;
+        }
+        return null;
+      }
+    } catch (e) {
+      print('Add to Favorites Exception: $e');
+      return null;
+    }
+  }
+
+  // Remove product from favorites
+  Future<bool> removeFromFavorites({
+    required String favoriteId,
+  }) async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      print('❌ Remove from Favorites: No token');
+      return false;
+    }
+
+    print('💔 Removing from favorites: ID $favoriteId');
+
+    try {
+      // Use request() with DELETE and empty body to satisfy Content-Type requirement
+      final response = await request(
+        '/fashion/favorite/$favoriteId',
+        'DELETE',
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+        body: {}, // Empty body to satisfy Content-Type: application/json
+      );
+
+      print('📡 Delete Response Status: ${response.statusCode}');
+      print('📡 Delete Response Body: ${response.body}');
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        print('✅ Successfully removed from favorites');
+        return true;
+      } else {
+        print('❌ Remove failed: ${response.statusCode}');
+        print('❌ Error body: ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      print('❌ Remove exception: $e');
+      return false;
     }
   }
 }

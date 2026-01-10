@@ -6,6 +6,7 @@ class ProductModel {
   final String? category;
   final String? imageUrl; // Network image URL from API
   final String? productUrl; // External product URL for "Buy Now"
+  final String? favoriteId; // Server favorite ID for deletion
 
   ProductModel({
     required this.id,
@@ -15,5 +16,6 @@ class ProductModel {
     this.category,
     this.imageUrl,
     this.productUrl,
+    this.favoriteId,
   });
 }

@@ -19,6 +19,9 @@ class OutputOutfitController extends GetxController {
 
   // Products from API
   final allProducts = <ProductModel>[].obs;
+  
+  // Map to store favorite IDs from server (index -> favoriteId)
+  final favoriteIds = <int, String>{}.obs;
 
   @override
   void onInit() {
@@ -196,11 +199,60 @@ class OutputOutfitController extends GetxController {
     isFeaturedOutfitFavorited.value = !isFeaturedOutfitFavorited.value;
   }
 
-  void toggleProductFavorite(int index) {
-    if (favoriteProducts.contains(index)) {
+  Future<void> toggleProductFavorite(int index) async {
+    // Check if already favorited
+    final isCurrentlyFavorited = favoriteProducts.contains(index);
+    
+    if (isCurrentlyFavorited) {
+      // Remove from favorites
       favoriteProducts.remove(index);
+      print('💔 Removed from favorites (index: $index)');
+      
+      // If we have a favorite ID, delete from server
+      if (favoriteIds.containsKey(index)) {
+        final favoriteId = favoriteIds[index]!;
+        final success = await _apiService.removeFromFavorites(favoriteId: favoriteId);
+        
+        if (success) {
+          favoriteIds.remove(index);
+        }
+      }
     } else {
+      // Add to favorites
       favoriteProducts.add(index);
+      
+      // Get product details
+      if (index < allProducts.length) {
+        final product = allProducts[index];
+        
+        print('❤️ Adding to favorites: ${product.name}');
+        
+        // Call API to save to backend
+        try {
+          final response = await _apiService.addToFavorites(
+            productName: product.name,
+            productUrl: product.productUrl ?? '',
+            imageUrl: product.imageUrl ?? '',
+            price: '\$${product.price.toStringAsFixed(2)}',
+            searchQuery: outfitQueries.value,
+          );
+          
+          if (response != null) {
+            print('✅ Successfully added to favorites on server');
+            
+            // Store favorite ID from response
+            if (response['favorite'] != null && response['favorite']['id'] != null) {
+              final favoriteId = response['favorite']['id'].toString();
+              favoriteIds[index] = favoriteId;
+              print('📝 Stored favorite ID: $favoriteId');
+            }
+          } else {
+            print('⚠️ Failed to add to favorites on server');
+          }
+        } catch (e) {
+          print('❌ Error adding to favorites: $e');
+        }
+      }
     }
   }
 
