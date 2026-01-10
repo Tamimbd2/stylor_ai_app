@@ -638,4 +638,94 @@ class ApiService extends GetConnect {
       return null;
     }
   }
+
+  // Add outfit to favorites
+  Future<Map<String, dynamic>?> addOutfitToFavorites({
+    required String imageUrl,
+    required String title,
+    required String description,
+    required List<Map<String, String>> products,
+  }) async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      print('❌ Add Outfit to Favorites: No token');
+      return null;
+    }
+
+    final body = {
+      'image_url': imageUrl,
+      'title': title,
+      'description': description,
+      'products': products,
+    };
+
+    print('❤️ Adding outfit to favorites: $title');
+
+    try {
+      final response = await post(
+        '/fashion/outfit/favorite',
+        body,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.status.hasError) {
+        print('❌ Add Outfit to Favorites Error: ${response.statusCode}');
+        print('   Body: ${response.body}');
+        return null;
+      } else {
+        print('✅ Add Outfit to Favorites Success: ${response.body}');
+        if (response.body is Map<String, dynamic>) {
+          return response.body;
+        }
+        return null;
+      }
+    } catch (e) {
+      print('❌ Add Outfit to Favorites Exception: $e');
+      return null;
+    }
+  }
+
+  // Remove outfit from favorites
+  Future<bool> removeOutfitFromFavorites({
+    required String outfitFavoriteId,
+  }) async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      print('❌ Remove Outfit from Favorites: No token');
+      return false;
+    }
+
+    print('💔 Removing outfit from favorites: ID $outfitFavoriteId');
+
+    try {
+      final response = await request(
+        '/fashion/outfit/favorite/$outfitFavoriteId',
+        'DELETE',
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+        body: {}, // Empty body to satisfy Content-Type requirement
+      );
+
+      print('📡 Delete Outfit Response Status: ${response.statusCode}');
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        print('✅ Successfully removed outfit from favorites');
+        return true;
+      } else {
+        print('❌ Remove outfit failed: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      print('❌ Remove outfit exception: $e');
+      return false;
+    }
+  }
 }

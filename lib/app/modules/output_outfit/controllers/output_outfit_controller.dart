@@ -22,6 +22,9 @@ class OutputOutfitController extends GetxController {
   
   // Map to store favorite IDs from server (index -> favoriteId)
   final favoriteIds = <int, String>{}.obs;
+  
+  // Store outfit favorite ID from server
+  final outfitFavoriteId = ''.obs;
 
   @override
   void onInit() {
@@ -195,8 +198,87 @@ class OutputOutfitController extends GetxController {
     return 'Top'; // Default
   }
 
-  void toggleFeaturedFavorite() {
+  void toggleFeaturedFavorite() async {
+    print('🔄 toggleFeaturedFavorite called');
+    print('   Current state: ${isFeaturedOutfitFavorited.value}');
+    print('   Outfit favorite ID: ${outfitFavoriteId.value}');
+    
     isFeaturedOutfitFavorited.value = !isFeaturedOutfitFavorited.value;
+    
+    print('   New state: ${isFeaturedOutfitFavorited.value}');
+    
+    if (isFeaturedOutfitFavorited.value) {
+      // Adding to favorites
+      print('➕ Adding outfit to favorites...');
+      try {
+        // Get products from the outfit data passed from ShapeselectView
+        final productsList = <Map<String, String>>[];
+        
+        // Parse queries to create products
+        if (outfitQueries.value.isNotEmpty) {
+          final queries = outfitQueries.value.split(',');
+          for (var query in queries) {
+            productsList.add({
+              'title': query.trim(),
+              'category': 'Item',
+            });
+          }
+        }
+        
+        final response = await _apiService.addOutfitToFavorites(
+          imageUrl: outfitImageUrl.value,
+          title: 'AI Generated Outfit',
+          description: outfitDescription.value,
+          products: productsList,
+        );
+        
+        if (response != null) {
+          print('✅ Outfit added to favorites on server');
+          print('   Response: $response');
+          
+          // Store outfit favorite ID from response
+          if (response['favoriteOutfit'] != null && response['favoriteOutfit']['id'] != null) {
+            outfitFavoriteId.value = response['favoriteOutfit']['id'].toString();
+            print('📝 Stored outfit favorite ID: ${outfitFavoriteId.value}');
+          } else if (response['favorite'] != null && response['favorite']['id'] != null) {
+            outfitFavoriteId.value = response['favorite']['id'].toString();
+            print('📝 Stored outfit favorite ID: ${outfitFavoriteId.value}');
+          } else if (response['id'] != null) {
+            outfitFavoriteId.value = response['id'].toString();
+            print('📝 Stored outfit favorite ID: ${outfitFavoriteId.value}');
+          } else {
+            print('⚠️ No ID found in response');
+          }
+        } else {
+          print('⚠️ Failed to add outfit to favorites on server');
+        }
+      } catch (e) {
+        print('❌ Error adding outfit to favorites: $e');
+      }
+    } else {
+      // Removing from favorites
+      print('➖ Removing outfit from favorites...');
+      print('   Outfit favorite ID: ${outfitFavoriteId.value}');
+      
+      if (outfitFavoriteId.value.isNotEmpty) {
+        try {
+          final success = await _apiService.removeOutfitFromFavorites(
+            outfitFavoriteId: outfitFavoriteId.value,
+          );
+          
+          if (success) {
+            print('✅ Cleared outfit favorite ID');
+            outfitFavoriteId.value = '';
+          } else {
+            print('⚠️ Delete failed, keeping ID');
+          }
+        } catch (e) {
+          print('❌ Error removing outfit from favorites: $e');
+        }
+      } else {
+        print('⚠️ No outfit favorite ID to delete');
+      }
+    }
   }
 
   Future<void> toggleProductFavorite(int index) async {
