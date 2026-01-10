@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import '../../../../service/apiservice.dart';
 import '../../../models/product_model.dart';
 import '../../cart/controllers/cart_controller.dart';
@@ -58,8 +59,53 @@ class FindSimilarView extends GetView<FindSimilarController> {
             // Content
             Expanded(
               child: Obx(() {
+                // Show skeleton while loading
                 if (controller.isLoading.value) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Skeletonizer(
+                    enabled: true,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 16.h),
+                          // Skeleton chips
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            child: Row(
+                              children: List.generate(
+                                5,
+                                (index) => Padding(
+                                  padding: EdgeInsets.only(right: 8.w),
+                                  child: Container(
+                                    height: 40.h,
+                                    width: 80.w,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10.r),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 16.h),
+                          // Skeleton product cards
+                          ...List.generate(
+                            3,
+                            (index) => Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+                              child: Container(
+                                height: 156.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16.r),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
                 }
 
                 if (controller.allProducts.isEmpty) {
@@ -169,17 +215,6 @@ class FindSimilarView extends GetView<FindSimilarController> {
                         ? Image.network(
                             product.imageUrl!,
                             fit: BoxFit.contain,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes != null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null,
-                                ),
-                              );
-                            },
                             errorBuilder: (context, error, stackTrace) {
                               return const Icon(
                                 Icons.image_not_supported,
