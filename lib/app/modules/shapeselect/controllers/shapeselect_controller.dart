@@ -10,16 +10,17 @@ class ShapeselectController extends GetxController {
   final isLoading = false.obs;
   final generatedImages = <String>[].obs;
   final selectedStyle = 'Casual'.obs; // Default option
-  final temperature = 0.8.obs; // Default temperature
+  final temperature = 30.5.obs; // Temperature from UI (in Celsius)
   final currentLocation = 'Loading...'.obs; // Observable location
 
   final showOutfitDetails = false.obs;
+  final isInitialGenerationDone = false.obs; // Track if first generation is done
 
   @override
   void onInit() {
     super.onInit();
     getLocation(); // Fetch location on init
-    generateOutfit(); // Auto-generate on screen load
+    // Don't auto-generate here, wait for UI to set temperature first
   }
   
   Future<void> getLocation() async {
@@ -90,7 +91,19 @@ class ShapeselectController extends GetxController {
 
   void updateTemperature(double temp) {
     temperature.value = temp;
-    generateOutfit();
+    
+    print('🌡️ ShapeselectController.updateTemperature: $temp');
+    
+    // If this is the first time temperature is being set, generate outfits
+    if (!isInitialGenerationDone.value) {
+      isInitialGenerationDone.value = true;
+      print('🎨 First time generation triggered');
+      generateOutfit();
+    } else {
+      // For subsequent updates, regenerate
+      print('🔄 Regenerating outfits');
+      generateOutfit();
+    }
   }
 
   Future<void> generateOutfit() async {
@@ -98,15 +111,17 @@ class ShapeselectController extends GetxController {
       isLoading.value = true;
       generatedImages.clear(); 
 
+      final tempValue = temperature.value;
+      
       print('===== Generating Outfit =====');
-      print('Temperature: ${temperature.value}');
+      print('Temperature (from UI): ${tempValue}°C');
       print('Style: ${selectedStyle.value}');
       print('============================');
 
       // Generate 5 outfits but don't wait for all to complete
       // Show each image as soon as it's ready
       for (int i = 0; i < 5; i++) {
-        _generateSingleOutfit(temperature.value, i + 1);
+        _generateSingleOutfit(tempValue, i + 1);
       }
 
       // Wait a bit to show loading state, then mark as not loading

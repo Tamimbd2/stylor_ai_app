@@ -15,11 +15,26 @@ class WeatherLocationCard extends StatefulWidget {
 class _WeatherLocationCardState extends State<WeatherLocationCard> {
   late TextEditingController _tempController;
   final RxBool _isEditing = false.obs;
+  double _currentTemp = 30.5; // Default temperature in Celsius
 
   @override
   void initState() {
     super.initState();
-    _tempController = TextEditingController(text: '30.5 °C (87°F)');
+    // Initialize with default temperature
+    _tempController = TextEditingController(text: '${_currentTemp} °C (${(_currentTemp * 9/5 + 32).toStringAsFixed(0)}°F)');
+    
+    print('🌡️ WeatherLocationCard initState: _currentTemp = $_currentTemp');
+    print('🌡️ WeatherLocationCard initState: _tempController.text = ${_tempController.text}');
+    
+    // Update controller with initial temperature after widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      try {
+        print('🌡️ Updating ShapeselectController with temperature: $_currentTemp');
+        Get.find<ShapeselectController>().updateTemperature(_currentTemp);
+      } catch (e) {
+        print('❌ Error updating initial temperature: $e');
+      }
+    });
   }
 
   @override
@@ -127,7 +142,10 @@ class _WeatherLocationCardState extends State<WeatherLocationCard> {
                   if (match != null) {
                      final val = double.tryParse(match.group(0)!);
                      if (val != null) {
+                       _currentTemp = val; // Update local temperature
                        Get.find<ShapeselectController>().updateTemperature(val);
+                       // Update text controller with formatted temperature
+                       _tempController.text = '${val} °C (${(val * 9/5 + 32).toStringAsFixed(0)}°F)';
                      }
                   }
 
