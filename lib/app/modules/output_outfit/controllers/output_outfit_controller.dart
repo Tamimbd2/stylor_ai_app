@@ -1,88 +1,196 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../models/product_model.dart';
+import '../../../../service/apiservice.dart';
 
 class OutputOutfitController extends GetxController {
-  //TODO: Implement OutputOutfitController
+  final ApiService _apiService = Get.put(ApiService());
 
-  final count = 0.obs;
+  // Selected outfit data
+  final outfitImageUrl = ''.obs;
+  final outfitDescription = ''.obs;
+  final outfitQueries = ''.obs; // Comma-separated queries
+
+  // UI state
   final selectedChip = 'All'.obs;
   final isFeaturedOutfitFavorited = false.obs;
   final favoriteProducts = <int>{}.obs;
-  
-  // All products list
-  final allProducts = <ProductModel>[
-    ProductModel(
-      id: '1',
-      name: 'ONLMADISON High waist Wide Leg Fit Jeans',
-      imagePath: 'assets/image/clothes.png',
-      price: 20.50,
-      category: 'bottoms',
-    ),
-    ProductModel(
-      id: '2',
-      name: 'Elegant Summer Dress',
-      imagePath: 'assets/image/dreess1.png',
-      price: 35.99,
-      category: 'Top',
-    ),
-    ProductModel(
-      id: '3',
-      name: 'Classic Black Shoes',
-      imagePath: 'assets/image/shoe.png',
-      price: 45.00,
-      category: 'Top',
-    ),
-    ProductModel(
-      id: '4',
-      name: 'Designer Party Dress',
-      imagePath: 'assets/image/dress2.png',
-      price: 55.50,
-      category: 'Top',
-    ),
-    ProductModel(
-      id: '5',
-      name: 'Stylish Sunglasses',
-      imagePath: 'assets/image/sunglass.png',
-      price: 25.00,
-      category: 'Sunglass',
-    ),
-  ].obs;
-  
+  final isLoading = false.obs;
+
+  // Products from API
+  final allProducts = <ProductModel>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    print('📦 OutputOutfitController.onInit() called');
+    
+    // Get arguments passed from previous screen
+    final args = Get.arguments;
+    
+    print('📦 Arguments type: ${args.runtimeType}');
+    print('📦 Arguments: $args');
+    
+    if (args != null && args is Map<String, dynamic>) {
+      outfitImageUrl.value = args['imageUrl'] ?? '';
+      outfitDescription.value = args['description'] ?? '';
+      outfitQueries.value = args['queries'] ?? '';
+
+      print('📦 OutputOutfit received:');
+      print('   Image: ${outfitImageUrl.value}');
+      print('   Description: ${outfitDescription.value}');
+      print('   Queries: ${outfitQueries.value}');
+
+      // Fetch products if queries are available
+      if (outfitQueries.value.isNotEmpty) {
+        print('✅ Queries found, calling searchProducts()');
+        searchProducts();
+      } else {
+        print('⚠️ No queries found, skipping search');
+      }
+    } else {
+      print('❌ No arguments received or invalid format');
+    }
+  }
+
   // Filtered products based on selected category
   List<ProductModel> get filteredProducts {
     if (selectedChip.value == 'All') {
       return allProducts;
     }
-    return allProducts.where((product) => product.category == selectedChip.value).toList();
+    return allProducts
+        .where((product) => product.category == selectedChip.value)
+        .toList();
   }
-  
-  // Card swipe functionality
-  final currentCardIndex = 0.obs;
-  final cardFavorites = <int>{}.obs;
-  
-  // Sample outfit cards data
-  final outfitCards = [
-    {
-      'image': 'assets/image/dress.png',
-      'description': 'This is really white shirt and black pant black show which show for this wither. it will match very good for this session'
-    },
-    {
-      'image': 'assets/image/clothes.png',
-      'description': 'Casual outfit perfect for a day out with friends. Comfortable and stylish.'
-    },
-    {
-      'image': 'assets/image/dreess1.png',
-      'description': 'Elegant evening wear that combines sophistication with modern style.'
-    },
-    {
-      'image': 'assets/image/dress2.png',
-      'description': 'Summer vibes with this light and breezy outfit. Perfect for warm weather.'
-    },
-    {
-      'image': 'assets/image/shoe.png',
-      'description': 'Professional attire suitable for office meetings and formal events.'
-    },
-  ];
+
+  // Search products from API
+  Future<void> searchProducts() async {
+    try {
+      isLoading.value = true;
+      allProducts.clear();
+
+      print('🔍 Searching products with queries: ${outfitQueries.value}');
+
+      final response = await _apiService.searchProducts(
+        queries: outfitQueries.value,
+        limit: 10,
+        offset: 0,
+      );
+
+      print('📡 API Response received: ${response != null}');
+      print('📡 Response keys: ${response?.keys}');
+      print('📡 Products key exists: ${response?['products'] != null}');
+
+      if (response != null && response['products'] != null) {
+        final productsList = response['products'] as List;
+
+        print('✅ Found ${productsList.length} products in response');
+
+        int successCount = 0;
+        for (var i = 0; i < productsList.length; i++) {
+          try {
+            final productData = productsList[i];
+            
+            // Parse product data with correct field names
+            final product = ProductModel(
+              id: productData['product_url']?.toString() ?? '', // Use URL as ID
+              name: productData['product_name'] ?? 'Product',
+              imagePath: '', // No local asset
+              price: _parsePrice(productData['price']),
+              category: _detectCategory(productData['product_name'] ?? ''),
+              imageUrl: productData['image_url'],
+              productUrl: productData['product_url'],
+            );
+
+            allProducts.add(product);
+            successCount++;
+            
+            if (i < 3) { // Log first 3 products
+              print('   Product $i: ${product.name} - ${product.category} - \$${product.price}');
+            }
+          } catch (e) {
+            print('   ❌ Error parsing product $i: $e');
+          }
+        }
+
+        print('📦 Successfully loaded $successCount/${productsList.length} products');
+        print('📦 Total products in controller: ${allProducts.length}');
+        print('📦 Categories: ${allProducts.map((p) => p.category).toSet()}');
+      } else {
+        print('⚠️ No products found in response');
+        print('⚠️ Response: $response');
+      }
+    } catch (e) {
+      print('❌ Error searching products: $e');
+      print('❌ Stack trace: ${StackTrace.current}');
+      Get.snackbar(
+        'Error',
+        'Failed to load products',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } finally {
+      isLoading.value = false;
+      print('🏁 Search completed. Loading: ${isLoading.value}');
+    }
+  }
+
+  // Helper to parse price
+  double _parsePrice(dynamic price) {
+    if (price == null) return 0.0;
+    if (price is num) return price.toDouble();
+    if (price is String) {
+      // Remove currency symbols and parse
+      final cleaned = price.replaceAll(RegExp(r'[^\d.]'), '');
+      return double.tryParse(cleaned) ?? 0.0;
+    }
+    return 0.0;
+  }
+
+  // Detect category from product name
+  String _detectCategory(String name) {
+    final nameLower = name.toLowerCase();
+
+    if (nameLower.contains('shirt') ||
+        nameLower.contains('t-shirt') ||
+        nameLower.contains('blouse') ||
+        nameLower.contains('top') ||
+        nameLower.contains('jacket') ||
+        nameLower.contains('coat') ||
+        nameLower.contains('sweater') ||
+        nameLower.contains('hoodie') ||
+        nameLower.contains('dress')) {
+      return 'Top';
+    }
+
+    if (nameLower.contains('pant') ||
+        nameLower.contains('trouser') ||
+        nameLower.contains('jeans') ||
+        nameLower.contains('short') ||
+        nameLower.contains('skirt')) {
+      return 'bottoms';
+    }
+
+    if (nameLower.contains('sunglass') ||
+        nameLower.contains('glasses') ||
+        nameLower.contains('eyewear')) {
+      return 'Sunglass';
+    }
+
+    if (nameLower.contains('bag') ||
+        nameLower.contains('purse') ||
+        nameLower.contains('backpack') ||
+        nameLower.contains('handbag')) {
+      return 'Bag';
+    }
+
+    if (nameLower.contains('watch') || nameLower.contains('clock')) {
+      return 'Watch';
+    }
+
+    return 'Top'; // Default
+  }
 
   void toggleFeaturedFavorite() {
     isFeaturedOutfitFavorited.value = !isFeaturedOutfitFavorited.value;
@@ -95,42 +203,8 @@ class OutputOutfitController extends GetxController {
       favoriteProducts.add(index);
     }
   }
-  
-  void toggleCardFavorite() {
-    if (cardFavorites.contains(currentCardIndex.value)) {
-      cardFavorites.remove(currentCardIndex.value);
-    } else {
-      cardFavorites.add(currentCardIndex.value);
-    }
-  }
-  
-  void nextCard() {
-    if (currentCardIndex.value < outfitCards.length - 1) {
-      currentCardIndex.value++;
-    } else {
-      // Loop back to first card
-      currentCardIndex.value = 0;
-    }
-  }
-  
-  void likeAndNextCard() {
-    if (!cardFavorites.contains(currentCardIndex.value)) {
-      cardFavorites.add(currentCardIndex.value);
-    }
-    nextCard();
-  }
-  
-  void dislikeAndNextCard() {
-    cardFavorites.remove(currentCardIndex.value);
-    nextCard();
-  }
 
   void selectChip(String chipLabel) {
     selectedChip.value = chipLabel;
   }
-
-
-
-
-  void increment() => count.value++;
 }

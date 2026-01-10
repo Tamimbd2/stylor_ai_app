@@ -440,4 +440,52 @@ class ApiService extends GetConnect {
       return null;
     }
   }
+
+  // Search Products
+  Future<Map<String, dynamic>?> searchProducts({
+    required String queries,
+    int limit = 5,
+    int offset = 0,
+  }) async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      print('Search Products Error: No token');
+      return null;
+    }
+
+    // URL encode the queries
+    final encodedQueries = Uri.encodeComponent(queries);
+    
+    // Build path with query parameters
+    final path = '/fashion/search?queries=$encodedQueries&limit=$limit&offset=$offset';
+    
+    print('🔍 Search Products Request: $baseUrl$path');
+
+    try {
+      final response = await get(
+        path,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.status.hasError) {
+        print('Search Products Error: ${response.statusCode} - ${response.statusText}');
+        print('Search Products Body: ${response.body}');
+        return null;
+      } else {
+        print('Search Products Success: ${response.body}');
+        if (response.body is Map<String, dynamic>) {
+          return response.body;
+        }
+        return null;
+      }
+    } catch (e) {
+      print('Search Products Exception: $e');
+      return null;
+    }
+  }
 }

@@ -9,6 +9,7 @@ class ShapeselectController extends GetxController {
   
   final isLoading = false.obs;
   final generatedImages = <String>[].obs;
+  final generatedOutfits = <Map<String, dynamic>>[].obs; // Store complete outfit data
   final selectedStyle = 'Casual'.obs; // Default option
   final temperature = 30.5.obs; // Temperature from UI (in Celsius)
   final currentLocation = 'Loading...'.obs; // Observable location
@@ -109,7 +110,8 @@ class ShapeselectController extends GetxController {
   Future<void> generateOutfit() async {
     try {
       isLoading.value = true;
-      generatedImages.clear(); 
+      generatedImages.clear();
+      generatedOutfits.clear(); // Clear previous outfit data
 
       final tempValue = temperature.value;
       
@@ -154,8 +156,17 @@ class ShapeselectController extends GetxController {
 
       if (result != null) {
         String? url;
+        String? title;
+        String? description;
+        List<dynamic>? products;
+
+        // Extract data from generatedImage object
         if (result['generatedImage'] != null && result['generatedImage'] is Map) {
-          url = result['generatedImage']['url'];
+          final generatedImage = result['generatedImage'] as Map<String, dynamic>;
+          url = generatedImage['url'];
+          title = generatedImage['title'];
+          description = generatedImage['description'];
+          products = generatedImage['products'] as List<dynamic>?;
         } else if (result['imageUrl'] != null) {
           url = result['imageUrl']; 
         }
@@ -166,9 +177,20 @@ class ShapeselectController extends GetxController {
             url = url.replaceFirst('http://localhost', 'http://10.0.2.2');
           }
           
-          // Add instantly as it arrives
+          // Add image to list
           generatedImages.add(url);
-          print('✓ Image $index added instantly: ${generatedImages.length} total');
+          
+          // Store complete outfit data
+          generatedOutfits.add({
+            'url': url,
+            'title': title ?? 'AI Generated Outfit',
+            'description': description ?? 'Perfect outfit for your style',
+            'products': products ?? [],
+          });
+          
+          print('✓ Image $index added: ${generatedImages.length} total');
+          print('  Title: $title');
+          print('  Products: ${products?.length ?? 0} items');
         }
       }
     } catch (e) {

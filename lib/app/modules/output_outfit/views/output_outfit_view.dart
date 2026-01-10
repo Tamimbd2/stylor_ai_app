@@ -61,124 +61,166 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                 // Featured Outfit Card
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 21.w),
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20.r),
-                      border: Border.all(color: const Color(0xFFF4F4F4)),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0x0F101828),
-                          blurRadius: 64,
-                          offset: Offset(0, 32),
-                          spreadRadius: -12,
-                        ),
-                      ],
-                    ),
-                    child: Stack(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(26.w),
-                          child: Column(
-                            children: [
-                              // Outfit Image
-                              Center(
-                                child: Image.asset(
-                                  'assets/image/dress.png',
-                                  width: 135.w,
-                                  height: 181.h,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              SizedBox(height: 24.h),
-                              const Divider(color: Color(0xFFF4F4F4)),
-                              SizedBox(height: 16.h),
-                              // Description
-                              Text(
-                                'This is really white shirt and black pant black show which show for this wither. it will match very good for this session  ',
-                                style: TextStyle(
-                                  color: const Color(0xFF49494B),
-                                  fontSize: 14.sp,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w400,
-                                  height: 1.43,
-                                ),
-                              ),
-                            ],
+                  child: Obx(() {
+                    final imageUrl = controller.outfitImageUrl.value;
+                    final description = controller.outfitDescription.value;
+
+                    return Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20.r),
+                        border: Border.all(color: const Color(0xFFF4F4F4)),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0x0F101828),
+                            blurRadius: 64,
+                            offset: Offset(0, 32),
+                            spreadRadius: -12,
                           ),
-                        ),
-                        // Heart Icon (top right)
-                        Positioned(
-                          right: 24.w,
-                          top: 24.h,
-                          child: Obx(
-                            () => GestureDetector(
-                              onTap: () => controller.toggleFeaturedFavorite(),
-                              child: Container(
-                                width: 56.w,
-                                height: 56.h,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: const Color(0xFFF4F4F4),
+                        ],
+                      ),
+                      child: Stack(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(26.w),
+                            child: Column(
+                              children: [
+                                // Outfit Image
+                                Center(
+                                  child: imageUrl.isNotEmpty
+                                      ? Image.network(
+                                          imageUrl,
+                                          width: 135.w,
+                                          height: 181.h,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (context, error, stackTrace) {
+                                            return Container(
+                                              width: 135.w,
+                                              height: 181.h,
+                                              color: Colors.grey[200],
+                                              child: Icon(
+                                                Icons.image_not_supported,
+                                                size: 40.sp,
+                                                color: Colors.grey[400],
+                                              ),
+                                            );
+                                          },
+                                          loadingBuilder: (context, child, loadingProgress) {
+                                            if (loadingProgress == null) return child;
+                                            return Container(
+                                              width: 135.w,
+                                              height: 181.h,
+                                              color: Colors.grey[200],
+                                              child: Center(
+                                                child: CircularProgressIndicator(
+                                                  value: loadingProgress.expectedTotalBytes != null
+                                                      ? loadingProgress.cumulativeBytesLoaded /
+                                                          loadingProgress.expectedTotalBytes!
+                                                      : null,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        )
+                                      : Image.asset(
+                                          'assets/image/dress.png',
+                                          width: 135.w,
+                                          height: 181.h,
+                                          fit: BoxFit.cover,
+                                        ),
+                                ),
+                                SizedBox(height: 24.h),
+                                const Divider(color: Color(0xFFF4F4F4)),
+                                SizedBox(height: 16.h),
+                                // Description
+                                Text(
+                                  description.isNotEmpty
+                                      ? description
+                                      : 'This is really white shirt and black pant black show which show for this wither. it will match very good for this session  ',
+                                  style: TextStyle(
+                                    color: const Color(0xFF49494B),
+                                    fontSize: 14.sp,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w400,
+                                    height: 1.43,
                                   ),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Color(0x0F101828),
-                                      blurRadius: 64,
-                                      offset: Offset(0, 32),
-                                      spreadRadius: -12,
-                                    ),
-                                  ],
-                                ),
-                                child: Icon(
-                                  controller.isFeaturedOutfitFavorited.value
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color:
-                                      controller.isFeaturedOutfitFavorited.value
-                                      ? Colors.red
-                                      : const Color(0xFF1C1C1E),
-                                  size: 24.sp,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        // Share Icon (middle right)
-                        Positioned(
-                          right: 24.w,
-                          top: 155.h,
-                          child: Container(
-                            width: 56.w,
-                            height: 56.h,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: const Color(0xFFF4F4F4),
-                              ),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color(0x0F101828),
-                                  blurRadius: 64,
-                                  offset: Offset(0, 32),
-                                  spreadRadius: -12,
                                 ),
                               ],
                             ),
-                            child: Icon(
-                              Icons.share_outlined,
-                              color: const Color(0xFF1C1C1E),
-                              size: 24.sp,
+                          ),
+                          // Heart Icon (top right)
+                          Positioned(
+                            right: 24.w,
+                            top: 24.h,
+                            child: Obx(
+                              () => GestureDetector(
+                                onTap: () => controller.toggleFeaturedFavorite(),
+                                child: Container(
+                                  width: 56.w,
+                                  height: 56.h,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: const Color(0xFFF4F4F4),
+                                    ),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Color(0x0F101828),
+                                        blurRadius: 64,
+                                        offset: Offset(0, 32),
+                                        spreadRadius: -12,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    controller.isFeaturedOutfitFavorited.value
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
+                                    color:
+                                        controller.isFeaturedOutfitFavorited.value
+                                        ? Colors.red
+                                        : const Color(0xFF1C1C1E),
+                                    size: 24.sp,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                          // Share Icon (middle right)
+                          Positioned(
+                            right: 24.w,
+                            top: 155.h,
+                            child: Container(
+                              width: 56.w,
+                              height: 56.h,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: const Color(0xFFF4F4F4),
+                                ),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color(0x0F101828),
+                                    blurRadius: 64,
+                                    offset: Offset(0, 32),
+                                    spreadRadius: -12,
+                                  ),
+                                ],
+                              ),
+                              child: Icon(
+                                Icons.share_outlined,
+                                color: const Color(0xFF1C1C1E),
+                                size: 24.sp,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
                 ),
 
                 SizedBox(height: 24.h),
@@ -335,7 +377,31 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
               child: Stack(
                 children: [
                   Center(
-                    child: Image.asset(product.imagePath, fit: BoxFit.contain),
+                    child: product.imageUrl != null && product.imageUrl!.isNotEmpty
+                        ? Image.network(
+                            product.imageUrl!,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) {
+                              // Fallback to asset if network fails
+                              return product.imagePath.isNotEmpty
+                                  ? Image.asset(product.imagePath, fit: BoxFit.contain)
+                                  : Icon(Icons.image_not_supported, size: 40.sp, color: Colors.grey);
+                            },
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            },
+                          )
+                        : product.imagePath.isNotEmpty
+                            ? Image.asset(product.imagePath, fit: BoxFit.contain)
+                            : Icon(Icons.image, size: 40.sp, color: Colors.grey),
                   ),
                   Positioned(
                     left: 12.w,
@@ -405,13 +471,23 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                         GestureDetector(
                           onTap: () async {
                             // Open product URL in browser
-                            final Uri url = Uri.parse(
-                              'https://www.example.com/product',
-                            );
+                            final productUrl = product.productUrl ?? 'https://www.example.com/product';
+                            final Uri url = Uri.parse(productUrl);
+                            
+                            print('🛒 Opening product URL: $productUrl');
+                            
                             if (await canLaunchUrl(url)) {
                               await launchUrl(
                                 url,
                                 mode: LaunchMode.externalApplication,
+                              );
+                            } else {
+                              Get.snackbar(
+                                'Error',
+                                'Could not open product link',
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
+                                snackPosition: SnackPosition.BOTTOM,
                               );
                             }
                           },

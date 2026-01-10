@@ -73,10 +73,43 @@ class OutfitCardSectionState extends State<OutfitCardSection> {
             onUndo: _onUndo,
             cardBuilder: (context, index, percentX, percentY) {
               final networkImage = generatedImages[index];
+              final outfitData = controller.generatedOutfits.length > index 
+                  ? controller.generatedOutfits[index] 
+                  : null;
+
+              // Generate queries from products
+              String queries = '';
+              if (outfitData != null && outfitData['products'] != null) {
+                final products = outfitData['products'] as List<dynamic>;
+                queries = products
+                    .map((p) => p['title'] ?? '')
+                    .where((title) => title.isNotEmpty)
+                    .join(',');
+              }
+
+              // Fallback if no queries
+              if (queries.isEmpty) {
+                queries = 'Minimalist Watch,White T-Shirt,Chino Shorts';
+              }
 
               return GestureDetector(
                 behavior: HitTestBehavior.opaque, // 🔑 full card clickable
-                onTap: () => Get.toNamed('/output-outfit'),
+                onTap: () {
+                  print('🎯 Navigating to outfit details:');
+                  print('   URL: $networkImage');
+                  print('   Title: ${outfitData?['title']}');
+                  print('   Queries: $queries');
+                  
+                  // Navigate with outfit data
+                  Get.toNamed(
+                    '/output-outfit',
+                    arguments: {
+                      'imageUrl': networkImage,
+                      'description': outfitData?['description'] ?? 'AI-generated outfit perfect for your style and weather',
+                      'queries': queries,
+                    },
+                  );
+                },
                 child: Stack(
                   children: [
                     OutfitCard(
@@ -89,10 +122,28 @@ class OutfitCardSectionState extends State<OutfitCardSection> {
                       right: 12.w,
                       bottom: 12.h,
                       child: GestureDetector(
-                        onTap: () => Get.toNamed('/output-outfit'),
+                        onTap: () {
+                          Get.toNamed(
+                            '/output-outfit',
+                            arguments: {
+                              'imageUrl': networkImage,
+                              'description': outfitData?['description'] ?? 'AI-generated outfit perfect for your style and weather',
+                              'queries': queries,
+                            },
+                          );
+                        },
                         child: CircleIconButton(
                           iconPath: 'assets/icons/arrow.png',
-                          onTap: () => Get.toNamed('/output-outfit'),
+                          onTap: () {
+                            Get.toNamed(
+                              '/output-outfit',
+                              arguments: {
+                                'imageUrl': networkImage,
+                                'description': outfitData?['description'] ?? 'AI-generated outfit perfect for your style and weather',
+                                'queries': queries,
+                              },
+                            );
+                          },
                         ),
                       ),
                     ),
