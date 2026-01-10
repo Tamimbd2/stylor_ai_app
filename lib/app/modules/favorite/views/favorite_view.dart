@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../models/product_model.dart';
 import '../../cart/controllers/cart_controller.dart';
+import '../../find_similar/views/find_similar.dart';
+import '../../find_similar/controllers/find_similar_controller.dart';
 import '../controllers/favorite_controller.dart';
 
 class FavoriteView extends GetView<FavoriteController> {
@@ -539,25 +541,53 @@ class FavoriteView extends GetView<FavoriteController> {
                       maxLines: 4,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Container(
-                      height: 36.h,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 28.w,
-                        vertical: 5.h,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF060017),
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Find Similar',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.sp,
-                            fontFamily: 'Helvetica Neue',
-                            fontWeight: FontWeight.w400,
-                            height: 1.50,
+                    GestureDetector(
+                      onTap: () {
+                        print('🔍 Find Similar button tapped!');
+                        
+                        // Convert products to comma-separated queries
+                        final productTitles = <String>[];
+                        for (var p in outfit.products) {
+                          final title = p['title'] ?? '';
+                          if (title.isNotEmpty) {
+                            productTitles.add(title);
+                          }
+                        }
+                        final queries = productTitles.join(',');
+
+                        print('   Queries: $queries');
+
+                        // Initialize controller and set data
+                        final controller = Get.put(FindSimilarController());
+                        controller.setOutfitData(
+                          imageUrl: outfit.imageUrl,
+                          description: outfit.description,
+                          queries: queries,
+                        );
+
+                        // Navigate to Find Similar screen
+                        Get.to(const FindSimilarView());
+                      },
+                      child: Container(
+                        height: 36.h,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 28.w,
+                          vertical: 5.h,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF060017),
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Find Similar',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.sp,
+                              fontFamily: 'Helvetica Neue',
+                              fontWeight: FontWeight.w400,
+                              height: 1.50,
+                            ),
                           ),
                         ),
                       ),

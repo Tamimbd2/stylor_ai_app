@@ -26,6 +26,7 @@ abstract class Routes {
   static const FORGOT_PASSWORD = _Paths.FORGOT_PASSWORD;
   static const OTP = _Paths.OTP;
   static const RESET_PASSWORD = _Paths.RESET_PASSWORD;
+  static const FIND_SIMILER = _Paths.FIND_SIMILER;
 }
 
 abstract class _Paths {
@@ -53,4 +54,5 @@ abstract class _Paths {
   static const FORGOT_PASSWORD = '/forgot-password';
   static const OTP = '/otp';
   static const RESET_PASSWORD = '/reset-password';
+  static const FIND_SIMILER = '/find-similar';
 }

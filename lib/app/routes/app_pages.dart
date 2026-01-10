@@ -20,6 +20,8 @@ import '../modules/favorite/bindings/favorite_binding.dart';
 import '../modules/favorite/views/favorite_view.dart';
 import '../modules/filterScreen/bindings/filter_screen_binding.dart';
 import '../modules/filterScreen/views/filter_screen_view.dart';
+import '../modules/find_similar/bindings/find_similar_binding.dart';
+import '../modules/find_similar/views/find_similar.dart';
 import '../modules/language/bindings/language_binding.dart';
 import '../modules/language/views/language_view.dart';
 import '../modules/onboarding/bindings/onboarding_binding.dart';
@@ -184,6 +186,11 @@ class AppPages {
       name: _Paths.RESET_PASSWORD,
       page: () =>  ResetPasswordView(),
       binding: ResetPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.FIND_SIMILER,
+      page: () =>  FindSimilarView(),
+      binding: FindSimilarBinding(),
     ),
   ];
 }
