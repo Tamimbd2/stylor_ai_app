@@ -812,4 +812,94 @@ class ApiService extends GetConnect {
       return false;
     }
   }
+
+  // Get favorite products
+  Future<List<Map<String, dynamic>>> getFavoriteProducts() async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      print('❌ Get Favorite Products: No token');
+      return [];
+    }
+
+    print('❤️ Fetching favorite products...');
+
+    try {
+      final response = await get(
+        '/fashion/favorites',
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.status.hasError) {
+        print('❌ Get Favorite Products Error: ${response.statusCode}');
+        print('   Body: ${response.body}');
+        return [];
+      } else {
+        print('✅ Get Favorite Products Success');
+        
+        // Response is directly an array
+        if (response.body is List) {
+          print('📦 Found ${response.body.length} favorite products');
+          return (response.body as List).cast<Map<String, dynamic>>();
+        } else if (response.body is Map<String, dynamic> && response.body['favorites'] != null) {
+          final favorites = response.body['favorites'] as List;
+          print('📦 Found ${favorites.length} favorite products');
+          return favorites.cast<Map<String, dynamic>>();
+        }
+        
+        return [];
+      }
+    } catch (e) {
+      print('❌ Get Favorite Products Exception: $e');
+      return [];
+    }
+  }
+
+  // Get favorite outfits
+  Future<List<Map<String, dynamic>>> getFavoriteOutfits() async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      print('❌ Get Favorite Outfits: No token');
+      return [];
+    }
+
+    print('👗 Fetching favorite outfits...');
+
+    try {
+      final response = await get(
+        '/fashion/outfit/favorites',
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.status.hasError) {
+        print('❌ Get Favorite Outfits Error: ${response.statusCode}');
+        print('   Body: ${response.body}');
+        return [];
+      } else {
+        print('✅ Get Favorite Outfits Success');
+        
+        // Response is directly an array
+        if (response.body is List) {
+          print('📦 Found ${response.body.length} favorite outfits');
+          return (response.body as List).cast<Map<String, dynamic>>();
+        } else if (response.body is Map<String, dynamic> && response.body['outfits'] != null) {
+          final outfits = response.body['outfits'] as List;
+          print('📦 Found ${outfits.length} favorite outfits');
+          return outfits.cast<Map<String, dynamic>>();
+        }
+        
+        return [];
+      }
+    } catch (e) {
+      print('❌ Get Favorite Outfits Exception: $e');
+      return [];
+    }
+  }
 }

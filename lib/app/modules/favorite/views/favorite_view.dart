@@ -194,13 +194,45 @@ class FavoriteView extends GetView<FavoriteController> {
   }
 
   Widget _buildOutfitList() {
-    return Column(
-      children: [
-        _buildOutfitCard('assets/image/dress.png'),
-        _buildOutfitCard('assets/image/manDress.png'),
-        _buildOutfitCard('assets/image/dress.png'),
-      ],
-    );
+    return Obx(() {
+      if (controller.favoriteOutfits.isEmpty) {
+        return Padding(
+          padding: EdgeInsets.symmetric(vertical: 80.h),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.checkroom_outlined, size: 80.sp, color: Colors.grey[300]),
+              SizedBox(height: 16.h),
+              Text(
+                'No favorite outfits yet',
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 18.sp,
+                  fontFamily: 'Helvetica Neue',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: 8.h),
+              Text(
+                'Start adding outfits to your favorites',
+                style: TextStyle(
+                  color: Colors.grey[500],
+                  fontSize: 14.sp,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+
+      return Column(
+        children: controller.favoriteOutfits
+            .map((outfit) => _buildOutfitCard(outfit))
+            .toList(),
+      );
+    });
   }
 
   Widget _buildFavoriteCard(ProductModel product) {
@@ -236,7 +268,34 @@ class FavoriteView extends GetView<FavoriteController> {
               child: Stack(
                 children: [
                   Center(
-                    child: Image.asset(product.imagePath, fit: BoxFit.contain),
+                    child: product.imageUrl != null && product.imageUrl!.isNotEmpty
+                        ? Image.network(
+                            product.imageUrl!,
+                            fit: BoxFit.contain,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(
+                                Icons.image_not_supported,
+                                size: 50,
+                                color: Colors.grey,
+                              );
+                            },
+                          )
+                        : const Icon(
+                            Icons.image,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
                   ),
                   Positioned(
                     left: 12.w,
@@ -296,13 +355,21 @@ class FavoriteView extends GetView<FavoriteController> {
                       children: [
                         GestureDetector(
                           onTap: () async {
-                            final Uri url = Uri.parse(
-                              'https://www.example.com/product',
-                            );
+                            final productUrl = product.productUrl ?? 'https://www.example.com/product';
+                            final Uri url = Uri.parse(productUrl);
+                            
+                            print('❤️ Opening favorite product URL: $productUrl');
+                            
                             if (await canLaunchUrl(url)) {
                               await launchUrl(
                                 url,
                                 mode: LaunchMode.externalApplication,
+                              );
+                            } else {
+                              Get.snackbar(
+                                'Error',
+                                'Could not open product link',
+                                snackPosition: SnackPosition.BOTTOM,
                               );
                             }
                           },
@@ -359,7 +426,7 @@ class FavoriteView extends GetView<FavoriteController> {
     );
   }
 
-  Widget _buildOutfitCard(String imagePath) {
+  Widget _buildOutfitCard(outfit) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: Container(
@@ -392,27 +459,54 @@ class FavoriteView extends GetView<FavoriteController> {
               child: Stack(
                 children: [
                   Center(
-                    child: Image.asset(
-                      imagePath,
-                      width: 62.w,
-                      height: 83.h,
-                      fit: BoxFit.cover,
-                    ),
+                    child: outfit.imageUrl.isNotEmpty
+                        ? Image.network(
+                            outfit.imageUrl,
+                            width: 62.w,
+                            height: 83.h,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(
+                                Icons.image_not_supported,
+                                size: 50,
+                                color: Colors.grey,
+                              );
+                            },
+                          )
+                        : const Icon(
+                            Icons.checkroom,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
                   ),
                   Positioned(
                     left: 12.w,
                     top: 12.h,
-                    child: Container(
-                      width: 20.w,
-                      height: 20.h,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.favorite,
-                        size: 14.sp,
-                        color: Colors.red,
+                    child: GestureDetector(
+                      onTap: () => controller.removeOutfitFromFavorites(outfit),
+                      child: Container(
+                        width: 20.w,
+                        height: 20.h,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.favorite,
+                          size: 14.sp,
+                          color: Colors.red,
+                        ),
                       ),
                     ),
                   ),
@@ -434,7 +528,7 @@ class FavoriteView extends GetView<FavoriteController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'This is really white shirt and black pant black show which show for this wither. it will match very good ....',
+                      outfit.description,
                       style: TextStyle(
                         color: const Color(0xFF1C1C1E),
                         fontSize: 14.sp,
