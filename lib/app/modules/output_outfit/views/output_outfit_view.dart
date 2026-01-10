@@ -520,10 +520,7 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                         SizedBox(width: 8.w),
                         GestureDetector(
                           onTap: () async {
-                            // Add to cart - both local and API
-                            cartController.addToCart(product);
-                            
-                            // Call API
+                            // Call API first
                             try {
                               final apiService = Get.find<ApiService>();
                               final response = await apiService.addToCart(
@@ -535,6 +532,17 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                               
                               if (response != null) {
                                 print('✅ Added to cart on server');
+                                
+                                // Refresh cart to get items with correct IDs from server
+                                await cartController.fetchCartItems();
+                                
+                                // Show snackbar
+                                Get.snackbar(
+                                  'Added to Cart',
+                                  product.name,
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  duration: const Duration(seconds: 2),
+                                );
                               }
                             } catch (e) {
                               print('❌ Failed to add to cart on server: $e');

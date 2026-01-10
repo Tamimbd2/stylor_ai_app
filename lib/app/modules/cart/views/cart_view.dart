@@ -131,7 +131,34 @@ class CartView extends GetView<CartController> {
               child: Stack(
                 children: [
                   Center(
-                    child: Image.asset(product.imagePath, fit: BoxFit.contain),
+                    child: product.imageUrl != null && product.imageUrl!.isNotEmpty
+                        ? Image.network(
+                            product.imageUrl!,
+                            fit: BoxFit.contain,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(
+                                Icons.image_not_supported,
+                                size: 50,
+                                color: Colors.grey,
+                              );
+                            },
+                          )
+                        : const Icon(
+                            Icons.image,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
                   ),
                   // Delete button
                   Positioned(
@@ -191,13 +218,21 @@ class CartView extends GetView<CartController> {
                     GestureDetector(
                       onTap: () async {
                         // Open product URL in browser
-                        final Uri url = Uri.parse(
-                          'https://www.example.com/product',
-                        );
+                        final productUrl = product.productUrl ?? 'https://www.example.com/product';
+                        final Uri url = Uri.parse(productUrl);
+                        
+                        print('🛒 Opening cart product URL: $productUrl');
+                        
                         if (await canLaunchUrl(url)) {
                           await launchUrl(
                             url,
                             mode: LaunchMode.externalApplication,
+                          );
+                        } else {
+                          Get.snackbar(
+                            'Error',
+                            'Could not open product link',
+                            snackPosition: SnackPosition.BOTTOM,
                           );
                         }
                       },

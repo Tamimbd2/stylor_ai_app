@@ -728,4 +728,88 @@ class ApiService extends GetConnect {
       return false;
     }
   }
+
+  // Get cart items
+  Future<List<Map<String, dynamic>>> getCartItems() async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      print('❌ Get Cart Items: No token');
+      return [];
+    }
+
+    print('🛒 Fetching cart items...');
+
+    try {
+      final response = await get(
+        '/cart',
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.status.hasError) {
+        print('❌ Get Cart Items Error: ${response.statusCode}');
+        print('   Body: ${response.body}');
+        return [];
+      } else {
+        print('✅ Get Cart Items Success');
+        
+        // Response is directly an array
+        if (response.body is List) {
+          print('📦 Found ${response.body.length} items in cart');
+          return (response.body as List).cast<Map<String, dynamic>>();
+        } else if (response.body is Map<String, dynamic> && response.body['items'] != null) {
+          final items = response.body['items'] as List;
+          print('📦 Found ${items.length} items in cart');
+          return items.cast<Map<String, dynamic>>();
+        }
+        
+        return [];
+      }
+    } catch (e) {
+      print('❌ Get Cart Items Exception: $e');
+      return [];
+    }
+  }
+
+  // Remove item from cart
+  Future<bool> removeFromCart({
+    required String cartItemId,
+  }) async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      print('❌ Remove from Cart: No token');
+      return false;
+    }
+
+    print('🗑️ Removing from cart: ID $cartItemId');
+
+    try {
+      final response = await request(
+        '/cart/$cartItemId',
+        'DELETE',
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+        body: {}, // Empty body to satisfy Content-Type requirement
+      );
+
+      print('📡 Delete Cart Response Status: ${response.statusCode}');
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        print('✅ Successfully removed from cart');
+        return true;
+      } else {
+        print('❌ Remove from cart failed: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      print('❌ Remove from cart exception: $e');
+      return false;
+    }
+  }
 }

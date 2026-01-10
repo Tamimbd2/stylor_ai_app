@@ -174,7 +174,13 @@ class OutputOutfitController extends GetxController {
         nameLower.contains('trouser') ||
         nameLower.contains('jeans') ||
         nameLower.contains('short') ||
-        nameLower.contains('skirt')) {
+        nameLower.contains('skirt') ||
+        nameLower.contains('shoe') ||
+        nameLower.contains('sneaker') ||
+        nameLower.contains('boot') ||
+        nameLower.contains('sandal') ||
+        nameLower.contains('footwear') ||
+        nameLower.contains('loafer')) {
       return 'bottoms';
     }
 
