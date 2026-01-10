@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../service/apiservice.dart';
 import '../../../models/product_model.dart';
+
 import '../../cart/controllers/cart_controller.dart';
 import '../../favorite/controllers/favorite_controller.dart';
 import '../controllers/output_outfit_controller.dart';
@@ -517,9 +519,26 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                         ),
                         SizedBox(width: 8.w),
                         GestureDetector(
-                          onTap: () {
-                            // Add to cart
+                          onTap: () async {
+                            // Add to cart - both local and API
                             cartController.addToCart(product);
+                            
+                            // Call API
+                            try {
+                              final apiService = Get.find<ApiService>();
+                              final response = await apiService.addToCart(
+                                title: product.name,
+                                price: '\$${product.price.toStringAsFixed(2)}',
+                                buyNowUrl: product.productUrl ?? '',
+                                imageUrl: product.imageUrl ?? '',
+                              );
+                              
+                              if (response != null) {
+                                print('✅ Added to cart on server');
+                              }
+                            } catch (e) {
+                              print('❌ Failed to add to cart on server: $e');
+                            }
                           },
                           child: Container(
                             width: 36.w,

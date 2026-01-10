@@ -587,4 +587,55 @@ class ApiService extends GetConnect {
       return false;
     }
   }
+
+  // Add product to cart
+  Future<Map<String, dynamic>?> addToCart({
+    required String title,
+    required String price,
+    required String buyNowUrl,
+    required String imageUrl,
+  }) async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      print('❌ Add to Cart: No token');
+      return null;
+    }
+
+    final body = {
+      'title': title,
+      'price': price,
+      'buy_now_url': buyNowUrl,
+      'image_url': imageUrl,
+    };
+
+    print('🛒 Adding to cart: $title');
+
+    try {
+      final response = await post(
+        '/cart',
+        body,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.status.hasError) {
+        print('❌ Add to Cart Error: ${response.statusCode}');
+        print('   Body: ${response.body}');
+        return null;
+      } else {
+        print('✅ Add to Cart Success: ${response.body}');
+        if (response.body is Map<String, dynamic>) {
+          return response.body;
+        }
+        return null;
+      }
+    } catch (e) {
+      print('❌ Add to Cart Exception: $e');
+      return null;
+    }
+  }
 }
