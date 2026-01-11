@@ -356,7 +356,7 @@ class _SignupViewState extends State<SignupView> {
                           height: 22.w,
                         ),
                         label: 'Google',
-                        onTap: () => () {},
+                        onTap: () => controller.handleGoogleSignUp(),
                       ),
                       SizedBox(width: 16.w),
                       _buildSocialButton(

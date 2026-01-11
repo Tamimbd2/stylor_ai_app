@@ -70,17 +70,20 @@ class FindSimilarView extends GetView<FindSimilarController> {
                           // Skeleton chips
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            child: Row(
-                              children: List.generate(
-                                5,
-                                (index) => Padding(
-                                  padding: EdgeInsets.only(right: 8.w),
-                                  child: Container(
-                                    height: 40.h,
-                                    width: 80.w,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10.r),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: List.generate(
+                                  5,
+                                  (index) => Padding(
+                                    padding: EdgeInsets.only(right: 8.w),
+                                    child: Container(
+                                      height: 40.h,
+                                      width: 80.w,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10.r),
+                                      ),
                                     ),
                                   ),
                                 ),

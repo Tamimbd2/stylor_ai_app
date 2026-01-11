@@ -16,6 +16,23 @@ class ProfileDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+      appBar: AppBar(
+        backgroundColor: AppColors.background,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 20.sp),
+          onPressed: () => Get.back(),
+        ),
+        title: Text(
+          'Profile',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 20.w),

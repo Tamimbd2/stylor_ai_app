@@ -464,12 +464,13 @@ class FavoriteView extends GetView<FavoriteController> {
               ),
               child: Stack(
                 children: [
-                  Center(
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10.r),
                     child: outfit.imageUrl.isNotEmpty
                         ? Image.network(
                             outfit.imageUrl,
-                            width: 62.w,
-                            height: 83.h,
+                            width: double.infinity,
+                            height: double.infinity,
                             fit: BoxFit.cover,
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) return child;
@@ -490,10 +491,12 @@ class FavoriteView extends GetView<FavoriteController> {
                               );
                             },
                           )
-                        : const Icon(
-                            Icons.checkroom,
-                            size: 50,
-                            color: Colors.grey,
+                        : const Center(
+                            child: Icon(
+                              Icons.checkroom,
+                              size: 50,
+                              color: Colors.grey,
+                            ),
                           ),
                   ),
                   Positioned(

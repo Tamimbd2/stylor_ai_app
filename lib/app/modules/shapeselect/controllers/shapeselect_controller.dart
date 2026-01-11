@@ -97,14 +97,15 @@ class ShapeselectController extends GetxController {
     print('🌡️ ShapeselectController.updateTemperature: $temp');
     
     // If this is the first time temperature is being set, generate outfits
+    // If this is the first time temperature is being set, generate outfits
     if (!isInitialGenerationDone.value) {
       isInitialGenerationDone.value = true;
       print('🎨 First time generation triggered');
       generateOutfit();
     } else {
-      // For subsequent updates, regenerate
-      print('🔄 Regenerating outfits');
-      generateOutfit();
+      // For subsequent updates, DO NOT regenerate automatically
+      // This prevents regeneration when switching tabs or clicking Home again
+      print('ℹ️ Temperature updated to $temp, skipping auto-regeneration.');
     }
   }
 

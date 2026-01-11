@@ -43,36 +43,42 @@ class _ShapeselectViewState extends State<ShapeselectView> {
         child: Obx(
           () => controller.showOutfitDetails.value
               ? OutputOutfitView()
-              : SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const HeaderSection(),
-                      // SizedBox(height: 8.h),
-                      OutfitCardSection(
-                        key: _cardSectionKey,
-                        onDetailsPressed: () =>
-                            controller.toggleOutfitDetails(),
+              : Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            const HeaderSection(),
+                            // SizedBox(height: 8.h),
+                            OutfitCardSection(
+                              key: _cardSectionKey,
+                              onDetailsPressed: () =>
+                                  controller.toggleOutfitDetails(),
+                            ),
+                            SizedBox(height: 0.h),
+                            ActionButtonsSection(
+                              onCancel: () =>
+                                  _cardSectionKey.currentState?.swipeLeft(),
+                              onLike: () {
+                                final currentIndex = _cardSectionKey.currentState?.currentIndex ?? 0;
+                                controller.addCurrentOutfitToFavorites(currentIndex);
+                                _cardSectionKey.currentState?.swipeRight();
+                              },
+                            ),
+                            SizedBox(height: 0.h),
+                          ],
+                        ),
                       ),
-                      SizedBox(height: 0.h),
-                      ActionButtonsSection(
-                        onCancel: () =>
-                            _cardSectionKey.currentState?.swipeLeft(),
-                        onLike: () {
-                          final currentIndex = _cardSectionKey.currentState?.currentIndex ?? 0;
-                          controller.addCurrentOutfitToFavorites(currentIndex);
-                          _cardSectionKey.currentState?.swipeRight();
-                        },
-                      ),
-                      SizedBox(height: 0.h),
-                      StyleSelectorSection(
-                        selectedStyle: _selectedStyle,
-                        onStyleChanged: (style) {
-                          setState(() => _selectedStyle = style);
-                        },
-                      ),
-                      SizedBox(height: 24.h),
-                    ],
-                  ),
+                    ),
+                    StyleSelectorSection(
+                      selectedStyle: _selectedStyle,
+                      onStyleChanged: (style) {
+                        setState(() => _selectedStyle = style);
+                      },
+                    ),
+                    SizedBox(height: 4.h),
+                  ],
                 ),
         ),
       ),

@@ -22,9 +22,19 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, size: 20.sp),
+          icon: Icon(Icons.close, size: 24.sp, color: Colors.black),
           onPressed: () => Get.back(),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.delete_outline, size: 24.sp, color: Colors.black),
+            onPressed: () {
+              // controller.deleteItem();
+              print("Delete tapped");
+            },
+          ),
+          SizedBox(width: 12.w),
+        ],
         title: Text(
           'Details',
           style: TextStyle(
@@ -177,8 +187,8 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
                                       'Top';
                       return Container(
                         padding: EdgeInsets.symmetric(
-                          horizontal: 36.w,
-                          vertical: 5.h,
+                          horizontal: 16.w,
+                          vertical: 6.h,
                         ),
                         decoration: BoxDecoration(
                           color: const Color(0xFFE8E8E8),

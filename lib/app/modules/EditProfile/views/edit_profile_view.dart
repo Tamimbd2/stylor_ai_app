@@ -20,6 +20,23 @@ class EditProfileView extends GetView<EditProfileController> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9F9),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFF9F9F9),
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 20.sp),
+          onPressed: () => Get.back(),
+        ),
+        title: Text(
+          'Edit Profile',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: Obx(() {
         // Show skeleton while fetching
         if (controller.isLoading.value) {
