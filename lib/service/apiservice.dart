@@ -40,16 +40,35 @@ class ApiService extends GetConnect {
   }
 
   Future<LoginResponse?> login(String email, String password) async {
+    print('🔵 Login Request: email=$email');
+    
     final response = await post('/auth/login', {
       'email': email,
       'password': password,
     });
 
     if (response.status.hasError) {
-      print('API Error: ${response.statusCode} - ${response.statusText}');
-      print('API Body: ${response.body}');
-      return Future.error(response.statusText ?? 'Unknown Error');
+      print('❌ Login API Error: ${response.statusCode} - ${response.statusText}');
+      print('❌ Login API Body: ${response.body}');
+      
+      // Extract error message from response body
+      String errorMessage = 'Login failed';
+      if (response.body != null) {
+        if (response.body is Map) {
+          // Try to get error message from various possible fields
+          errorMessage = response.body['message'] ?? 
+                        response.body['error'] ?? 
+                        response.body['msg'] ?? 
+                        response.statusText ?? 
+                        'Login failed';
+        } else if (response.body is String) {
+          errorMessage = response.body;
+        }
+      }
+      
+      return Future.error(errorMessage);
     } else {
+      print('✅ Login Success: ${response.body}');
       final loginResponse = LoginResponse.fromJson(response.body);
       if (loginResponse.user != null) {
         _fixUserAvatar(loginResponse.user!);
@@ -60,22 +79,63 @@ class ApiService extends GetConnect {
 
   // Register
   Future<LoginResponse?> register(String fullName, String email, String password) async {
+    print('🔵 Register Request: fullName=$fullName, email=$email');
+    
     final response = await post('/auth/register', {
-      'fullName': fullName,
       'email': email,
       'password': password,
+      'fullName': fullName,
     });
 
     if (response.status.hasError) {
-      print('API Error: ${response.statusCode} - ${response.statusText}');
-      print('API Body: ${response.body}');
-      return Future.error(response.statusText ?? 'Unknown Error');
-    } else {
-      final loginResponse = LoginResponse.fromJson(response.body);
-      if (loginResponse.user != null) {
-        _fixUserAvatar(loginResponse.user!);
+      print('❌ Register API Error: ${response.statusCode} - ${response.statusText}');
+      print('❌ Register API Body: ${response.body}');
+      
+      // Extract error message from response body
+      String errorMessage = 'Registration failed';
+      if (response.body != null) {
+        if (response.body is Map) {
+          // Try to get error message from various possible fields
+          errorMessage = response.body['message'] ?? 
+                        response.body['error'] ?? 
+                        response.body['msg'] ?? 
+                        response.statusText ?? 
+                        'Registration failed';
+        } else if (response.body is String) {
+          errorMessage = response.body;
+        }
       }
-      return loginResponse;
+      
+      return Future.error(errorMessage);
+    } else {
+      print('✅ Register Success: ${response.body}');
+      
+      // Check if response has token (normal case)
+      if (response.body['token'] != null) {
+        final loginResponse = LoginResponse.fromJson(response.body);
+        if (loginResponse.user != null) {
+          _fixUserAvatar(loginResponse.user!);
+        }
+        return loginResponse;
+      } 
+      // Handle case where API returns success and user but no token
+      else if (response.body['success'] == true && response.body['user'] != null) {
+        print('⚠️ No token in register response, creating LoginResponse with user data');
+        
+        // Create a LoginResponse with user but no token
+        // The signup controller will need to handle this case
+        final user = User.fromJson(response.body['user']);
+        _fixUserAvatar(user);
+        
+        return LoginResponse(
+          token: null, // No token from register
+          refreshToken: null,
+          user: user,
+        );
+      }
+      
+      // If neither token nor success+user, return error
+      return Future.error('Invalid registration response');
     }
   }
 
@@ -356,16 +416,28 @@ class ApiService extends GetConnect {
   }
   // Request Password Reset
   Future<bool> requestPasswordReset(String email) async {
+    print('🔵 Password Reset Request: email=$email');
+    
     final response = await post('/auth/password-reset/request', {
       'email': email,
     });
 
     if (response.status.hasError) {
-      print('Password Reset Request Error: ${response.statusCode} - ${response.statusText}');
-      print('Password Reset Request Body: ${response.body}');
-      return false; // Or throw error
+      print('❌ Password Reset Request Error: ${response.statusCode} - ${response.statusText}');
+      print('❌ Password Reset Request Body: ${response.body}');
+      
+      // Extract error message from response body
+      String errorMessage = 'Failed to send reset code';
+      if (response.body != null && response.body is Map) {
+        errorMessage = response.body['message'] ?? 
+                      response.body['error'] ?? 
+                      response.statusText ?? 
+                      'Failed to send reset code';
+      }
+      
+      throw Exception(errorMessage);
     } else {
-      print('Password Reset Request Success: ${response.body}');
+      print('✅ Password Reset Request Success: ${response.body}');
       return true;
     }
   }
@@ -441,6 +513,50 @@ class ApiService extends GetConnect {
       } catch (e) {
         print("Error parsing wardrobe items: $e");
       }
+      return null;
+    }
+  }
+
+  // Get Wardrobe Item Details
+  Future<Map<String, dynamic>?> getWardrobeItemDetails(int itemId) async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      print('❌ Get Wardrobe Item Details: No token');
+      return null;
+    }
+
+    print('🔍 Fetching wardrobe item details: ID $itemId');
+
+    try {
+      final response = await get(
+        '/fashion/wardrobe/$itemId',
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+
+      if (response.status.hasError) {
+        print('❌ Get Wardrobe Item Details Error: ${response.statusCode}');
+        print('   Body: ${response.body}');
+        return null;
+      } else {
+        print('✅ Get Wardrobe Item Details Success');
+        
+        if (response.body is Map && response.body['item'] != null) {
+          final item = response.body['item'] as Map<String, dynamic>;
+          print('   Title: ${item['title']}');
+          print('   Image URL: ${item['imageUrl']}');
+          print('   Uploaded Image URL: ${item['uploadedImageUrl']}');
+          return item;
+        }
+        
+        return null;
+      }
+    } catch (e) {
+      print('❌ Get Wardrobe Item Details Exception: $e');
       return null;
     }
   }

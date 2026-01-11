@@ -6,8 +6,6 @@ import 'package:get/get.dart';
 
 import '../../../../../core/color.dart';
 import '../../../../../widgets/primary_button.dart';
-import '../../../personalize/views/personalize_view.dart';
-import '../../login/views/auth_login_view.dart';
 import '../controllers/signup_controller.dart';
 
 class SignupView extends StatefulWidget {
@@ -649,22 +647,9 @@ class _SignupViewState extends State<SignupView> {
       setState(() => _isLoading = false);
 
       if (success) {
-        // Show success message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Sign Up Successful!'),
-            backgroundColor: Colors.black, // Black styling as requested before
-          ),
-        );
-
-        // Navigate after delay
-        await Future.delayed(const Duration(milliseconds: 500));
-        if (mounted) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PersonalizeView()),
-          );
-        }
+        // Navigate to PersonalizeView after successful signup
+        await Future.delayed(const Duration(milliseconds: 800));
+        Get.offNamed('/personalize');
       }
     }
   }

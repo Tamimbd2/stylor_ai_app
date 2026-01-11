@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/color.dart';
 import '../../../../widgets/primary_button.dart';
+import '../../../controllers/user_controller.dart';
 import '../../filterScreen/views/filter_screen_view.dart';
 import '../controllers/personalize_controller.dart';
 
@@ -11,6 +12,20 @@ class PersonalizeView extends GetView<PersonalizeController> {
   PersonalizeView({super.key});
   @override
   final PersonalizeController controller = Get.put(PersonalizeController());
+
+  // Get user's first name
+  String _getFirstName() {
+    final userController = Get.find<UserController>();
+    final fullName = userController.user.value?.name ?? '';
+    
+    if (fullName.isEmpty) {
+      return 'User';
+    }
+    
+    // Extract first name (before first space)
+    final firstName = fullName.split(' ').first;
+    return firstName.isNotEmpty ? firstName : 'User';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +42,9 @@ class PersonalizeView extends GetView<PersonalizeController> {
                 // Logo
                 Image.asset('assets/logo/logo.png', height: 60.h),
                 SizedBox(height: 40.h),
-                // Greeting
-                Text(
-                  'Hi David',
+                // Greeting - Dynamic with user's first name
+                Obx(() => Text(
+                  'Hi ${_getFirstName()}',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: AppColors.neutral900,
@@ -38,7 +53,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                     fontWeight: FontWeight.w700,
                     height: 1.40,
                   ),
-                ),
+                )),
                 SizedBox(height: 4.h),
                 // Subtitle
                 Text(

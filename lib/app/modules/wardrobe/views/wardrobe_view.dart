@@ -371,15 +371,20 @@ class WardrobeView extends GetView<WardrobeController> {
         ),
         itemCount: items.length,
         itemBuilder: (context, index) {
+          final item = items[index];
           return GestureDetector(
             onTap: () {
+              // Pass the item with ID for API fetching
               Get.toNamed(
                 '/wardrop-details',
-                arguments: items[index],
+                arguments: {
+                  'id': item['id'], // For API fetching
+                  ...item, // Keep all other data for backward compatibility
+                },
               );
             },
             child: _buildWardrobeItem(
-              items[index],
+              item,
             ),
           );
         },
