@@ -219,25 +219,12 @@ class EditProfileView extends GetView<EditProfileController> {
                             final localFile = controller.selectedImage.value;
                             final user = userController.user.value;
 
-                            ImageProvider? imageProvider;
-
-                            if (localFile != null) {
-                              imageProvider = FileImage(localFile);
-                            } else if (user?.avatar != null && user!.avatar!.isNotEmpty) {
-                              // If avatar is a full URL, use it. If relative, prepend base URL?
-                              // Usually network images need full URL.
-                              // Assuming backend returns full URL or handled.
-                              // For now assuming full URL or accessible URL.
-                              imageProvider = NetworkImage(user.avatar!);
-                            } else {
-                              imageProvider = const AssetImage('assets/image/profilef.jpg');
-                            }
-
                             return Container(
                               width: 80.w,
                               height: 80.w,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
+                                color: const Color(0xFFF2F4F7),
                                 border: Border.all(
                                   color: Colors.white,
                                   width: 3.w,
@@ -249,14 +236,24 @@ class EditProfileView extends GetView<EditProfileController> {
                                     offset: Offset(0, 4),
                                   ),
                                 ],
-                                image: DecorationImage(
-                                  image: imageProvider,
-                                  fit: BoxFit.cover,
-                                  onError: (exception, stackTrace) {
-                                      // Fallback on error
-                                      // print("Error loading image: $exception");
-                                  },
-                                ),
+                              ),
+                              child: ClipOval(
+                                child: (() {
+                                  if (localFile != null) {
+                                    return Image.file(
+                                      localFile,
+                                      fit: BoxFit.cover,
+                                    );
+                                  } else if (user?.avatar != null && user!.avatar!.isNotEmpty) {
+                                    return Image.network(
+                                      user.avatar!,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) => _buildFallbackIcon(),
+                                    );
+                                  } else {
+                                    return _buildFallbackIcon();
+                                  }
+                                })(),
                               ),
                             );
                           }),
@@ -742,6 +739,16 @@ class EditProfileView extends GetView<EditProfileController> {
     if (picked != null) {
       controller.selectedDate.value = picked;
     }
+  }
+
+  Widget _buildFallbackIcon() {
+    return Center(
+      child: Icon(
+        Icons.person,
+        size: 40.sp,
+        color: const Color(0xFF98A2B3), // Neutral grey
+      ),
+    );
   }
 
   /// ======================

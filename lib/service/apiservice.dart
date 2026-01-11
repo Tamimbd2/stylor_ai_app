@@ -1018,4 +1018,43 @@ class ApiService extends GetConnect {
       return [];
     }
   }
+
+  // Delete user account
+  Future<bool> deleteAccount() async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      print('❌ Delete Account: No token');
+      return false;
+    }
+
+    print('🗑️ Deleting user account...');
+
+    try {
+      // Use request with DELETE and empty body to satisfy server requirement
+      final response = await request(
+        '/user/delete',
+        'DELETE',
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+        body: {}, // Empty JSON body
+      );
+
+      print('📡 Delete Account Response Status: ${response.statusCode}');
+      print('📡 Delete Account Response Body: ${response.body}');
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        print('✅ Account deleted successfully');
+        return true;
+      } else {
+        print('❌ Delete account failed: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      print('❌ Delete account exception: $e');
+      return false;
+    }
+  }
 }

@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../../../../core/color.dart';
+import '../../../../service/apiservice.dart';
 import '../../../routes/app_pages.dart';
-import '../../EditProfile/views/edit_profile_view.dart';
 import '../../../controllers/user_controller.dart';
 
 class ProfileDetailsView extends StatelessWidget {
@@ -47,10 +47,7 @@ class ProfileDetailsView extends StatelessWidget {
                                 offset: Offset(0, 4),
                               ),
                             ],
-                            image: const DecorationImage(
-                              image: AssetImage('assets/image/profilef.jpg'), // Placeholder for initial load
-                              fit: BoxFit.cover,
-                            ),
+                            color: const Color(0xFFF2F4F7), // Light background for fallback
                           ),
                           child: ClipOval(
                             child: Obx(() {
@@ -59,16 +56,10 @@ class ProfileDetailsView extends StatelessWidget {
                                   return Image.network(
                                     user.avatar!,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) => Image.asset(
-                                      'assets/image/profilef.jpg',
-                                      fit: BoxFit.cover,
-                                    ),
+                                    errorBuilder: (context, error, stackTrace) => _buildFallbackIcon(),
                                   );
                                 } else {
-                                  return Image.asset(
-                                    'assets/image/profilef.jpg',
-                                    fit: BoxFit.cover,
-                                  );
+                                  return _buildFallbackIcon();
                                 }
                             }),
                           ),
@@ -93,7 +84,7 @@ class ProfileDetailsView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Obx(() => Text(
-                            userController.user.value?.name ?? 'Sara Rahman',
+                            userController.user.value?.name ?? 'User',
                             style: TextStyle(
                               fontSize: 20.sp,
                               fontWeight: FontWeight.w500,
@@ -244,17 +235,93 @@ class ProfileDetailsView extends StatelessWidget {
                             ),
                           ),
                           ElevatedButton(
-                            onPressed: () {
-                              // Delete account logic here
+                            onPressed: () async {
+                              // Close the dialog first
                               Get.back();
-                              Get.snackbar(
-                                'Account Deleted',
-                                'Your account has been successfully deleted',
-                                snackPosition: SnackPosition.BOTTOM,
-                                backgroundColor: const Color(0xFFFF3232),
-                                colorText: Colors.white,
-                                margin: EdgeInsets.all(16.w),
+                              
+                              // Show loading indicator
+                              Get.dialog(
+                                Center(
+                                  child: Container(
+                                    padding: EdgeInsets.all(20.w),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12.r),
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CircularProgressIndicator(
+                                          color: AppColors.primaryDark,
+                                        ),
+                                        SizedBox(height: 16.h),
+                                        Text(
+                                          'Deleting account...',
+                                          style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w500,
+                                            color: AppColors.neutral900,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                barrierDismissible: false,
                               );
+
+                              try {
+                                // Get ApiService instance
+                                final apiService = Get.find<ApiService>();
+                                final success = await apiService.deleteAccount();
+
+                                // Close loading dialog
+                                Get.back();
+
+                                if (success) {
+                                  // Clear user data using controller logout
+                                  await userController.logout();
+                                  
+                                  // Show success message
+                                  Get.snackbar(
+                                    'Account Deleted',
+                                    'Your account has been successfully deleted',
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: const Color(0xFFFF3232),
+                                    colorText: Colors.white,
+                                    margin: EdgeInsets.all(16.w),
+                                    duration: const Duration(seconds: 3),
+                                  );
+
+                                  // Navigate to onboarding screen
+                                  Get.offAllNamed(Routes.ONBOARDING);
+                                } else {
+                                  // Show error message
+                                  Get.snackbar(
+                                    'Error',
+                                    'Failed to delete account. Please try again.',
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.red,
+                                    colorText: Colors.white,
+                                    margin: EdgeInsets.all(16.w),
+                                  );
+                                }
+                              } catch (e) {
+                                // Close loading dialog if still open
+                                if (Get.isDialogOpen ?? false) {
+                                  Get.back();
+                                }
+                                
+                                print('❌ Error deleting account: $e');
+                                Get.snackbar(
+                                  'Error',
+                                  'An error occurred: $e',
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  backgroundColor: Colors.red,
+                                  colorText: Colors.white,
+                                  margin: EdgeInsets.all(16.w),
+                                );
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFFFF3232),
@@ -296,6 +363,16 @@ class ProfileDetailsView extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildFallbackIcon() {
+    return Center(
+      child: Icon(
+        Icons.person,
+        size: 32.sp,
+        color: const Color(0xFF98A2B3), // Neutral grey
       ),
     );
   }

@@ -31,7 +31,40 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 24.h),
+                SizedBox(height: 16.h),
+                // Back Button
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: GestureDetector(
+                    onTap: () => Get.back(),
+                    child: Container(
+                      width: 40.w,
+                      height: 40.h,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: const Color(0xFFE8E8E8),
+                          width: 1,
+                        ),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0x0F101828),
+                            blurRadius: 8,
+                            offset: Offset(0, 2),
+                            spreadRadius: 0,
+                          ),
+                        ],
+                      ),
+                      child: Icon(
+                        Icons.arrow_back_ios_new,
+                        size: 18.sp,
+                        color: const Color(0xFF1C1C1E),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 0.h),
                 // Header
                 Center(
                   child: Text(
