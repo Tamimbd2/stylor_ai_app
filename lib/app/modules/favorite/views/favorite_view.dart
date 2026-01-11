@@ -95,7 +95,11 @@ class FavoriteView extends GetView<FavoriteController> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => controller.isOutfitSelected.value = true,
+                          onTap: () {
+                            controller.isOutfitSelected.value = true;
+                            // Refresh outfits when tab is selected
+                            controller.fetchFavoriteOutfits();
+                          },
                           child: Container(
                             height: 56.h,
                             decoration: BoxDecoration(

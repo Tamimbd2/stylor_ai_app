@@ -22,8 +22,7 @@ class OutfitCardSection extends StatefulWidget {
 
 class OutfitCardSectionState extends State<OutfitCardSection> {
   late CardSwiperController _controller;
-
-
+  int _currentIndex = 0; // Track current card index
 
   @override
   void initState() {
@@ -165,6 +164,11 @@ class OutfitCardSectionState extends State<OutfitCardSection> {
     int? currentIndex,
     CardSwiperDirection direction,
   ) {
+    if (currentIndex != null) {
+      setState(() {
+        _currentIndex = currentIndex;
+      });
+    }
     return true;
   }
 
@@ -179,6 +183,8 @@ class OutfitCardSectionState extends State<OutfitCardSection> {
   // =======================
   // External controls
   // =======================
+
+  int get currentIndex => _currentIndex;
 
   void swipeLeft() {
     _controller.swipe(CardSwiperDirection.left);

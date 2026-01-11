@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import '../../../../service/apiservice.dart';
+import '../../favorite/controllers/favorite_controller.dart';
 
 class ShapeselectController extends GetxController {
   final ApiService _apiService = Get.put(ApiService());
@@ -199,4 +200,90 @@ class ShapeselectController extends GetxController {
   }
 
   void toggleOutfitDetails() => showOutfitDetails.toggle();
+
+  // Add current outfit to favorites
+  Future<void> addCurrentOutfitToFavorites(int currentIndex) async {
+    try {
+      // Validate index
+      if (currentIndex < 0 || currentIndex >= generatedOutfits.length) {
+        print('❌ Invalid outfit index: $currentIndex');
+        Get.snackbar(
+          'Error',
+          'No outfit selected',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        return;
+      }
+
+      final outfit = generatedOutfits[currentIndex];
+      final imageUrl = outfit['url'] as String;
+      final title = outfit['title'] as String? ?? 'AI Generated Outfit';
+      final description = outfit['description'] as String? ?? 'Perfect outfit for your style';
+      final productsData = outfit['products'] as List<dynamic>? ?? [];
+
+      // Convert products to required format
+      final products = productsData.map((p) {
+        return {
+          'title': p['title']?.toString() ?? '',
+          'category': p['category']?.toString() ?? '',
+        };
+      }).toList();
+
+      print('❤️ Adding outfit to favorites:');
+      print('   Title: $title');
+      print('   Image: $imageUrl');
+      print('   Products: ${products.length}');
+
+      // Call API
+      final result = await _apiService.addOutfitToFavorites(
+        imageUrl: imageUrl,
+        title: title,
+        description: description,
+        products: products,
+      );
+
+      if (result != null) {
+        print('✅ Outfit added to favorites successfully');
+        
+        // Refresh favorite outfits list to show the new addition instantly
+        try {
+          final favoriteController = Get.find<FavoriteController>();
+          await favoriteController.fetchFavoriteOutfits();
+          print('🔄 Refreshed favorite outfits list');
+        } catch (e) {
+          // If FavoriteController is not initialized yet, that's fine
+          print('ℹ️ FavoriteController not found, will update on next visit: $e');
+        }
+        
+        Get.snackbar(
+          'Success',
+          'Outfit added to favorites!',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 2),
+        );
+      } else {
+        print('❌ Failed to add outfit to favorites');
+        Get.snackbar(
+          'Error',
+          'Failed to add to favorites',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      print('❌ Exception adding outfit to favorites: $e');
+      Get.snackbar(
+        'Error',
+        'Failed to add to favorites: $e',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
 }

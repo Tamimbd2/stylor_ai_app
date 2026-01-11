@@ -57,8 +57,11 @@ class _ShapeselectViewState extends State<ShapeselectView> {
                       ActionButtonsSection(
                         onCancel: () =>
                             _cardSectionKey.currentState?.swipeLeft(),
-                        onLike: () =>
-                            _cardSectionKey.currentState?.swipeRight(),
+                        onLike: () {
+                          final currentIndex = _cardSectionKey.currentState?.currentIndex ?? 0;
+                          controller.addCurrentOutfitToFavorites(currentIndex);
+                          _cardSectionKey.currentState?.swipeRight();
+                        },
                       ),
                       SizedBox(height: 0.h),
                       StyleSelectorSection(
