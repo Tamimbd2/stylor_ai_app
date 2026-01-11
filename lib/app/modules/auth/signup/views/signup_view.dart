@@ -339,7 +339,7 @@ class _SignupViewState extends State<SignupView> {
 
                   Center(
                     child: Text(
-                      'Sign in with',
+                      'Sign up with',
                       style: TextStyle(fontSize: 14.sp, color: Colors.black87),
                     ),
                   ),
@@ -356,7 +356,12 @@ class _SignupViewState extends State<SignupView> {
                           height: 22.w,
                         ),
                         label: 'Google',
-                        onTap: () => controller.handleGoogleSignUp(),
+                        onTap: () async {
+                          final success = await controller.handleGoogleSignUp();
+                          if (success) {
+                            Get.offNamed('/personalize');
+                          }
+                        },
                       ),
                       SizedBox(width: 16.w),
                       _buildSocialButton(
