@@ -1,31 +1,44 @@
 {
   "project_info": {
-    "project_number": "000000000000",
-    "project_id": "mock-project-id",
-    "storage_bucket": "mock-project-id.appspot.com"
+    "project_number": "276093179006",
+    "project_id": "stylorai-4e8d6",
+    "storage_bucket": "stylorai-4e8d6.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:000000000000:android:0000000000000000",
+        "mobilesdk_app_id": "1:276093179006:android:a137485988a28d728e342f",
         "android_client_info": {
           "package_name": "com.example.outfit"
         }
       },
       "oauth_client": [
         {
-          "client_id": "000000000000-dummy.apps.googleusercontent.com",
+          "client_id": "276093179006-hfvqccv6vr0ib9vb2dbf0796ciqr527s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.outfit",
+            "certificate_hash": "8edbac03e3b9831badc6b5f17739631e180fc320"
+          }
+        },
+        {
+          "client_id": "276093179006-c55utgcbulsrba2vo29ps2qdtc6g9ajl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDummyKeyForBuildPurposesOnly"
+          "current_key": "AIzaSyCP7PXuSQMOy7UAKCMkI9DPwYeFzjvmP9U"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "276093179006-c55utgcbulsrba2vo29ps2qdtc6g9ajl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

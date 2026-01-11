@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "276093179006",
+    "project_id": "stylorai-4e8d6",
+    "storage_bucket": "stylorai-4e8d6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276093179006:android:a137485988a28d728e342f",
+        "android_client_info": {
+          "package_name": "com.example.outfit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCP7PXuSQMOy7UAKCMkI9DPwYeFzjvmP9U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
