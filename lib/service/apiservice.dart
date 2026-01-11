@@ -561,6 +561,43 @@ class ApiService extends GetConnect {
     }
   }
 
+  // Delete Wardrobe Item
+  Future<bool> deleteWardrobeItem(int itemId) async {
+    final userController = Get.find<UserController>();
+    final token = userController.token.value;
+
+    if (token.isEmpty) {
+      print('❌ Delete Wardrobe Item: No token');
+      return false;
+    }
+
+    print('🗑️ Deleting wardrobe item: ID $itemId');
+
+    try {
+      final response = await request(
+        '/fashion/wardrobe/$itemId',
+        'DELETE',
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+        body: {},
+      );
+
+      print('📡 Delete Wardrobe Item Response Status: ${response.statusCode}');
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        print('✅ Delete Wardrobe Item Success');
+        return true;
+      } else {
+        print('❌ Delete Wardrobe Item Failed: ${response.statusCode}');
+        return false;
+      }
+    } catch (e) {
+      print('❌ Delete Wardrobe Item Exception: $e');
+      return false;
+    }
+  }
+
   // Search Products
   Future<Map<String, dynamic>?> searchProducts({
     required String queries,

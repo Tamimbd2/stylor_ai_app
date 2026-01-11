@@ -334,4 +334,55 @@ class WardropDetailsController extends GetxController {
 
   /// Optional counter
   void increment() => count.value++;
+
+  /// Delete current item
+  Future<void> deleteCurrentItem() async {
+    final details = itemDetails.value;
+    if (details == null || details['id'] == null) {
+      Get.snackbar('Error', 'No item loaded to delete');
+      return;
+    }
+
+    // Try to parse ID
+    int id;
+    if (details['id'] is int) {
+      id = details['id'];
+    } else {
+      id = int.tryParse(details['id'].toString()) ?? -1;
+    }
+
+    if (id == -1) {
+       Get.snackbar('Error', 'Invalid item ID');
+       return;
+    }
+    
+    try {
+      isLoading.value = true;
+      final success = await _apiService.deleteWardrobeItem(id);
+      
+      if (success) {
+         Get.back(); // Return to previous screen (Wardrobe List)
+         Get.snackbar(
+           'Success',
+           'Item deleted successfully',
+           backgroundColor: Colors.black,
+           colorText: Colors.white,
+           snackPosition: SnackPosition.BOTTOM,
+         );
+      } else {
+         Get.snackbar(
+           'Error', 
+           'Failed to delete item',
+           backgroundColor: Colors.red,
+           colorText: Colors.white,
+           snackPosition: SnackPosition.BOTTOM,
+         );
+      }
+    } catch (e) {
+      print('Deletion Error: $e');
+      Get.snackbar('Error', 'An error occurred during deletion');
+    } finally {
+      isLoading.value = false;
+    }
+  }
 }

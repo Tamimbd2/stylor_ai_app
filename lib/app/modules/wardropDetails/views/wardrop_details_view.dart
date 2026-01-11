@@ -29,8 +29,54 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
           IconButton(
             icon: Icon(Icons.delete_outline, size: 24.sp, color: Colors.black),
             onPressed: () {
-              // controller.deleteItem();
-              print("Delete tapped");
+              Get.dialog(
+                AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.r),
+                  ),
+                  title: Text(
+                    'Delete Item',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFF1C1C1E),
+                    ),
+                  ),
+                  content: Text(
+                    'Are you sure you want to delete this item?',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: const Color(0xFF1C1C1E),
+                    ),
+                  ),
+                  actions: [
+                    TextButton(
+                      child: Text(
+                        'Cancel',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 16.sp,
+                        ),
+                      ),
+                      onPressed: () => Get.back(),
+                    ),
+                    TextButton(
+                      child: Text(
+                        'Delete',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      onPressed: () {
+                        Get.back(); // Close dialog
+                        controller.deleteCurrentItem();
+                      },
+                    ),
+                  ],
+                ),
+              );
             },
           ),
           SizedBox(width: 12.w),
