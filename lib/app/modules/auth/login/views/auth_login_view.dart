@@ -71,7 +71,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
 
                     Center(
                       child: Text(
-                        'welcome_back'.tr,
+                        'Welcome Back'.tr,
                         style: TextStyle(
                           fontSize: 24.sp,
                           fontWeight: FontWeight.w600,
@@ -84,7 +84,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
 
                     Center(
                       child: Text(
-                        'login_subtitle'.tr,
+                        'Login Subtitle'.tr,
                         style: TextStyle(fontSize: 14.sp, color: Colors.black),
                       ),
                     ),
@@ -92,7 +92,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                     SizedBox(height: 40.h),
 
                     Text(
-                      'Email Address',
+                      'Email Address'.tr,
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
@@ -104,7 +104,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                     _buildInputField(
                       controller: _emailController,
                       prefixIcon: Icons.email_outlined,
-                      hintText: 'Enter your email',
+                      hintText: 'Enter Email'.tr,
                     ),
 
                     if (_emailError != null)
@@ -119,7 +119,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                     SizedBox(height: 16.h),
 
                     Text(
-                      'Password',
+                      'Password'.tr,
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
@@ -168,7 +168,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                         ),
                         SizedBox(width: 1.w),
                         Text(
-                          'Remember me',
+                          'Remember Me'.tr,
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: Colors.black87,
@@ -183,7 +183,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                     SizedBox(height: 16.h),
 
                     AppButton(
-                      text: "Sign In",
+                      text: 'Sign In'.tr,
                       textColor: AppColors.primaryLight,
                       backgroundColor: AppColors.primaryDark,
                       onPressed: () async {
@@ -212,7 +212,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                           Navigator.pushNamed(context, '/forgot-password');
                         },
                         child: Text(
-                          'Forgot Password?',
+                          'Forgot Password'.tr,
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: Colors.black87,
@@ -229,7 +229,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 16.w),
                           child: Text(
-                            'OR',
+                            'OR'.tr,
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: Colors.grey,
@@ -244,7 +244,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
 
                     Center(
                       child: Text(
-                        'Sign in with',
+                        'Sign In With'.tr,
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: Colors.black87,
@@ -286,7 +286,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "Don't have an account? ",
+                            'Dont Have Account'.tr,
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: Colors.black87,
@@ -298,7 +298,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                             },
 
                             child: Text(
-                              'Sign Up',
+                              'Sign Up'.tr,
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 color: Colors.black,
@@ -359,7 +359,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        'Please wait',
+                        'Loading'.tr,
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: Colors.black54,
@@ -392,7 +392,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
       isValid = false;
     } else if (!_isValidEmail(email)) {
       setState(() {
-        _emailError = 'Please enter a valid email';
+        _emailError = 'Valid Email Required'.tr;
       });
       isValid = false;
     }
@@ -406,7 +406,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
       isValid = false;
     } else if (password.length < 8) {
       setState(() {
-        _passwordError = 'Password must be at least 8 characters';
+        _passwordError = 'Password Min Length'.tr;
       });
       isValid = false;
     }
@@ -463,7 +463,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
         obscureText: _obscurePassword,
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.lock_outline, color: AppColors.neutral900),
-          hintText: 'Enter your password',
+          hintText: 'Enter Password'.tr,
           hintStyle: TextStyle(fontSize: 14.sp, color: Colors.grey[400]),
           suffixIcon: IconButton(
             icon: Icon(
@@ -568,7 +568,7 @@ class _AuthLoginViewState extends State<AuthLoginView> {
                 _buildAccountOption('olivia.brown@gmail.com'),
                 SizedBox(height: 24.h),
                 AppButton(
-                  text: "Cancel",
+                  text: 'Cancel'.tr,
                   textColor: Colors.black,
                   backgroundColor: Colors.grey[200]!,
                   onPressed: () => Navigator.pop(context),

@@ -107,7 +107,7 @@ class ProfileView extends GetView<ProfileController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Obx(() => Text(
-                                userController.user.value?.name ?? 'User',
+                                userController.user.value?.name ?? 'User'.tr,
                                 style: TextStyle(
                                   color: AppColors.neutral900,
                                   fontSize: 16.sp,
@@ -118,7 +118,7 @@ class ProfileView extends GetView<ProfileController> {
                               )),
                               SizedBox(height: 2.h),
                               Text(
-                                'account_details'.tr,
+                                'Account Details'.tr,
                                 style: TextStyle(
                                   color: AppColors.neutral700,
                                   fontSize: 14.sp,
@@ -142,7 +142,7 @@ class ProfileView extends GetView<ProfileController> {
                 SizedBox(height: 32.h),
                 // Settings Title
                 Text(
-                  'settings'.tr,
+                  'Settings'.tr,
                   style: TextStyle(
                     color: AppColors.neutral900,
                     fontSize: 20.sp,
@@ -172,7 +172,7 @@ class ProfileView extends GetView<ProfileController> {
                       Obx(
                         () => _buildSettingItem(
                           icon: Icons.notifications_outlined,
-                          title: 'notification'.tr,
+                          title: 'Notification'.tr,
                           hasSwitch: true,
                           switchValue: controller.isNotificationEnabled.value,
                           onTap: () => controller.toggleNotification(
@@ -183,7 +183,7 @@ class ProfileView extends GetView<ProfileController> {
                       _buildDivider(),
                       _buildSettingItem(
                         icon: Icons.lock_outline,
-                        title: 'privacy'.tr,
+                        title: 'Privacy'.tr,
                         hasArrow: true,
                         onTap: () {
                           Navigator.push(
@@ -198,7 +198,7 @@ class ProfileView extends GetView<ProfileController> {
                       _buildDivider(),
                       Obx(() => _buildSettingItem(
                         icon: Icons.language,
-                        title: 'language'.tr,
+                        title: 'Language'.tr,
                         trailingText: languageController.currentLanguageName,
                         hasArrow: true,
                         onTap: () {
@@ -208,7 +208,7 @@ class ProfileView extends GetView<ProfileController> {
                       _buildDivider(),
                       _buildSettingItem(
                         icon: Icons.description_outlined,
-                        title: 'terms_and_condition'.tr,
+                        title: 'Terms And Condition'.tr,
                         hasArrow: true,
                         onTap: () {
                           Navigator.push(
@@ -223,7 +223,7 @@ class ProfileView extends GetView<ProfileController> {
                       _buildDivider(),
                       _buildSettingItem(
                         icon: Icons.share_outlined,
-                        title: 'share_the_app'.tr,
+                        title: 'Share The App'.tr,
                         hasArrow: true,
                         onTap: () {
                           controller.shareApp();
@@ -232,11 +232,11 @@ class ProfileView extends GetView<ProfileController> {
                     ],
                   ),
                 ),
-                SizedBox(height: 300.h),
+                SizedBox(height: 100.h),
                 // Log Out Button
                 Container(
                   width: double.infinity,
-                  height: 56.h,
+                  height: 48.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12.r),
@@ -252,7 +252,7 @@ class ProfileView extends GetView<ProfileController> {
                       ),
                     ),
                     child: Text(
-                      'log_out'.tr,
+                      'Log Out'.tr,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.red,

@@ -24,7 +24,7 @@ class ProfileDetailsView extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
         title: Text(
-          'Profile',
+          'Profile'.tr,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18.sp,
@@ -101,7 +101,7 @@ class ProfileDetailsView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Obx(() => Text(
-                            userController.user.value?.name ?? 'User',
+                            userController.user.value?.name ?? 'User'.tr,
                             style: TextStyle(
                               fontSize: 20.sp,
                               fontWeight: FontWeight.w500,
@@ -120,7 +120,7 @@ class ProfileDetailsView extends StatelessWidget {
                                 width: 16.w,
                                 height: 16.h,
                               ),
-                              label: const Text('Edit Profile'),
+                              label: Text('Edit Profile'.tr),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primaryDark,
                                 foregroundColor: Colors.white,
@@ -149,7 +149,7 @@ class ProfileDetailsView extends StatelessWidget {
               /// ======================
               _listTileCard(
                 iconPath: 'assets/svg/sw.svg',
-                title: 'Switch Account',
+                title: 'Switch Account'.tr,
                 hasTrailing: true,
               ),
 
@@ -224,7 +224,7 @@ class ProfileDetailsView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(16.r),
                         ),
                         title: Text(
-                          'Delete Account',
+                          'Delete Account'.tr,
                           style: TextStyle(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w700,
@@ -232,7 +232,7 @@ class ProfileDetailsView extends StatelessWidget {
                           ),
                         ),
                         content: Text(
-                          'Are you sure you want to delete your account? This action cannot be undone.',
+                          'Delete Account Confirmation'.tr,
                           style: TextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
@@ -243,7 +243,7 @@ class ProfileDetailsView extends StatelessWidget {
                           TextButton(
                             onPressed: () => Get.back(),
                             child: Text(
-                              'Cancel',
+                              'Cancel'.tr,
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
@@ -273,7 +273,7 @@ class ProfileDetailsView extends StatelessWidget {
                                         ),
                                         SizedBox(height: 16.h),
                                         Text(
-                                          'Deleting account...',
+                                          'Deleting Account'.tr,
                                           style: TextStyle(
                                             fontSize: 16.sp,
                                             fontWeight: FontWeight.w500,
@@ -301,8 +301,8 @@ class ProfileDetailsView extends StatelessWidget {
                                   
                                   // Show success message
                                   Get.snackbar(
-                                    'Account Deleted',
-                                    'Your account has been successfully deleted',
+                                    'Account Deleted'.tr,
+                                    'Account Deleted Message'.tr,
                                     snackPosition: SnackPosition.BOTTOM,
                                     backgroundColor: const Color(0xFFFF3232),
                                     colorText: Colors.white,
@@ -315,8 +315,8 @@ class ProfileDetailsView extends StatelessWidget {
                                 } else {
                                   // Show error message
                                   Get.snackbar(
-                                    'Error',
-                                    'Failed to delete account. Please try again.',
+                                    'Error'.tr,
+                                    'Delete Failed'.tr,
                                     snackPosition: SnackPosition.BOTTOM,
                                     backgroundColor: Colors.red,
                                     colorText: Colors.white,
@@ -331,8 +331,8 @@ class ProfileDetailsView extends StatelessWidget {
                                 
                                 print('❌ Error deleting account: $e');
                                 Get.snackbar(
-                                  'Error',
-                                  'An error occurred: $e',
+                                  'Error'.tr,
+                                  '${'Something Went Wrong'.tr}: $e',
                                   snackPosition: SnackPosition.BOTTOM,
                                   backgroundColor: Colors.red,
                                   colorText: Colors.white,
@@ -347,7 +347,7 @@ class ProfileDetailsView extends StatelessWidget {
                               ),
                             ),
                             child: Text(
-                              'Delete',
+                              'Delete'.tr,
                               style: TextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
@@ -366,7 +366,7 @@ class ProfileDetailsView extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'Delete',
+                    'Delete'.tr,
                     style: TextStyle(
                       color: const Color(0xFFFF3232),
                       fontSize: 18.sp,

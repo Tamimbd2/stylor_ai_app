@@ -34,7 +34,7 @@ class StyleSelectorSection extends StatelessWidget {
               SizedBox(width: 6.w),
               Expanded(
                 child: Text(
-                  selectedStyle,
+                  selectedStyle.tr,
                   style: TextStyle(
                     color: AppColors.neutral700,
                     fontSize: 13.sp,
@@ -114,7 +114,7 @@ class StyleSelectBottomSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Select Style',
+              'Select Style'.tr,
               style: TextStyle(
                 color: AppColors.neutral900,
                 fontSize: 18.sp,
@@ -185,7 +185,7 @@ class StyleOption extends StatelessWidget {
             SizedBox(width: 12.w),
             Expanded(
               child: Text(
-                style,
+                style.tr,
                 style: TextStyle(
                   color: AppColors.neutral700,
                   fontSize: 14.sp,

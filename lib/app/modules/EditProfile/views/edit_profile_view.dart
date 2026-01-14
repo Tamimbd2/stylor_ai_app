@@ -28,7 +28,7 @@ class EditProfileView extends GetView<EditProfileController> {
           onPressed: () => Get.back(),
         ),
         title: Text(
-          'Edit Profile',
+          'Edit Profile'.tr,
           style: TextStyle(
             color: Colors.black,
             fontSize: 18.sp,
@@ -444,7 +444,7 @@ class EditProfileView extends GetView<EditProfileController> {
                     child: Obx(() => controller.isUploading.value
                       ? const CircularProgressIndicator(color: Colors.white)
                       : Text(
-                        'save_as'.tr,
+                        'Save As'.tr,
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.w500,

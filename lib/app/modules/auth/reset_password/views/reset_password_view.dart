@@ -50,7 +50,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
 
                 // Success Title
                 Text(
-                  'Password Reset Successful!',
+                  'Password Reset Successful'.tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: const Color(0xFF1C1C1E),
@@ -64,7 +64,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
 
                 // Success Message
                 Text(
-                  'Your password has been reset successfully. Please login with your new password.',
+                  'Password Reset Success Message'.tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: const Color(0xFF101C2C),
@@ -78,7 +78,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
 
                 // Login Button
                 AppButton(
-                  text: "Login",
+                  text: 'Sign In'.tr,
                   textColor: Colors.white,
                   backgroundColor: const Color(0xFF060017),
                   onPressed: () {
@@ -110,7 +110,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               Center(child: Image.asset('assets/logo/logo.png', height: 50.h)),
               SizedBox(height: 40.h),
               Text(
-                'Reset Your Password',
+                'Reset Your Password'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: const Color(0xFF1C1C1E),
@@ -122,7 +122,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               ),
               SizedBox(height: 8.h),
               Text(
-                'The password must be different then before',
+                'Password Must Be Different'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: const Color(0xFF101C2C),
@@ -139,7 +139,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'New Password',
+                    'New Password'.tr,
                     style: TextStyle(
                       color: const Color(0xFF1C1C1E),
                       fontSize: 14.sp,
@@ -177,7 +177,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Confirm Password',
+                    'Confirm Password'.tr,
                     style: TextStyle(
                       color: const Color(0xFF1C1C1E),
                       fontSize: 14.sp,
@@ -205,7 +205,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
               /// RESET PASSWORD BUTTON
               /// RESET PASSWORD BUTTON
               Obx(() => AppButton(
-                text: controller.isLoading.value ? "Resetting..." : "Reset Password",
+                text: controller.isLoading.value ? 'Loading'.tr : 'Reset Password'.tr,
                 textColor: Colors.white,
                 backgroundColor: const Color(0xFF060017),
                 onPressed: controller.isLoading.value ? () {} : () async {
@@ -214,11 +214,11 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
                     final confirmPwd = controller.confirmPasswordController.text;
 
                     if (pwd.isEmpty) {
-                      newPasswordError = 'Please enter your new password';
+                      newPasswordError = 'Password Required'.tr;
                     } else if (pwd.length < 8) {
-                      newPasswordError = 'Password must be at least 8 characters';
+                      newPasswordError = 'Password Min Length'.tr;
                     } else if (pwd != confirmPwd) {
-                      newPasswordError = 'Passwords do not match';
+                      newPasswordError = 'Passwords Mismatch'.tr;
                     } else {
                       newPasswordError = null;
                     }
@@ -239,7 +239,7 @@ class _ResetPasswordViewState extends State<ResetPasswordView> {
 
               /// CANCEL BUTTON
               AppButton(
-                text: "Cancel",
+                text: 'Cancel'.tr,
                 textColor: const Color(0xFF060017),
                 backgroundColor: Colors.white,
                 withBorder: true,

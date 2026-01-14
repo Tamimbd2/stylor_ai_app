@@ -28,7 +28,7 @@ class OtpView extends GetView<OtpController> {
 
               /// TITLE
               Text(
-                'Enter Verification Code',
+                'Enter Verification Code'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: const Color(0xFF1C1C1E),
@@ -53,9 +53,10 @@ class OtpView extends GetView<OtpController> {
                     height: 1.56,
                   ),
                   children: [
-                    const TextSpan(text: 'We have sent a code to '),
+                    TextSpan(text: 'We Sent Code To'.tr),
+                    const TextSpan(text: ' '),
                     TextSpan(
-                      text: controller.email.value.isNotEmpty ? controller.email.value : 'your email',
+                      text: controller.email.value.isNotEmpty ? controller.email.value : 'Your Email'.tr,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: const Color(0xFF1C1C1E),
@@ -105,7 +106,7 @@ class OtpView extends GetView<OtpController> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Didn't Receive any code? ",
+                    'Didnt Receive Code'.tr,
                     style: TextStyle(
                       color: const Color(0xFF101C2C),
                       fontSize: 14.sp,
@@ -118,7 +119,7 @@ class OtpView extends GetView<OtpController> {
                       controller.resendCode();
                     },
                     child: Text(
-                      controller.isResending.value ? 'Sending...' : 'Resend Code',
+                      controller.isResending.value ? 'Sending'.tr : 'Resend Code'.tr,
                       style: TextStyle(
                         color: controller.isResending.value ? Colors.grey : const Color(0xFF1C1C1E),
                         fontSize: 14.sp,
@@ -134,7 +135,7 @@ class OtpView extends GetView<OtpController> {
               SizedBox(height: 20.h),
               /// VERIFY BUTTON
               Obx(() => AppButton(
-                text: controller.isVerifying.value ? "Verifying..." : "Verify Now",
+                text: controller.isVerifying.value ? 'Verifying'.tr : 'Verify Now'.tr,
                 textColor: Colors.white,
                 backgroundColor: const Color(0xFF060017),
                 onPressed: controller.isVerifying.value

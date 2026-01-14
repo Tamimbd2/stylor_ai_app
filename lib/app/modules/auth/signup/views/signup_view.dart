@@ -84,7 +84,7 @@ class _SignupViewState extends State<SignupView> {
 
                   Center(
                     child: Text(
-                      'Welcome Back',
+                      'Welcome Back'.tr,
                       style: TextStyle(
                         fontSize: 24.sp,
                         fontWeight: FontWeight.w600,
@@ -97,7 +97,7 @@ class _SignupViewState extends State<SignupView> {
 
                   Center(
                     child: Text(
-                      'Login to access your account',
+                      'Login Subtitle'.tr,
                       style: TextStyle(fontSize: 14.sp, color: Colors.black87),
                     ),
                   ),
@@ -105,7 +105,7 @@ class _SignupViewState extends State<SignupView> {
                   SizedBox(height: 40.h),
 
                   Text(
-                    'Your Name',
+                    'Your Name'.tr,
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
@@ -119,11 +119,11 @@ class _SignupViewState extends State<SignupView> {
                     focusNode: _nameFocus,
                     nextFocus: _emailFocus,
                     prefixIcon: Icons.person_outline,
-                    hintText: 'Write Your Name',
+                    hintText: 'Write Your Name'.tr,
                     keyboardType: TextInputType.name,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your name';
+                        return 'Name Required'.tr;
                       }
                       return null;
                     },
@@ -141,7 +141,7 @@ class _SignupViewState extends State<SignupView> {
                   SizedBox(height: 16.h),
 
                   Text(
-                    'Email Address',
+                    'Email Address'.tr,
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
@@ -159,10 +159,10 @@ class _SignupViewState extends State<SignupView> {
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
+                        return 'Email Required'.tr;
                       }
                       if (!GetUtils.isEmail(value)) {
-                        return 'Please enter a valid email';
+                        return 'Valid Email Required'.tr;
                       }
                       return null;
                     },
@@ -180,7 +180,7 @@ class _SignupViewState extends State<SignupView> {
                   SizedBox(height: 16.h),
 
                   Text(
-                    'Password',
+                    'Password'.tr,
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
@@ -193,7 +193,7 @@ class _SignupViewState extends State<SignupView> {
                   SizedBox(height: 16.h),
 
                   Text(
-                    'Confirm Password',
+                    'Confirm Password'.tr,
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w500,
@@ -259,9 +259,9 @@ class _SignupViewState extends State<SignupView> {
                                 color: Colors.black87,
                               ),
                               children: [
-                                const TextSpan(text: 'I agree to the '),
+                                TextSpan(text: 'I Agree To'.tr),
                                 TextSpan(
-                                  text: 'Privacy Policy',
+                                  text: 'Privacy Policy'.tr,
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     // decoration: TextDecoration.underline,
@@ -272,9 +272,9 @@ class _SignupViewState extends State<SignupView> {
                                       Get.toNamed('/privacy-policy');
                                     },
                                 ),
-                                const TextSpan(text: ' and '),
+                                TextSpan(text: 'And'.tr),
                                 TextSpan(
-                                  text: 'Terms of use',
+                                  text: 'Terms Of Use'.tr,
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     // decoration: TextDecoration.underline,
@@ -305,7 +305,7 @@ class _SignupViewState extends State<SignupView> {
                   SizedBox(height: 24.h),
 
                   AppButton(
-                    text: _isLoading ? "Signing Up..." : "Sign Up",
+                    text: _isLoading ? 'Signing Up'.tr : 'Sign Up'.tr,
                     textColor: AppColors.primaryLight,
                     backgroundColor: AppColors.primaryDark,
                     onPressed: () {
@@ -323,7 +323,7 @@ class _SignupViewState extends State<SignupView> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16.w),
                         child: Text(
-                          'OR',
+                          'OR'.tr,
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: Colors.grey,
@@ -339,7 +339,7 @@ class _SignupViewState extends State<SignupView> {
 
                   Center(
                     child: Text(
-                      'Sign up with',
+                      'Sign In With'.tr,
                       style: TextStyle(fontSize: 14.sp, color: Colors.black87),
                     ),
                   ),
@@ -383,7 +383,7 @@ class _SignupViewState extends State<SignupView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Already have an account? ',
+                          'Already Have Account'.tr,
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: Colors.black87,
@@ -392,7 +392,7 @@ class _SignupViewState extends State<SignupView> {
                         GestureDetector(
                           onTap: () => Get.back(),
                           child: Text(
-                            'Sign In',
+                            'Sign In'.tr,
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: Colors.black,
@@ -477,10 +477,10 @@ class _SignupViewState extends State<SignupView> {
         textInputAction: TextInputAction.next,
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'Please enter your password';
+            return 'Password Required'.tr;
           }
           if (value.length < 8) {
-            return 'Password must be at least 8 characters';
+            return 'Password Min Length'.tr;
           }
           return null;
         },
@@ -524,10 +524,10 @@ class _SignupViewState extends State<SignupView> {
         textInputAction: TextInputAction.done,
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'Please confirm your password';
+            return 'Confirm Password Required'.tr;
           }
           if (value != _passwordController.text) {
-            return 'Passwords do not match';
+            return 'Passwords Mismatch'.tr;
           }
           return null;
         },
@@ -546,7 +546,7 @@ class _SignupViewState extends State<SignupView> {
               );
             },
           ),
-          hintText: 'Re-enter password',
+          hintText: 'Re-enter Password'.tr,
           hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14.sp),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(
@@ -595,17 +595,17 @@ class _SignupViewState extends State<SignupView> {
 
     // Name validation
     if (_nameController.text.trim().isEmpty) {
-      setState(() => _nameError = 'Please enter your name');
+      setState(() => _nameError = 'Name Required'.tr);
       isValid = false;
     }
 
     // Email validation
     String email = _emailController.text.trim();
     if (email.isEmpty) {
-      setState(() => _emailError = 'Please enter your email');
+      setState(() => _emailError = 'Email Required'.tr);
       isValid = false;
     } else if (!GetUtils.isEmail(email)) {
-      setState(() => _emailError = 'Please enter a valid email');
+      setState(() => _emailError = 'Valid Email Required'.tr);
       isValid = false;
     }
 
@@ -614,23 +614,23 @@ class _SignupViewState extends State<SignupView> {
     // Password validation
     String password = _passwordController.text;
     if (password.isEmpty) {
-      setState(() => _passwordError = 'Please enter your password');
+      setState(() => _passwordError = 'Password Required'.tr);
       isValid = false;
     } else if (password.length < 8) {
-      setState(() => _passwordError = 'Password must be at least 8 characters');
+      setState(() => _passwordError = 'Password Min Length'.tr);
       isValid = false;
     }
 
     // Confirm Password
     if (_confirmPasswordController.text != password) {
-      setState(() => _confirmPasswordError = 'Passwords do not match');
+      setState(() => _confirmPasswordError = 'Passwords Mismatch'.tr);
       isValid = false;
     }
 
     // If all fields are valid, then check privacy policy
     if (isValid && !_acceptPrivacy) {
       setState(
-        () => _privacyError = 'Please accept Privacy Policy to continue',
+        () => _privacyError = 'Accept Privacy'.tr,
       );
       return;
     }

@@ -104,7 +104,7 @@ class OutfitCardSectionState extends State<OutfitCardSection> {
                     '/output-outfit',
                     arguments: {
                       'imageUrl': networkImage,
-                      'description': outfitData?['description'] ?? 'AI-generated outfit perfect for your style and weather',
+                      'description': outfitData?['description'] ?? 'Default Outfit Description'.tr,
                       'queries': queries,
                     },
                   );
@@ -126,7 +126,7 @@ class OutfitCardSectionState extends State<OutfitCardSection> {
                             '/output-outfit',
                             arguments: {
                               'imageUrl': networkImage,
-                              'description': outfitData?['description'] ?? 'AI-generated outfit perfect for your style and weather',
+                              'description': outfitData?['description'] ?? 'Default Outfit Description'.tr,
                               'queries': queries,
                             },
                           );
@@ -138,7 +138,7 @@ class OutfitCardSectionState extends State<OutfitCardSection> {
                               '/output-outfit',
                               arguments: {
                                 'imageUrl': networkImage,
-                                'description': outfitData?['description'] ?? 'AI-generated outfit perfect for your style and weather',
+                                'description': outfitData?['description'] ?? 'Default Outfit Description'.tr,
                                 'queries': queries,
                               },
                             );
@@ -223,7 +223,7 @@ class OutfitCardSectionState extends State<OutfitCardSection> {
           SizedBox(height: 24.h),
           // Loading Text
           Text(
-            'Outfit generating...',
+            'Outfit Generating'.tr,
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w600,
@@ -233,7 +233,7 @@ class OutfitCardSectionState extends State<OutfitCardSection> {
           ),
           SizedBox(height: 8.h),
           Text(
-            'Creating your perfect look',
+            'Creating Perfect Look'.tr,
             style: TextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w400,

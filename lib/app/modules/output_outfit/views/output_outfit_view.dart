@@ -68,7 +68,7 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                 // Header
                 Center(
                   child: Text(
-                    'Today\'s outfits',
+                    'Todays Outfits'.tr,
                     style: TextStyle(
                       color: const Color(0xFF1C1C1E),
                       fontSize: 24.sp,
@@ -81,7 +81,7 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                 SizedBox(height: 6.h),
                 Center(
                   child: Text(
-                    'Your choices shape your AI style feed.',
+                    'Your Choices Shape AI Feed'.tr,
                     style: TextStyle(
                       color: const Color(0xFF101C2C),
                       fontSize: 14.sp,
@@ -172,7 +172,7 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                                 Text(
                                   description.isNotEmpty
                                       ? description
-                                      : 'This is really white shirt and black pant black show which show for this wither. it will match very good for this session  ',
+                                      : 'Default Outfit Description'.tr,
                                   style: TextStyle(
                                     color: const Color(0xFF49494B),
                                     fontSize: 14.sp,
@@ -264,7 +264,7 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Text(
-                    'Try form',
+                    'Try Form'.tr,
                     style: TextStyle(
                       color: const Color(0xFF1C1C1E),
                       fontSize: 20.sp,
@@ -285,29 +285,29 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                     () => Row(
                       children: [
                         _buildChip(
-                          'All',
+                          'All'.tr,
                           isSelected: controller.selectedChip.value == 'All',
                         ),
                         SizedBox(width: 8.w),
                         _buildChip(
-                          'Top',
+                          'Top'.tr,
                           isSelected: controller.selectedChip.value == 'Top',
                         ),
                         SizedBox(width: 8.w),
                         _buildChip(
-                          'bottoms',
+                          'Bottoms'.tr,
                           isSelected:
                               controller.selectedChip.value == 'bottoms',
                         ),
                         SizedBox(width: 8.w),
                         _buildChip(
-                          'Sunglass',
+                          'Sunglass'.tr,
                           isSelected:
                               controller.selectedChip.value == 'Sunglass',
                         ),
                         SizedBox(width: 8.w),
                         _buildChip(
-                          'Bag',
+                          'Bag'.tr,
                           isSelected: controller.selectedChip.value == 'Bag',
                         ),
                       ],
@@ -325,7 +325,7 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                       padding: EdgeInsets.symmetric(vertical: 40.h),
                       child: Center(
                         child: Text(
-                          'No products in this category',
+                          'No Products In Category'.tr,
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 16.sp,
@@ -518,8 +518,8 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                               );
                             } else {
                               Get.snackbar(
-                                'Error',
-                                'Could not open product link',
+                                'Error'.tr,
+                                'Could Not Open Product Link'.tr,
                                 backgroundColor: Colors.red,
                                 colorText: Colors.white,
                                 snackPosition: SnackPosition.BOTTOM,
@@ -571,7 +571,7 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                                 
                                 // Show snackbar
                                 Get.snackbar(
-                                  'Added to Cart',
+                                  'Added to Cart'.tr,
                                   product.name,
                                   snackPosition: SnackPosition.BOTTOM,
                                   duration: const Duration(seconds: 2),

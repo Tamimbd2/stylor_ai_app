@@ -57,7 +57,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                 SizedBox(height: 4.h),
                 // Subtitle
                 Text(
-                  'Lets personalize your AI outfit experience!',
+                  'Personalize AI Outfit Experience'.tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: AppColors.neutral900,
@@ -73,7 +73,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Birth Of Date',
+                      'Birth Of Date'.tr,
                       style: TextStyle(
                         color: AppColors.neutral900,
                         fontSize: 14.sp,
@@ -137,7 +137,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Gender',
+                      'Gender'.tr,
                       style: TextStyle(
                         color: AppColors.neutral900,
                         fontSize: 14.sp,
@@ -152,7 +152,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                         children: [
                           Expanded(
                             child: _GenderButton(
-                              label: 'Male',
+                              label: 'Male'.tr,
                               iconPath: 'assets/svg/male.svg',
                               isSelected:
                                   controller.selectedGender.value == 'Male',
@@ -164,7 +164,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                           SizedBox(width: 12.w),
                           Expanded(
                             child: _GenderButton(
-                              label: 'Female',
+                              label: 'Female'.tr,
                               iconPath: 'assets/svg/female.svg',
                               isSelected:
                                   controller.selectedGender.value == 'Female',
@@ -176,7 +176,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                           SizedBox(width: 12.w),
                           Expanded(
                             child: _GenderButton(
-                              label: 'Other',
+                              label: 'Other'.tr,
                               iconPath: 'assets/svg/othersgender.svg',
                               isSelected:
                                   controller.selectedGender.value == 'Other',
@@ -196,7 +196,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Country',
+                      'Country'.tr,
                       style: TextStyle(
                         color: AppColors.neutral900,
                         fontSize: 14.sp,
@@ -238,7 +238,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                               Expanded(
                                 child: Text(
                                   controller.selectedCountry.value ??
-                                      'Select Country',
+                                      'Select Country'.tr,
                                   style: TextStyle(
                                     color: AppColors.neutral700,
                                     fontSize: 14.sp,
@@ -264,7 +264,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
                 SizedBox(height: 200.h),
                 // Next Button
                 Obx(() => AppButton(
-                  text: controller.isLoading.value ? "Processing..." : "Next",
+                  text: controller.isLoading.value ? 'Loading'.tr : 'Next'.tr,
                   textColor: Colors.white,
                   backgroundColor: AppColors.primaryDark,
                   onPressed: controller.isLoading.value 
@@ -324,7 +324,7 @@ class PersonalizeView extends GetView<PersonalizeController> {
               Padding(
                 padding: EdgeInsets.all(16.w),
                 child: Text(
-                  'Select Country',
+                  'Select Country'.tr,
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w600,

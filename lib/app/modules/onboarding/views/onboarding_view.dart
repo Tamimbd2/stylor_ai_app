@@ -62,7 +62,7 @@ class OnboardingView extends GetView<OnboardingController> {
                           const Spacer(), //
 
                           Text(
-                            'Your AI outfit, instantly.',
+                            'Onboarding Title'.tr,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 24.sp,
@@ -72,7 +72,7 @@ class OnboardingView extends GetView<OnboardingController> {
                           SizedBox(height: 10.h),
 
                           Text(
-                            'Personalized fashion advice, AI-powered outfit\nrecommendations, all in one app.',
+                            'Onboarding Desc'.tr,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 14.sp,
@@ -82,7 +82,7 @@ class OnboardingView extends GetView<OnboardingController> {
                           SizedBox(height: 24.h),
 
                           AppButton(
-                            text: "Get Started",
+                            text: 'Get Started'.tr,
                             textColor: AppColors.primaryLight,
                             backgroundColor: AppColors.primaryDark,
                             onPressed: () {
@@ -92,7 +92,7 @@ class OnboardingView extends GetView<OnboardingController> {
                           SizedBox(height: 12.h),
 
                           AppButton(
-                            text: "Login",
+                            text: 'Sign In'.tr,
                             textColor: Colors.black,
                             backgroundColor: AppColors.primaryLight,
                             withBorder: true,

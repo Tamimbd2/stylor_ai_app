@@ -34,7 +34,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
               /// TITLE
               Text(
-                'Forget Password',
+                'Forgot Password'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: const Color(0xFF1C1C1E),
@@ -49,7 +49,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
               /// SUBTITLE
               Text(
-                'Enter your email account to reset password',
+                'Enter Email to Reset Password'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: const Color(0xFF101C2C),
@@ -67,7 +67,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Email Address',
+                    'Email Address'.tr,
                     style: TextStyle(
                       color: const Color(0xFF1C1C1E),
                       fontSize: 14.sp,
@@ -111,8 +111,8 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                               fontWeight: FontWeight.w400,
                               height: 1.56,
                             ),
-                            decoration: const InputDecoration(
-                              hintText: 'Enter your email',
+                            decoration: InputDecoration(
+                              hintText: 'Enter Email'.tr,
                               border: InputBorder.none,
                               contentPadding: EdgeInsets.zero,
                               isDense: true,
@@ -138,7 +138,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               /// CONTINUE BUTTON
               /// CONTINUE BUTTON
               Obx(() => AppButton(
-                text: controller.isLoading.value ? "Processing..." : "Continue",
+                text: controller.isLoading.value ? 'Loading'.tr : 'Continue'.tr,
                 textColor: Colors.white,
                 backgroundColor: const Color(0xFF060017),
                 onPressed: controller.isLoading.value
@@ -146,7 +146,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                     : () {
                         setState(() {
                           if (controller.emailController.text.isEmpty) {
-                            errorText = 'Please enter your email address';
+                            errorText = 'Email Required'.tr;
                           } else {
                             errorText = null;
                             controller.sendOtp();
@@ -159,7 +159,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
               /// CANCEL BUTTON
               AppButton(
-                text: "Cancel",
+                text: 'Cancel'.tr,
                 textColor: const Color(0xFF060017),
                 backgroundColor: Colors.white,
                 withBorder: true,

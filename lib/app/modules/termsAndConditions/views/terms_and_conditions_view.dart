@@ -21,7 +21,7 @@ class TermsAndConditionsView extends GetView<TermsAndConditionsController> {
           onPressed: () => Get.back(),
         ),
         title: Text(
-          'Terms and condition',
+          'Terms And Condition'.tr,
           style: TextStyle(
             color: Color(0xFF1C1C1E),
             fontSize: 24.sp,

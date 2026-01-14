@@ -39,7 +39,7 @@ class FindSimilarView extends GetView<FindSimilarController> {
                   ),
                   Expanded(
                     child: Text(
-                      'Similar Products',
+                      'Similar Products'.tr,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: const Color(0xFF1C1C1E),
@@ -119,7 +119,7 @@ class FindSimilarView extends GetView<FindSimilarController> {
                         Icon(Icons.search_off, size: 80.sp, color: Colors.grey[300]),
                         SizedBox(height: 16.h),
                         Text(
-                          'No similar products found',
+                          'No similar products found'.tr,
                           style: TextStyle(
                             color: Colors.grey[600],
                             fontSize: 18.sp,
@@ -387,7 +387,7 @@ class FindSimilarView extends GetView<FindSimilarController> {
         ),
         child: Center(
           child: Text(
-            label,
+            label.tr,
             style: TextStyle(
               color: isSelected ? Colors.white : const Color(0xFF1C1C1E),
               fontSize: 14.sp,

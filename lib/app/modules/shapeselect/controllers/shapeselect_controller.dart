@@ -12,7 +12,8 @@ class ShapeselectController extends GetxController {
   final generatedImages = <String>[].obs;
   final generatedOutfits = <Map<String, dynamic>>[].obs; // Store complete outfit data
   final selectedStyle = 'Casual'.obs; // Default option
-  final temperature = 30.5.obs; // Temperature from UI (in Celsius)
+  final temperature = 0.0.obs; // Temperature from UI (in Celsius)
+  final isWeatherLoaded = false.obs; // Track if weather is real or default
   final currentLocation = 'Loading...'.obs; // Observable location
 
   final showOutfitDetails = false.obs;
@@ -72,10 +73,14 @@ class ShapeselectController extends GetxController {
         
         if (city.isNotEmpty && country.isNotEmpty) {
           currentLocation.value = '$city, $country';
+          // Fetch weather for the city
+          fetchWeatherAndSetTemperature(city);
         } else if (city.isNotEmpty) {
            currentLocation.value = city;
+           fetchWeatherAndSetTemperature(city);
         } else if (country.isNotEmpty) {
            currentLocation.value = country;
+           fetchWeatherAndSetTemperature(country);
         } else {
            currentLocation.value = 'Unknown Location';
         }
@@ -83,6 +88,39 @@ class ShapeselectController extends GetxController {
     } catch (e) {
       print('Error getting location: $e');
       currentLocation.value = 'Unknown';
+    }
+  }
+
+  Future<void> fetchWeatherAndSetTemperature(String queryLocation) async {
+    print('🌦️ Fetching weather for $queryLocation...');
+    final weatherData = await _apiService.fetchWeather(queryLocation);
+    
+    if (weatherData != null) {
+      if (weatherData['current'] != null) {
+        final current = weatherData['current'];
+        final tempC = current['temp_c'];
+        
+        if (tempC != null) {
+           double temp = (tempC as num).toDouble();
+           print('🌡️ Weather API returned temp: $temp °C');
+           
+           isWeatherLoaded.value = true;
+
+           // Update temperature via our main update method to trigger dependent logic
+           temperature.value = temp;
+           
+           // Since this is real weather data, we should ensure outfits are generated 
+           // based on this new temperature, even if we already generated for default temp.
+           if (isInitialGenerationDone.value) {
+              print('🌦️ Real weather received ($temp°C), regenerating outfits...');
+              generateOutfit();
+           } else {
+              updateTemperature(temp);
+           } 
+        }
+      }
+    } else {
+      print('⚠️ Failed to fetch weather data for $queryLocation');
     }
   }
 
@@ -98,15 +136,15 @@ class ShapeselectController extends GetxController {
     
     // If this is the first time temperature is being set, generate outfits
     // If this is the first time temperature is being set, generate outfits
+    // Always generate outfits when temperature updates
+    // This allows manual edits or weather updates to refresh suggestions
     if (!isInitialGenerationDone.value) {
       isInitialGenerationDone.value = true;
       print('🎨 First time generation triggered');
-      generateOutfit();
-    } else {
-      // For subsequent updates, DO NOT regenerate automatically
-      // This prevents regeneration when switching tabs or clicking Home again
-      print('ℹ️ Temperature updated to $temp, skipping auto-regeneration.');
     }
+    
+    print('🎨 Temperature updated to $temp, regenerating outfits...');
+    generateOutfit();
   }
 
   Future<void> generateOutfit() async {

@@ -22,7 +22,7 @@ class WardrobeView extends GetView<WardrobeController> {
             SizedBox(height: 40.h),
             // Title
             Text(
-              'Wardrobe',
+              'Wardrobe'.tr,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: AppColors.neutral900,
@@ -37,7 +37,7 @@ class WardrobeView extends GetView<WardrobeController> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 40.w),
               child: Text(
-                'Your choices shape your AI style feed.',
+                'Your Choices Shape AI Feed'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: AppColors.neutral900,
@@ -57,27 +57,27 @@ class WardrobeView extends GetView<WardrobeController> {
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   children: [
                     _buildFilterChip(
-                      'All',
+                      'All'.tr,
                       controller.selectedFilter.value == 'All',
                     ),
                     SizedBox(width: 8.w),
                     _buildFilterChip(
-                      'Top',
+                      'Top'.tr,
                       controller.selectedFilter.value == 'Top',
                     ),
                     SizedBox(width: 8.w),
                     _buildFilterChip(
-                      'bottoms',
+                      'Bottoms'.tr,
                       controller.selectedFilter.value == 'bottoms',
                     ),
                     SizedBox(width: 8.w),
                     _buildFilterChip(
-                      'Sunglass',
+                      'Sunglass'.tr,
                       controller.selectedFilter.value == 'Sunglass',
                     ),
                     SizedBox(width: 8.w),
                     _buildFilterChip(
-                      'Bag',
+                      'Bag'.tr,
                       controller.selectedFilter.value == 'Bag',
                     ),
                   ],
@@ -289,7 +289,7 @@ class WardrobeView extends GetView<WardrobeController> {
                       ),
                       SizedBox(width: 8.w),
                       Text(
-                        'Add new Outfit',
+                        'Add Item'.tr,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18.sp,

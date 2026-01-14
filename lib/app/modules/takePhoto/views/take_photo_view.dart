@@ -37,7 +37,7 @@ class TakePhotoView extends GetView<TakePhotoController> {
                     padding: EdgeInsets.zero,
                   ),
                   Text(
-                    'Take a photo',
+                    'Take a photo'.tr,
                     style: TextStyle(
                       color: Color(0xFF1C1C1E),
                       fontSize: 24.sp,
@@ -76,7 +76,7 @@ class TakePhotoView extends GetView<TakePhotoController> {
                     if (controller.cameraController == null) {
                       return Center(
                         child: Text(
-                          'Camera not available',
+                          'Camera not available'.tr,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16.sp,
@@ -102,7 +102,7 @@ class TakePhotoView extends GetView<TakePhotoController> {
                 child: GestureDetector(
                   onTap: controller.retakePhoto,
                   child: Container(
-                    width: 206.w,
+                    width: 230.w,
                     height: 45.h,
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.48),
@@ -114,7 +114,7 @@ class TakePhotoView extends GetView<TakePhotoController> {
                         Icon(Icons.refresh, color: Colors.white, size: 24.sp),
                         SizedBox(width: 12.w),
                         Text(
-                          'Retake photo',
+                          'Retake photo'.tr,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18.sp,
@@ -158,7 +158,7 @@ class TakePhotoView extends GetView<TakePhotoController> {
                       ),
                       child: Center(
                         child: Text(
-                          'Use this photo',
+                          'Use this photo'.tr,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,

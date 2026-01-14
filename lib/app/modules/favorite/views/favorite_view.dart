@@ -24,7 +24,7 @@ class FavoriteView extends GetView<FavoriteController> {
               SizedBox(height: 40.h),
               // Header
               Text(
-                'Favorite',
+                'Favorites'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: const Color(0xFF1C1C1E),
@@ -36,7 +36,7 @@ class FavoriteView extends GetView<FavoriteController> {
               ),
               SizedBox(height: 6.h),
               Text(
-                'Your choices shape your AI style feed.',
+                'Your Choices Shape AI Feed'.tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: const Color(0xFF101C2C),
@@ -75,7 +75,7 @@ class FavoriteView extends GetView<FavoriteController> {
                             ),
                             child: Center(
                               child: Text(
-                                'Product',
+                                'Products'.tr,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: !controller.isOutfitSelected.value
@@ -117,7 +117,7 @@ class FavoriteView extends GetView<FavoriteController> {
                             ),
                             child: Center(
                               child: Text(
-                                'Outfit',
+                                'Outfits'.tr,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: controller.isOutfitSelected.value
@@ -168,7 +168,7 @@ class FavoriteView extends GetView<FavoriteController> {
               Icon(Icons.favorite_border, size: 80.sp, color: Colors.grey[300]),
               SizedBox(height: 16.h),
               Text(
-                'No favorite products yet',
+                'No Favorite Products Yet'.tr,
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontSize: 18.sp,
@@ -178,7 +178,7 @@ class FavoriteView extends GetView<FavoriteController> {
               ),
               SizedBox(height: 8.h),
               Text(
-                'Start adding products to your favorites',
+                'Start Adding Products'.tr,
                 style: TextStyle(
                   color: Colors.grey[500],
                   fontSize: 14.sp,
@@ -210,7 +210,7 @@ class FavoriteView extends GetView<FavoriteController> {
               Icon(Icons.checkroom_outlined, size: 80.sp, color: Colors.grey[300]),
               SizedBox(height: 16.h),
               Text(
-                'No favorite outfits yet',
+                'No Favorite Outfits Yet'.tr,
                 style: TextStyle(
                   color: Colors.grey[600],
                   fontSize: 18.sp,
@@ -220,7 +220,7 @@ class FavoriteView extends GetView<FavoriteController> {
               ),
               SizedBox(height: 8.h),
               Text(
-                'Start adding outfits to your favorites',
+                'Start Adding Outfits'.tr,
                 style: TextStyle(
                   color: Colors.grey[500],
                   fontSize: 14.sp,
@@ -382,19 +382,19 @@ class FavoriteView extends GetView<FavoriteController> {
                           child: Container(
                             height: 36.h,
                             padding: EdgeInsets.symmetric(
-                              horizontal: 28.w,
+                              horizontal: 24.w,
                               vertical: 5.h,
                             ),
                             decoration: BoxDecoration(
                               color: const Color(0xFF060017),
                               borderRadius: BorderRadius.circular(10.r),
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Text(
                                 'Buy Now',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                   fontFamily: 'Helvetica Neue',
                                   fontWeight: FontWeight.w400,
                                   height: 1.50,
@@ -587,7 +587,7 @@ class FavoriteView extends GetView<FavoriteController> {
                         ),
                         child: Center(
                           child: Text(
-                            'Find Similar',
+                            'Find Similar'.tr,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 16.sp,

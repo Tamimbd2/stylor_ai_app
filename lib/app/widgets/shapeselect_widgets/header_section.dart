@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import '../../../core/color.dart';
 import 'weather_location_card.dart';
 
@@ -13,7 +14,7 @@ class HeaderSection extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'Today\'s outfits',
+            'Todays Outfits'.tr,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: AppColors.neutral900,
@@ -25,7 +26,7 @@ class HeaderSection extends StatelessWidget {
           ),
           SizedBox(height: 8.h),
           Text(
-            'Your choices shape your AI style feed.',
+            'Your Choices Shape AI Feed'.tr,
             textAlign: TextAlign.center,
             style: TextStyle(
               color: AppColors.neutral900,

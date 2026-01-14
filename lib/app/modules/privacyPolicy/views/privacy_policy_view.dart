@@ -19,7 +19,7 @@ class PrivacyPolicyView extends GetView<PrivacyPolicyController> {
         ),
         centerTitle: true,
         title: Text(
-          "Privacy Policy",
+          "Privacy Policy".tr,
           style: TextStyle(
             color: const Color(0xFF1C1C1E),
             fontSize: 22.sp,

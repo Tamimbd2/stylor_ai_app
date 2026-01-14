@@ -19,6 +19,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Read saved locale
+    final box = GetStorage();
+    final String? lang = box.read('language_code');
+    final String? country = box.read('country_code');
+    
+    Locale initialLocale;
+    if (lang != null && country != null) {
+      initialLocale = Locale(lang, country);
+    } else {
+      initialLocale = const Locale('en', 'US');
+    }
+
     return ScreenUtilInit(
       designSize: const Size(375, 812), // Figma / standard mobile size
       minTextAdapt: true,
@@ -30,7 +42,7 @@ class MyApp extends StatelessWidget {
 
           // Localization Configuration
           translations: AppTranslations(),
-          locale: const Locale('en', 'US'),
+          locale: initialLocale,
           fallbackLocale: const Locale('en', 'US'),
 
           theme: ThemeData(

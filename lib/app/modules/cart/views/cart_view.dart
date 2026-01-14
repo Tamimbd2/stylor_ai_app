@@ -18,7 +18,7 @@ class CartView extends GetView<CartController> {
             SizedBox(height: 40.h),
             // Header
             Text(
-              'Cart',
+              'Cart'.tr,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: AppColors.neutral900,
@@ -30,7 +30,7 @@ class CartView extends GetView<CartController> {
             ),
             SizedBox(height: 6.h),
             Text(
-              'Your choices shape your AI style feed.',
+              'Your Choices Shape AI Feed'.tr,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: AppColors.neutral900,
@@ -57,7 +57,7 @@ class CartView extends GetView<CartController> {
                         ),
                         SizedBox(height: 16.h),
                         Text(
-                          'Your cart is empty',
+                          'Empty Cart'.tr,
                           style: TextStyle(
                             color: AppColors.neutral600,
                             fontSize: 18.sp,
@@ -67,7 +67,7 @@ class CartView extends GetView<CartController> {
                         ),
                         SizedBox(height: 8.h),
                         Text(
-                          'Add some products to get started',
+                          'Cart Empty Message'.tr,
                           style: TextStyle(
                             color: AppColors.neutral500,
                             fontSize: 14.sp,
@@ -230,8 +230,8 @@ class CartView extends GetView<CartController> {
                           );
                         } else {
                           Get.snackbar(
-                            'Error',
-                            'Could not open product link',
+                            'Error'.tr,
+                            'Could Not Open Product Link'.tr,
                             snackPosition: SnackPosition.BOTTOM,
                           );
                         }
@@ -248,7 +248,7 @@ class CartView extends GetView<CartController> {
                         ),
                         child: Center(
                           child: Text(
-                            'Buy Now',
+                            'Buy Now'.tr,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 16.sp,

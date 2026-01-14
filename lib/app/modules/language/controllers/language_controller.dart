@@ -34,9 +34,10 @@ class LanguageController extends GetxController {
     
     // Save to storage
     _storage.write('language_code', languageCode);
+    _storage.write('country_code', countryCode);
     _storage.write('language_name', languageName);
     
-    print('Language updated: $languageName ($languageCode)');
+    print('Language updated: $languageName ($languageCode-$countryCode)');
   }
   
   // Get language display name from code

@@ -15,30 +15,55 @@ class WeatherLocationCard extends StatefulWidget {
 class _WeatherLocationCardState extends State<WeatherLocationCard> {
   late TextEditingController _tempController;
   final RxBool _isEditing = false.obs;
-  double _currentTemp = 30.5; // Default temperature in Celsius
+  double _currentTemp = 0.0; // Default temperature
+  Worker? _tempWorker;
 
   @override
   void initState() {
     super.initState();
-    // Initialize with default temperature
-    _tempController = TextEditingController(text: '${_currentTemp} °C (${(_currentTemp * 9/5 + 32).toStringAsFixed(0)}°F)');
+    final controller = Get.find<ShapeselectController>();
     
-    print('🌡️ WeatherLocationCard initState: _currentTemp = $_currentTemp');
-    print('🌡️ WeatherLocationCard initState: _tempController.text = ${_tempController.text}');
+    // Initialize with current controller value if available
+    _currentTemp = controller.temperature.value;
     
-    // Update controller with initial temperature after widget is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      try {
-        print('🌡️ Updating ShapeselectController with temperature: $_currentTemp');
-        Get.find<ShapeselectController>().updateTemperature(_currentTemp);
-      } catch (e) {
-        print('❌ Error updating initial temperature: $e');
+    if (controller.isWeatherLoaded.value) {
+       _tempController = TextEditingController(text: '${_currentTemp} °C (${(_currentTemp * 9/5 + 32).toStringAsFixed(0)}°F)');
+    } else {
+       _tempController = TextEditingController(text: 'Loading...');
+    }
+    
+    print('🌡️ WeatherLocationCard initState: _currentTemp = $_currentTemp, loaded: ${controller.isWeatherLoaded.value}');
+    
+    // Listen for temperature changes from API
+    _tempWorker = ever(controller.temperature, (double temp) {
+      if (!_isEditing.value) {
+        print('🌡️ WeatherLocationCard Received Update: $temp');
+        _currentTemp = temp;
+        // Update text controller only if valid data
+        if (controller.isWeatherLoaded.value) {
+            _tempController.text = '${temp} °C (${(temp * 9/5 + 32).toStringAsFixed(0)}°F)';
+        }
+        // Trigger rebuild to update UI if showing text
+        if (mounted) setState(() {});
       }
     });
+
+    // Listen for loading state change
+    ever(controller.isWeatherLoaded, (bool loaded) {
+       if (loaded && !_isEditing.value) {
+          double temp = controller.temperature.value;
+          _currentTemp = temp;
+          _tempController.text = '${temp} °C (${(temp * 9/5 + 32).toStringAsFixed(0)}°F)';
+          if (mounted) setState(() {});
+       }
+    });
+    
+    // Do NOT push our default 0.0 to controller. Wait for weather.
   }
 
   @override
   void dispose() {
+    _tempWorker?.dispose();
     _tempController.dispose();
     super.dispose();
   }
@@ -127,9 +152,14 @@ class _WeatherLocationCardState extends State<WeatherLocationCard> {
               );
             }),
           ),
-          Obx(
-            () => GestureDetector(
+          Obx(() {
+             final controller = Get.find<ShapeselectController>();
+             final isLoaded = controller.isWeatherLoaded.value;
+             
+             return GestureDetector(
               onTap: () {
+                if (!isLoaded) return; // Disable if not loaded
+                
                 if (_isEditing.value) {
                   _isEditing.value = false;
                   // Update controller
@@ -175,13 +205,13 @@ class _WeatherLocationCardState extends State<WeatherLocationCard> {
                   width: 14.w,
                   height: 14.h,
                   colorFilter: ColorFilter.mode(
-                    _isEditing.value ? Colors.white : AppColors.neutral700,
+                    !isLoaded ? Colors.grey : (_isEditing.value ? Colors.white : AppColors.neutral700),
                     BlendMode.srcIn,
                   ),
                 ),
               ),
-            ),
-          ),
+            );
+          }),
         ],
       ),
     );

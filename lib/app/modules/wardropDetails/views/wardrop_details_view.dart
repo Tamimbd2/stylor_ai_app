@@ -35,7 +35,7 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
                     borderRadius: BorderRadius.circular(16.r),
                   ),
                   title: Text(
-                    'Delete Item',
+                    'Delete Item'.tr,
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w700,
@@ -43,7 +43,7 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
                     ),
                   ),
                   content: Text(
-                    'Are you sure you want to delete this item?',
+                    'Delete Item Confirmation'.tr,
                     style: TextStyle(
                       fontSize: 16.sp,
                       color: const Color(0xFF1C1C1E),
@@ -52,7 +52,7 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
                   actions: [
                     TextButton(
                       child: Text(
-                        'Cancel',
+                        'Cancel'.tr,
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 16.sp,
@@ -62,7 +62,7 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
                     ),
                     TextButton(
                       child: Text(
-                        'Delete',
+                        'Delete'.tr,
                         style: TextStyle(
                           color: Colors.red,
                           fontSize: 16.sp,
@@ -82,7 +82,7 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
           SizedBox(width: 12.w),
         ],
         title: Text(
-          'Details',
+          'Details'.tr,
           style: TextStyle(
             fontSize: 24.sp,
             fontWeight: FontWeight.w700,
@@ -303,7 +303,7 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Text(
-                'Item your  wardrobe',
+                'Item Your Wardrobe'.tr,
                 style: TextStyle(
                   color: const Color(0xFF1C1C1E),
                   fontSize: 20.sp,
@@ -337,7 +337,7 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Text(
-                'Relevant To purchase',
+                'Relevant To Purchase'.tr,
                 style: TextStyle(
                   color: const Color(0xFF1C1C1E),
                   fontSize: 20.sp,
@@ -381,7 +381,7 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
                     child: Padding(
                       padding: EdgeInsets.all(32.h),
                       child: Text(
-                        'No products found',
+                        'No Products Found'.tr,
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 16.sp,
@@ -646,7 +646,7 @@ Widget _buildPurchaseItem(
                     ),
                     child: Center(
                       child: Text(
-                        'Buy Now',
+                        'Buy Now'.tr,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16.sp,

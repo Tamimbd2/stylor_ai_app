@@ -28,7 +28,7 @@ class FilterScreenView extends GetView<FilterScreenController> {
                 SizedBox(height: 40.h),
                 // Title
                 Text(
-                  'Define your fashion DNA.',
+                  'Define Your Fashion DNA'.tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: AppColors.neutral900,
@@ -41,7 +41,7 @@ class FilterScreenView extends GetView<FilterScreenController> {
                 SizedBox(height: 10.h),
                 // Subtitle
                 Text(
-                  'Your choices shape your AI style feed.',
+                  'Your Choices Shape AI Feed'.tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: AppColors.neutral900,
@@ -53,7 +53,7 @@ class FilterScreenView extends GetView<FilterScreenController> {
                 ),
                 SizedBox(height: 40.h),
                 // Season Section
-                _buildSectionTitle('Season'),
+                _buildSectionTitle('Season'.tr),
                 SizedBox(height: 8.h),
                 Obx(
                   () => GridView.count(
@@ -65,22 +65,22 @@ class FilterScreenView extends GetView<FilterScreenController> {
                     childAspectRatio: 2.5,
                     children: [
                       _FilterChip(
-                        label: 'Spring',
+                        label: 'Spring'.tr,
                         isSelected: controller.selectedSeason.contains('Spring'),
                         onTap: () => controller.toggleSeason('Spring'),
                       ),
                       _FilterChip(
-                        label: 'Summer',
+                        label: 'Summer'.tr,
                         isSelected: controller.selectedSeason.contains('Summer'),
                         onTap: () => controller.toggleSeason('Summer'),
                       ),
                       _FilterChip(
-                        label: 'Winter',
+                        label: 'Winter'.tr,
                         isSelected: controller.selectedSeason.contains('Winter'),
                         onTap: () => controller.toggleSeason('Winter'),
                       ),
                       _FilterChip(
-                        label: 'Autumn',
+                        label: 'Autumn'.tr,
                         isSelected: controller.selectedSeason.contains('Autumn'),
                         onTap: () => controller.toggleSeason('Autumn'),
                       ),
@@ -89,7 +89,7 @@ class FilterScreenView extends GetView<FilterScreenController> {
                 ),
                 SizedBox(height: 24.h),
                 // Style Section
-                _buildSectionTitle('Style'),
+                _buildSectionTitle('Style'.tr),
                 SizedBox(height: 8.h),
                 Obx(
                   () => GridView.count(
@@ -101,51 +101,51 @@ class FilterScreenView extends GetView<FilterScreenController> {
                     childAspectRatio: 2.5,
                     children: [
                       _FilterChip(
-                        label: 'Casual',
+                        label: 'Casual'.tr,
                         isSelected: controller.selectedStyle.contains('Casual'),
                         onTap: () => controller.toggleStyle('Casual'),
                       ),
                       _FilterChip(
-                        label: 'Smart Casual',
+                        label: 'Smart Casual'.tr,
                         isSelected:
                             controller.selectedStyle.contains('Smart Casual'),
                         onTap: () => controller.toggleStyle('Smart Casual'),
                       ),
                       _FilterChip(
-                        label: 'Formal',
+                        label: 'Formal'.tr,
                         isSelected: controller.selectedStyle.contains('Formal'),
                         onTap: () => controller.toggleStyle('Formal'),
                       ),
                       _FilterChip(
-                        label: 'Streetwear',
+                        label: 'Streetwear'.tr,
                         isSelected:
                             controller.selectedStyle.contains('Streetwear'),
                         onTap: () => controller.toggleStyle('Streetwear'),
                       ),
                       _FilterChip(
-                        label: 'Minimalist',
+                        label: 'Minimalist'.tr,
                         isSelected:
                             controller.selectedStyle.contains('Minimalist'),
                         onTap: () => controller.toggleStyle('Minimalist'),
                       ),
                       _FilterChip(
-                        label: 'Party',
+                        label: 'Party'.tr,
                         isSelected: controller.selectedStyle.contains('Party'),
                         onTap: () => controller.toggleStyle('Party'),
                       ),
                       _FilterChip(
-                        label: 'Artistic',
+                        label: 'Artistic'.tr,
                         isSelected:
                             controller.selectedStyle.contains('Artistic'),
                         onTap: () => controller.toggleStyle('Artistic'),
                       ),
                       _FilterChip(
-                        label: 'Vintage',
+                        label: 'Vintage'.tr,
                         isSelected: controller.selectedStyle.contains('Vintage'),
                         onTap: () => controller.toggleStyle('Vintage'),
                       ),
                       _FilterChip(
-                        label: 'Sporty',
+                        label: 'Sporty'.tr,
                         isSelected: controller.selectedStyle.contains('Sporty'),
                         onTap: () => controller.toggleStyle('Sporty'),
                       ),
@@ -154,7 +154,7 @@ class FilterScreenView extends GetView<FilterScreenController> {
                 ),
                 SizedBox(height: 24.h),
                 // Preferences Color Section
-                _buildSectionTitle('Preferences Color'),
+                _buildSectionTitle('Preferences Color'.tr),
                 SizedBox(height: 8.h),
                 Obx(
                   () => GridView.count(
@@ -166,53 +166,53 @@ class FilterScreenView extends GetView<FilterScreenController> {
                     childAspectRatio: 2.5,
                     children: [
                       _FilterChip(
-                        label: 'Neutrals',
+                        label: 'Neutrals'.tr,
                         isSelected:
                             controller.selectedColor.contains('Neutrals'),
                         onTap: () => controller.toggleColor('Neutrals'),
                       ),
                       _FilterChip(
-                        label: 'Warm Tones',
+                        label: 'Warm Tones'.tr,
                         isSelected:
                             controller.selectedColor.contains('Warm Tones'),
                         onTap: () => controller.toggleColor('Warm Tones'),
                       ),
                       _FilterChip(
-                        label: 'Cool Tones',
+                        label: 'Cool Tones'.tr,
                         isSelected:
                             controller.selectedColor.contains('Cool Tones'),
                         onTap: () => controller.toggleColor('Cool Tones'),
                       ),
                       _FilterChip(
-                        label: 'Earthy Tones',
+                        label: 'Earthy Tones'.tr,
                         isSelected:
                             controller.selectedColor.contains('Earthy Tones'),
                         onTap: () => controller.toggleColor('Earthy Tones'),
                       ),
                       _FilterChip(
-                        label: 'Pastels',
+                        label: 'Pastels'.tr,
                         isSelected: controller.selectedColor.contains('Pastels'),
                         onTap: () => controller.toggleColor('Pastels'),
                       ),
                       _FilterChip(
-                        label: 'Vibrant',
+                        label: 'Vibrant'.tr,
                         isSelected: controller.selectedColor.contains('Vibrant'),
                         onTap: () => controller.toggleColor('Vibrant'),
                       ),
                       _FilterChip(
-                        label: 'Monochrome',
+                        label: 'Monochrome'.tr,
                         isSelected:
                             controller.selectedColor.contains('Monochrome'),
                         onTap: () => controller.toggleColor('Monochrome'),
                       ),
                       _FilterChip(
-                        label: 'Jewel Tones',
+                        label: 'Jewel Tones'.tr,
                         isSelected:
                             controller.selectedColor.contains('Jewel Tones'),
                         onTap: () => controller.toggleColor('Jewel Tones'),
                       ),
                       _FilterChip(
-                        label: 'Metallics',
+                        label: 'Metallics'.tr,
                         isSelected:
                             controller.selectedColor.contains('Metallics'),
                         onTap: () => controller.toggleColor('Metallics'),
@@ -222,7 +222,7 @@ class FilterScreenView extends GetView<FilterScreenController> {
                 ),
                 SizedBox(height: 24.h),
                 // Body Type Section
-                _buildSectionTitle('Body Type'),
+                _buildSectionTitle('Body Type'.tr),
                 SizedBox(height: 8.h),
                 Obx(
                   () => GridView.count(
@@ -234,35 +234,35 @@ class FilterScreenView extends GetView<FilterScreenController> {
                     childAspectRatio: 2.5,
                     children: [
                       _FilterChip(
-                        label: 'Curvy',
+                        label: 'Curvy'.tr,
                         isSelected:
                             controller.selectedBodyType.value == 'Curvy',
                         onTap: () => controller.selectBodyType('Curvy'),
                       ),
                       _FilterChip(
-                        label: 'Athletic',
+                        label: 'Athletic'.tr,
                         isSelected:
                             controller.selectedBodyType.value == 'Athletic',
                         onTap: () => controller.selectBodyType('Athletic'),
                       ),
                       _FilterChip(
-                        label: 'Slim',
+                        label: 'Slim'.tr,
                         isSelected: controller.selectedBodyType.value == 'Slim',
                         onTap: () => controller.selectBodyType('Slim'),
                       ),
                       _FilterChip(
-                        label: 'Pear',
+                        label: 'Pear'.tr,
                         isSelected: controller.selectedBodyType.value == 'Pear',
                         onTap: () => controller.selectBodyType('Pear'),
                       ),
                       _FilterChip(
-                        label: 'Rectangle',
+                        label: 'Rectangle'.tr,
                         isSelected:
                             controller.selectedBodyType.value == 'Rectangle',
                         onTap: () => controller.selectBodyType('Rectangle'),
                       ),
                       _FilterChip(
-                        label: 'Round',
+                        label: 'Round'.tr,
                         isSelected:
                             controller.selectedBodyType.value == 'Round',
                         onTap: () => controller.selectBodyType('Round'),
@@ -272,7 +272,7 @@ class FilterScreenView extends GetView<FilterScreenController> {
                 ),
                 SizedBox(height: 24.h),
                 // Skin Tone Section
-                _buildSectionTitle('Skin Tone'),
+                _buildSectionTitle('Skin Tone'.tr),
                 SizedBox(height: 8.h),
                 Obx(
                   () => GridView.count(
@@ -284,29 +284,29 @@ class FilterScreenView extends GetView<FilterScreenController> {
                     childAspectRatio: 2.5,
                     children: [
                       _FilterChip(
-                        label: 'Fair',
+                        label: 'Fair'.tr,
                         isSelected: controller.selectedSkinTone.value == 'Fair',
                         onTap: () => controller.selectSkinTone('Fair'),
                       ),
                       _FilterChip(
-                        label: 'Light-Medium',
+                        label: 'Light-Medium'.tr,
                         isSelected:
                             controller.selectedSkinTone.value == 'Light-Medium',
                         onTap: () => controller.selectSkinTone('Light-Medium'),
                       ),
                       _FilterChip(
-                        label: 'Medium',
+                        label: 'Medium'.tr,
                         isSelected:
                             controller.selectedSkinTone.value == 'Medium',
                         onTap: () => controller.selectSkinTone('Medium'),
                       ),
                       _FilterChip(
-                        label: 'Dark',
+                        label: 'Dark'.tr,
                         isSelected: controller.selectedSkinTone.value == 'Dark',
                         onTap: () => controller.selectSkinTone('Dark'),
                       ),
                       _FilterChip(
-                        label: 'Medium-Dark',
+                        label: 'Medium-Dark'.tr,
                         isSelected:
                             controller.selectedSkinTone.value == 'Medium-Dark',
                         onTap: () => controller.selectSkinTone('Medium-Dark'),
@@ -317,7 +317,7 @@ class FilterScreenView extends GetView<FilterScreenController> {
                 SizedBox(height: 40.h),
                 // See Outfit Matches Button
                 Obx(() => AppButton(
-                  text: controller.isLoading.value ? "Processing..." : "See Outfit Matches",
+                  text: controller.isLoading.value ? 'Loading'.tr : 'See Outfit Matches'.tr,
                   textColor: Colors.white,
                   backgroundColor: AppColors.primaryDark,
                   onPressed: controller.isLoading.value 

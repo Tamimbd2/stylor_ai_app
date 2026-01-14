@@ -20,7 +20,7 @@ class LanguageView extends GetView<LanguageController> {
           onPressed: () => Get.back(),
         ),
         title: Text(
-          'language_title'.tr,
+          'Language Title'.tr,
           style: const TextStyle(
             color: Color(0xFF1C1C1E),
             fontSize: 24,
@@ -39,28 +39,28 @@ class LanguageView extends GetView<LanguageController> {
               const SizedBox(height: 32),
               // English Option
               _buildLanguageOption(
-                language: 'English',
+                language: 'English'.tr,
                 isSelected: controller.selectedLanguage.value == 'en',
                 onTap: () => controller.updateLanguage('en', 'US'),
               ),
               const SizedBox(height: 16),
               // Dutch Option
               _buildLanguageOption(
-                language: 'Dutch',
+                language: 'Dutch'.tr,
                 isSelected: controller.selectedLanguage.value == 'nl',
                 onTap: () => controller.updateLanguage('nl', 'NL'),
               ),
               const SizedBox(height: 16),
               // French Option
               _buildLanguageOption(
-                language: 'French',
+                language: 'French'.tr,
                 isSelected: controller.selectedLanguage.value == 'fr',
                 onTap: () => controller.updateLanguage('fr', 'FR'),
               ),
               const SizedBox(height: 24),
               // Info Text
               Text(
-                'change_language_desc'.tr,
+                'Change Language Desc'.tr,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Color(0xFF49494B),
@@ -86,7 +86,7 @@ class LanguageView extends GetView<LanguageController> {
                     elevation: 0,
                   ),
                   child: Text(
-                    'save_as'.tr,
+                    'Save As'.tr,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
