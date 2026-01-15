@@ -5,8 +5,6 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:lottie/lottie.dart';
 import '../../modules/shapeselect/controllers/shapeselect_controller.dart';
-
-
 import 'common_buttons.dart';
 import 'outfit_card.dart';
 

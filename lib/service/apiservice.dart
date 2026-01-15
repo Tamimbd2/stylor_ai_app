@@ -1101,7 +1101,7 @@ class ApiService extends GetConnect {
       // Encode location to be URL safe
       final encodedLocation = Uri.encodeComponent(location);
       // Use the provided API URL directly
-      final url = 'https://api.weatherapi.com/v1/current.json?key=eaa3ca4a88f34cefb50152201261301&q=$encodedLocation';
+      final url = 'https://api.weatherapi.com/v1/current.json?key=89f5861539b24f3fa4961656261401&q=$encodedLocation';
       
       print('🌤️ Fetching Weather for: $location');
       
