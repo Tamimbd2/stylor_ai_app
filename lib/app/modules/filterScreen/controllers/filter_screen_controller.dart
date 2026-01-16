@@ -14,6 +14,7 @@ class FilterScreenController extends GetxController {
   // Single selection
   final selectedBodyType = Rx<String>('');
   final selectedSkinTone = Rx<String>('');
+  final selectedSpecificColor = Rx<String>('');
 
   // Arguments from previous screen
   String? birthdate;
@@ -71,6 +72,11 @@ class FilterScreenController extends GetxController {
     selectedSkinTone.value = skinTone;
   }
 
+  // Single selection for specific color
+  void selectSpecificColor(String color) {
+    selectedSpecificColor.value = color;
+  }
+
   Future<void> submitPreferences() async {
     print("Submit button clicked");
 
@@ -92,6 +98,7 @@ class FilterScreenController extends GetxController {
       "preferencesColor": selectedColor.toList(),
       "bodyType": selectedBodyType.value,
       "skinTone": selectedSkinTone.value,
+      "color": selectedSpecificColor.value,
     };
 
     print("Submitting full profile update...");

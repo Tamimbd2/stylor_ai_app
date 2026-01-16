@@ -221,6 +221,30 @@ class FilterScreenView extends GetView<FilterScreenController> {
                   ),
                 ),
                 SizedBox(height: 24.h),
+                // Color Section
+                _buildSectionTitle('Color'.tr),
+                SizedBox(height: 12.h),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      _buildColorCircle('Black', Colors.black),
+                      _buildColorCircle('White', Colors.white),
+                      _buildColorCircle('Gray', Colors.grey),
+                      _buildColorCircle('Red', Colors.red),
+                      _buildColorCircle('Indigo', Colors.indigo),
+                      _buildColorCircle('Orange', Colors.orange),
+                      _buildColorCircle('Yellow', Colors.yellow),
+                      _buildColorCircle('Brown', Colors.brown),
+                      _buildColorCircle('Green', Colors.green),
+                      _buildColorCircle('Blue', Colors.blue),
+                      _buildColorCircle('Violet', const Color(0xFFEE82EE)),
+                      _buildColorCircle('Pink', Colors.pink),
+                      _buildColorCircle('Purple', Colors.purple),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 24.h),
                 // Body Type Section
                 _buildSectionTitle('Body Type'.tr),
                 SizedBox(height: 8.h),
@@ -347,6 +371,37 @@ class FilterScreenView extends GetView<FilterScreenController> {
         ),
       ),
     );
+  }
+
+  Widget _buildColorCircle(String colorName, Color color) {
+    return Obx(() {
+      final isSelected = controller.selectedSpecificColor.value == colorName;
+      return GestureDetector(
+        onTap: () => controller.selectSpecificColor(colorName),
+        child: Container(
+          margin: EdgeInsets.only(right: 16.w),
+          padding: EdgeInsets.all(2.w),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: isSelected ? AppColors.neutral900 : Colors.transparent,
+              width: 1.5,
+            ),
+          ),
+          child: Container(
+            width: 42.w,
+            height: 42.h,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+              border: color == Colors.white
+                  ? Border.all(color: AppColors.neutral300, width: 1)
+                  : null,
+            ),
+          ),
+        ),
+      );
+    });
   }
 }
 

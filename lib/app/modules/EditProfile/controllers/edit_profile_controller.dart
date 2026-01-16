@@ -118,6 +118,11 @@ class EditProfileController extends GetxController {
       if (prefs.skinTone != null && prefs.skinTone!.isNotEmpty) {
         selectedSkinTone.value = prefs.skinTone!;
       }
+
+      // Load specific color
+      if (prefs.color != null && prefs.color!.isNotEmpty) {
+        selectedSpecificColor.value = prefs.color!;
+      }
     }
     
     print('Profile loaded successfully');
@@ -144,9 +149,9 @@ class EditProfileController extends GetxController {
   final selectedStyle = <String>[].obs;
   final selectedColor = <String>[].obs;
 
-  // BodyType, SkinTone (Single)
   final selectedBodyType = ''.obs;
   final selectedSkinTone = ''.obs;
+  final selectedSpecificColor = ''.obs;
 
   // List of countries
   final countries = <String>[
@@ -191,11 +196,8 @@ class EditProfileController extends GetxController {
   }
 
   void toggleStyle(String v) {
-    if (selectedStyle.contains(v)) {
-      selectedStyle.remove(v);
-    } else {
-      selectedStyle.add(v);
-    }
+    selectedStyle.clear();
+    selectedStyle.add(v);
   }
 
   void toggleColor(String v) {
@@ -207,6 +209,7 @@ class EditProfileController extends GetxController {
   }
   void selectBodyType(String v) => selectedBodyType.value = v;
   void selectSkinTone(String v) => selectedSkinTone.value = v;
+  void selectSpecificColor(String v) => selectedSpecificColor.value = v;
 
   String getCountryFlag(String country) {
     const countryFlags = {
@@ -301,6 +304,7 @@ class EditProfileController extends GetxController {
         'preferencesColor': selectedColor.toList(),
         'bodyType': selectedBodyType.value,
         'skinTone': selectedSkinTone.value,
+        'color': selectedSpecificColor.value,
       };
 
       print('===== Saving Profile =====');

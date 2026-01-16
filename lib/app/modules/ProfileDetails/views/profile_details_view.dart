@@ -147,11 +147,11 @@ class ProfileDetailsView extends StatelessWidget {
               /// ======================
               /// Switch Account
               /// ======================
-              _listTileCard(
-                iconPath: 'assets/svg/sw.svg',
-                title: 'Switch Account'.tr,
-                hasTrailing: true,
-              ),
+              // _listTileCard(
+              //   iconPath: 'assets/svg/sw.svg',
+              //   title: 'Switch Account'.tr,
+              //   hasTrailing: true,
+              // ),
 
               SizedBox(height: 20.h),
 

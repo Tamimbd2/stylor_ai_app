@@ -8,9 +8,9 @@
     
     <application
         android:usesCleartextTraffic="true"
-        android:label="outfit"
+        android:label="STYLOR AI"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
         android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".MainActivity"

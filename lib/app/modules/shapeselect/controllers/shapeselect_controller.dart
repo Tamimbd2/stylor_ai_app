@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import '../../../../service/apiservice.dart';
+import '../../../controllers/user_controller.dart';
 import '../../favorite/controllers/favorite_controller.dart';
+
 
 class ShapeselectController extends GetxController {
   final ApiService _apiService = Get.put(ApiService());
@@ -23,7 +25,32 @@ class ShapeselectController extends GetxController {
   void onInit() {
     super.onInit();
     getLocation(); // Fetch location on init
+    _loadUserReference();
     // Don't auto-generate here, wait for UI to set temperature first
+  }
+
+  void _loadUserReference() async {
+     try {
+       final UserController userController = Get.find<UserController>();
+       // Ensure user data is loaded if not already
+       if (userController.user.value == null) {
+          await userController.fetchUser();
+       }
+       
+       final user = userController.user.value;
+       if (user?.fashionPreferences?.style != null) {
+          final style = user!.fashionPreferences!.style;
+          // Handle both List and String cases from API
+          if (style is List && style.isNotEmpty) {
+            selectedStyle.value = style.first.toString();
+          } else if (style is String) {
+            selectedStyle.value = style;
+          }
+          print('🎨 Loaded user preferred style: ${selectedStyle.value}');
+       }
+     } catch (e) {
+       print('Error loading user reference style: $e');
+     }
   }
   
   Future<void> getLocation() async {

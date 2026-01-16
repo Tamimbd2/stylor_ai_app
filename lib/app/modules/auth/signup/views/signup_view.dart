@@ -363,16 +363,16 @@ class _SignupViewState extends State<SignupView> {
                           }
                         },
                       ),
-                      SizedBox(width: 16.w),
-                      _buildSocialButton(
-                        icon: SvgPicture.asset(
-                          'assets/svg/apple.svg',
-                          width: 22.w,
-                          height: 22.w,
-                        ),
-                        label: 'Apple',
-                        onTap: () => () {},
-                      ),
+                      // SizedBox(width: 16.w),
+                      // _buildSocialButton(
+                      //   icon: SvgPicture.asset(
+                      //     'assets/svg/apple.svg',
+                      //     width: 22.w,
+                      //     height: 22.w,
+                      //   ),
+                      //   label: 'Apple',
+                      //   onTap: () => () {},
+                      // ),
                     ],
                   ),
 

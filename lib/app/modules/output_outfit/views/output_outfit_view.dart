@@ -286,28 +286,33 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                       children: [
                         _buildChip(
                           'All'.tr,
+                          onTap: () => controller.selectChip('All'),
                           isSelected: controller.selectedChip.value == 'All',
                         ),
                         SizedBox(width: 8.w),
                         _buildChip(
                           'Top'.tr,
+                          onTap: () => controller.selectChip('Top'),
                           isSelected: controller.selectedChip.value == 'Top',
                         ),
                         SizedBox(width: 8.w),
                         _buildChip(
                           'Bottoms'.tr,
+                          onTap: () => controller.selectChip('bottoms'),
                           isSelected:
                               controller.selectedChip.value == 'bottoms',
                         ),
                         SizedBox(width: 8.w),
                         _buildChip(
                           'Sunglass'.tr,
+                          onTap: () => controller.selectChip('Sunglass'),
                           isSelected:
                               controller.selectedChip.value == 'Sunglass',
                         ),
                         SizedBox(width: 8.w),
                         _buildChip(
                           'Bag'.tr,
+                          onTap: () => controller.selectChip('Bag'),
                           isSelected: controller.selectedChip.value == 'Bag',
                         ),
                       ],
@@ -353,9 +358,9 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
     );
   }
 
-  Widget _buildChip(String label, {bool isSelected = false}) {
+  Widget _buildChip(String label, {required VoidCallback onTap, bool isSelected = false}) {
     return GestureDetector(
-      onTap: () => controller.selectChip(label),
+      onTap: onTap,
       child: Container(
         height: 36.h,
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),

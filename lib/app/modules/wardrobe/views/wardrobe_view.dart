@@ -58,27 +58,32 @@ class WardrobeView extends GetView<WardrobeController> {
                   children: [
                     _buildFilterChip(
                       'All'.tr,
-                      controller.selectedFilter.value == 'All',
+                      onTap: () => controller.selectFilter('All'),
+                      isSelected: controller.selectedFilter.value == 'All',
                     ),
                     SizedBox(width: 8.w),
                     _buildFilterChip(
                       'Top'.tr,
-                      controller.selectedFilter.value == 'Top',
+                      onTap: () => controller.selectFilter('Top'),
+                      isSelected: controller.selectedFilter.value == 'Top',
                     ),
                     SizedBox(width: 8.w),
                     _buildFilterChip(
                       'Bottoms'.tr,
-                      controller.selectedFilter.value == 'bottoms',
+                      onTap: () => controller.selectFilter('bottoms'),
+                      isSelected: controller.selectedFilter.value == 'bottoms',
                     ),
                     SizedBox(width: 8.w),
                     _buildFilterChip(
                       'Sunglass'.tr,
-                      controller.selectedFilter.value == 'Sunglass',
+                      onTap: () => controller.selectFilter('Sunglass'),
+                      isSelected: controller.selectedFilter.value == 'Sunglass',
                     ),
                     SizedBox(width: 8.w),
                     _buildFilterChip(
                       'Bag'.tr,
-                      controller.selectedFilter.value == 'Bag',
+                      onTap: () => controller.selectFilter('Bag'),
+                      isSelected: controller.selectedFilter.value == 'Bag',
                     ),
                   ],
                 ),
@@ -309,9 +314,9 @@ class WardrobeView extends GetView<WardrobeController> {
     );
   }
 
-  Widget _buildFilterChip(String label, bool isSelected) {
+  Widget _buildFilterChip(String label, {required VoidCallback onTap, required bool isSelected}) {
     return GestureDetector(
-      onTap: () => controller.selectFilter(label),
+      onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 5.h),
         decoration: BoxDecoration(

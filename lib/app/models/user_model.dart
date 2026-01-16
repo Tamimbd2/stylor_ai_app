@@ -96,6 +96,7 @@ class FashionPreferences {
   dynamic preferencesColor; // Can be String or List<String>
   String? bodyType;
   String? skinTone;
+  String? color;
   String? createdAt;
   String? updatedAt;
 
@@ -107,6 +108,7 @@ class FashionPreferences {
     this.preferencesColor,
     this.bodyType,
     this.skinTone,
+    this.color,
     this.createdAt,
     this.updatedAt,
   });
@@ -119,6 +121,7 @@ class FashionPreferences {
     preferencesColor = json['preferences_color']; // Keep as dynamic
     bodyType = json['body_type'];
     skinTone = json['skin_tone'];
+    color = json['color'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -132,6 +135,7 @@ class FashionPreferences {
     data['preferences_color'] = preferencesColor;
     data['body_type'] = bodyType;
     data['skin_tone'] = skinTone;
+    data['color'] = color;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     return data;

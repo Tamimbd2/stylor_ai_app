@@ -79,10 +79,12 @@ class _ShapeselectViewState extends State<ShapeselectView> {
                         ),
                       ),
                     ),
+// Replace local state usage with controller's observable
                     StyleSelectorSection(
-                      selectedStyle: _selectedStyle,
+                      selectedStyle: controller.selectedStyle.value,
                       onStyleChanged: (style) {
-                        setState(() => _selectedStyle = style);
+                        controller.updateStyle(style);
+                        // No need to set state locally as we use Obx
                       },
                     ),
                     SizedBox(height: 4.h),

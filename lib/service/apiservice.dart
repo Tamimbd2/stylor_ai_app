@@ -23,6 +23,33 @@ class ApiService extends GetConnect {
     // Allow self-signed certificates for development
     allowAutoSignedCert = true;
     
+    // Handle 401 Unauthorized globally
+    httpClient.addResponseModifier((request, response) {
+      if (response.statusCode == 401) {
+        // Ignore 401 on login endpoints since that's just "wrong password"
+        if (request.url.path.contains('/auth/login')) {
+          return response;
+        }
+        
+        print('🚨 401 Unauthorized - Redirecting to Login');
+        
+        // Find user controller to clear data
+        try {
+          if (Get.isRegistered<UserController>()) {
+             final userController = Get.find<UserController>();
+             userController.logout();
+          }
+        } catch (e) {
+          print('Error logging out during 401: $e');
+        }
+        
+        // Navigate to login if not already there
+        // Using SchedulerBinding to avoid build phase errors if this happens during build
+        Get.offAllNamed('/auth/login');
+      }
+      return response;
+    });
+
     super.onInit();
   }
 
