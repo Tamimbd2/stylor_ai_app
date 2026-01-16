@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/color.dart';
 import '../../../../widgets/primary_button.dart';
-import '../../output_outfit/views/main_navigation_view.dart';
 import '../controllers/filter_screen_controller.dart';
 
 class FilterScreenView extends GetView<FilterScreenController> {

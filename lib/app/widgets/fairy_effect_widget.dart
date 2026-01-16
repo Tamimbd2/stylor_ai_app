@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class FairyEffectWidget extends StatefulWidget {
   final Widget child;
-  const FairyEffectWidget({Key? key, required this.child}) : super(key: key);
+  const FairyEffectWidget({super.key, required this.child});
 
   @override
   State<FairyEffectWidget> createState() => _FairyEffectWidgetState();

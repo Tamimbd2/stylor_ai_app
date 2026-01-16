@@ -173,11 +173,11 @@ class WardropDetailsController extends GetxController {
   }
 
   /// Parse price from string (for display)
-  String _parsePrice(dynamic price) {
-    if (price == null) return '0.00';
-    final priceStr = price.toString().replaceAll(RegExp(r'[^\d.]'), '');
-    return priceStr.isEmpty ? '0.00' : priceStr;
-  }
+  // String _parsePrice(dynamic price) {
+  //   if (price == null) return '0.00';
+  //   final priceStr = price.toString().replaceAll(RegExp(r'[^\d.]'), '');
+  //   return priceStr.isEmpty ? '0.00' : priceStr;
+  // }
 
   /// Detect category from product name
   String _detectCategory(String name) {

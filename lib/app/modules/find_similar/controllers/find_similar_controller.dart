@@ -35,10 +35,6 @@ class FindSimilarController extends GetxController {
     selectedChip.value = chipLabel;
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   // Receive outfit data and search products
   void setOutfitData({

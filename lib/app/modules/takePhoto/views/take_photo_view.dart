@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../wardrobe/controllers/wardrobe_controller.dart';
 import '../controllers/take_photo_controller.dart';
-import '../../wardrobe/views/wardrobe_view.dart';
 
 class TakePhotoView extends GetView<TakePhotoController> {
   TakePhotoView({super.key});

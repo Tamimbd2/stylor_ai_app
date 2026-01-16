@@ -182,7 +182,7 @@ class EditProfileView extends GetView<EditProfileController> {
                             SizedBox(height: 20.h),
                           ],
                         );
-                      }).toList(),
+                      }),
 
                       SizedBox(height: 12.h),
 
@@ -777,7 +777,7 @@ class EditProfileView extends GetView<EditProfileController> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate:
-          controller.selectedDate.value ?? DateTime(2000, 4, 22),
+          controller.selectedDate.value,
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );

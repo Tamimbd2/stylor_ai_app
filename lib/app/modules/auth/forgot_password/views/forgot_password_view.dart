@@ -5,7 +5,7 @@ import '../../../../../widgets/primary_button.dart';
 import '../controllers/forgot_password_controller.dart';
 
 class ForgotPasswordView extends StatefulWidget {
-  ForgotPasswordView({super.key});
+  const ForgotPasswordView({super.key});
   @override
   State<ForgotPasswordView> createState() => _ForgotPasswordViewState();
 }

@@ -183,7 +183,7 @@ class ShapeselectController extends GetxController {
       final tempValue = temperature.value;
       
       print('===== Generating Outfit =====');
-      print('Temperature (from UI): ${tempValue}°C');
+      print('Temperature (from UI): $tempValue°C');
       print('Style: ${selectedStyle.value}');
       print('============================');
 

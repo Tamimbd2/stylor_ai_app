@@ -1,3 +1,5 @@
+// ignore_for_file: equal_keys_in_map
+
 import 'package:get/get.dart';
 
 class AppTranslations extends Translations {

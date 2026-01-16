@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:camera/camera.dart';
 import '../../../models/product_model.dart';
 import '../../wardrobe/controllers/wardrobe_controller.dart';
 import '../controllers/wardrop_details_controller.dart';
@@ -529,156 +528,154 @@ Widget _buildWardrobeItem(Map<String, dynamic> item) {
   );
 }
 
-Widget _buildPurchaseItem(
-    String imagePath,
-    String title,
-    String price, {
-      required bool isFavorited,
-    }) {
-  return Container(
-    height: 156.h,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(16.r),
-      border: Border.all(color: const Color(0xFFF4F4F4)),
-      boxShadow: [
-        BoxShadow(
-          color: const Color(0x0F101828),
-          blurRadius: 64,
-          offset: const Offset(0, 32),
-          spreadRadius: -12,
-        ),
-      ],
-    ),
-    child: Stack(
-      children: [
-        // Left Image Container
-        Positioned(
-          left: 12.w,
-          top: 12.h,
-          child: Container(
-            width: 134.w,
-            height: 132.h,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.r),
-              border: Border.all(color: const Color(0xFFF4F4F4)),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10.r),
-              child: Center(
-                child: Image.asset(
-                  imagePath,
-                  fit: BoxFit.contain,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: Colors.grey[100],
-                      child: Center(
-                        child: Icon(
-                          Icons.image_not_supported_outlined,
-                          color: Colors.grey[400],
-                          size: 40.sp,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ),
-        ),
-        // Heart Icon
-        Positioned(
-          left: 24.w,
-          top: 24.h,
-          child: GestureDetector(
-            onTap: () {},
-            child: Icon(
-              isFavorited ? Icons.favorite : Icons.favorite_outline,
-              color: isFavorited ? Colors.red : Colors.grey[400],
-              size: 20.sp,
-            ),
-          ),
-        ),
-        // Product Details
-        Positioned(
-          left: 163.w,
-          top: 12.h,
-          right: 12.w,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 205.w,
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    color: const Color(0xFF1C1C1E),
-                    fontSize: 14.sp,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w400,
-                    height: 1.56,
-                  ),
-                ),
-              ),
-
-              Text(
-                price,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 24.sp,
-                  fontFamily: 'Helvetica Neue',
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-
-              Row(
-                children: [
-                  Container(
-                    height: 32.h,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 28.w,
-                      vertical: 5.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF060017),
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Buy Now'.tr,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.sp,
-                          fontFamily: 'Helvetica Neue',
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 8.w),
-                  Container(
-                    width: 28.w,
-                    height: 28.h,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF4F4F4),
-                      borderRadius: BorderRadius.circular(8.r),
-                    ),
-                    child: Icon(
-                      Icons.shopping_cart_outlined,
-                      size: 20.sp,
-                      color: Colors.black54,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ],
-    ),
-  );
-}
+// Widget _buildPurchaseItem(
+//     String imagePath,
+//     String title,
+//     String price, {
+//       required bool isFavorited,
+//     }) {
+//   return Container(
+//     height: 156.h,
+//     decoration: BoxDecoration(
+//       color: Colors.white,
+//       borderRadius: BorderRadius.circular(16.r),
+//       border: Border.all(color: const Color(0xFFF4F4F4)),
+//       boxShadow: [
+//         BoxShadow(
+//           color: const Color(0x0F101828),
+//           blurRadius: 64,
+//           offset: const Offset(0, 32),
+//           spreadRadius: -12,
+//         ),
+//       ],
+//     ),
+//     child: Stack(
+//       children: [
+//         // Left Image Container
+//         Positioned(
+//           left: 12.w,
+//           top: 12.h,
+//           child: Container(
+//             width: 134.w,
+//             height: 132.h,
+//             decoration: BoxDecoration(
+//               color: Colors.white,
+//               borderRadius: BorderRadius.circular(10.r),
+//               border: Border.all(color: const Color(0xFFF4F4F4)),
+//             ),
+//             child: ClipRRect(
+//               borderRadius: BorderRadius.circular(10.r),
+//               child: Center(
+//                 child: Image.asset(
+//                   imagePath,
+//                   fit: BoxFit.contain,
+//                   errorBuilder: (context, error, stackTrace) {
+//                     return Container(
+//                       color: Colors.grey[100],
+//                       child: Center(
+//                         child: Icon(
+//                           Icons.image_not_supported_outlined,
+//                           color: Colors.grey[400],
+//                           size: 40.sp,
+//                         ),
+//                       ),
+//                     );
+//                   },
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ),
+//         // Heart Icon
+//         Positioned(
+//           left: 24.w,
+//           top: 24.h,
+//           child: GestureDetector(
+//             onTap: () {},
+//             child: Icon(
+//               isFavorited ? Icons.favorite : Icons.favorite_outline,
+//               color: isFavorited ? Colors.red : Colors.grey[400],
+//               size: 20.sp,
+//             ),
+//           ),
+//         ),
+//         // Product Details
+//         Positioned(
+//           left: 163.w,
+//           top: 12.h,
+//           right: 12.w,
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               SizedBox(
+//                 width: 205.w,
+//                 child: Text(
+//                   title,
+//                   style: TextStyle(
+//                     color: const Color(0xFF1C1C1E),
+//                     fontSize: 14.sp,
+//                     fontFamily: 'Poppins',
+//                     fontWeight: FontWeight.w400,
+//                     height: 1.56,
+//                   ),
+//                 ),
+//               ),
+//               Text(
+//                 price,
+//                 style: TextStyle(
+//                   color: Colors.black,
+//                   fontSize: 24.sp,
+//                   fontFamily: 'Helvetica Neue',
+//                   fontWeight: FontWeight.w500,
+//                 ),
+//               ),
+//               Row(
+//                 children: [
+//                   Container(
+//                     height: 32.h,
+//                     padding: EdgeInsets.symmetric(
+//                       horizontal: 28.w,
+//                       vertical: 5.h,
+//                     ),
+//                     decoration: BoxDecoration(
+//                       color: const Color(0xFF060017),
+//                       borderRadius: BorderRadius.circular(10.r),
+//                     ),
+//                     child: Center(
+//                       child: Text(
+//                         'Buy Now'.tr,
+//                         style: TextStyle(
+//                           color: Colors.white,
+//                           fontSize: 16.sp,
+//                           fontFamily: 'Helvetica Neue',
+//                           fontWeight: FontWeight.w400,
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                   SizedBox(width: 8.w),
+//                   Container(
+//                     width: 28.w,
+//                     height: 28.h,
+//                     decoration: BoxDecoration(
+//                       color: const Color(0xFFF4F4F4),
+//                       borderRadius: BorderRadius.circular(8.r),
+//                     ),
+//                     child: Icon(
+//                       Icons.shopping_cart_outlined,
+//                       size: 20.sp,
+//                       color: Colors.black54,
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ],
+//           ),
+//         ),
+//       ],
+//     ),
+//   );
+// }
 
 // Dynamic Purchase Item Widget
 Widget _buildDynamicPurchaseItem({

@@ -3,11 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../../core/color.dart';
 import '../../../routes/app_pages.dart';
-import '../../language/views/language_view.dart';
 import '../../language/controllers/language_controller.dart';
 import '../../privacyPolicy/views/privacy_policy_view.dart';
 import '../../termsAndConditions/views/terms_and_conditions_view.dart';
-import '../../ProfileDetails/views/profile_details_view.dart';
 import '../controllers/profile_controller.dart';
 import '../../../controllers/user_controller.dart';
 

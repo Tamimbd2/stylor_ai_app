@@ -11,7 +11,7 @@ class AuthLoginController extends GetxController {
   // ⚠️ IMPORTANT: Replace with your Web Client ID from Google Cloud Console
   // This is required for the backend to verify the token.
   // Format: "1234567890-abcdefgh.apps.googleusercontent.com"
-  static const String? _serverClientId = '276093179006-c55utgcbulsrba2vo29ps2qdtc6g9ajl.apps.googleusercontent.com'; 
+  static const String _serverClientId = '276093179006-c55utgcbulsrba2vo29ps2qdtc6g9ajl.apps.googleusercontent.com'; 
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email', 'profile'],

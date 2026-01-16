@@ -11,8 +11,7 @@ import 'outfit_card.dart';
 class OutfitCardSection extends StatefulWidget {
   final VoidCallback onDetailsPressed;
 
-  const OutfitCardSection({Key? key, required this.onDetailsPressed})
-    : super(key: key);
+  const OutfitCardSection({super.key, required this.onDetailsPressed});
 
   @override
   State<OutfitCardSection> createState() => OutfitCardSectionState();

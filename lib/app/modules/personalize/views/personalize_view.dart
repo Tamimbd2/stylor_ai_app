@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/color.dart';
 import '../../../../widgets/primary_button.dart';
 import '../../../controllers/user_controller.dart';
-import '../../filterScreen/views/filter_screen_view.dart';
 import '../controllers/personalize_controller.dart';
 
 class PersonalizeView extends GetView<PersonalizeController> {

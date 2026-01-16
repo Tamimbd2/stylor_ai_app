@@ -27,7 +27,7 @@ class _WeatherLocationCardState extends State<WeatherLocationCard> {
     _currentTemp = controller.temperature.value;
     
     if (controller.isWeatherLoaded.value) {
-       _tempController = TextEditingController(text: '${_currentTemp} °C (${(_currentTemp * 9/5 + 32).toStringAsFixed(0)}°F)');
+       _tempController = TextEditingController(text: '$_currentTemp °C (${(_currentTemp * 9/5 + 32).toStringAsFixed(0)}°F)');
     } else {
        _tempController = TextEditingController(text: 'Loading...');
     }
@@ -41,7 +41,7 @@ class _WeatherLocationCardState extends State<WeatherLocationCard> {
         _currentTemp = temp;
         // Update text controller only if valid data
         if (controller.isWeatherLoaded.value) {
-            _tempController.text = '${temp} °C (${(temp * 9/5 + 32).toStringAsFixed(0)}°F)';
+            _tempController.text = '$temp °C (${(temp * 9/5 + 32).toStringAsFixed(0)}°F)';
         }
         // Trigger rebuild to update UI if showing text
         if (mounted) setState(() {});
@@ -53,7 +53,7 @@ class _WeatherLocationCardState extends State<WeatherLocationCard> {
        if (loaded && !_isEditing.value) {
           double temp = controller.temperature.value;
           _currentTemp = temp;
-          _tempController.text = '${temp} °C (${(temp * 9/5 + 32).toStringAsFixed(0)}°F)';
+          _tempController.text = '$temp °C (${(temp * 9/5 + 32).toStringAsFixed(0)}°F)';
           if (mounted) setState(() {});
        }
     });
@@ -175,7 +175,7 @@ class _WeatherLocationCardState extends State<WeatherLocationCard> {
                        _currentTemp = val; // Update local temperature
                        Get.find<ShapeselectController>().updateTemperature(val);
                        // Update text controller with formatted temperature
-                       _tempController.text = '${val} °C (${(val * 9/5 + 32).toStringAsFixed(0)}°F)';
+                       _tempController.text = '$val °C (${(val * 9/5 + 32).toStringAsFixed(0)}°F)';
                      }
                   }
 

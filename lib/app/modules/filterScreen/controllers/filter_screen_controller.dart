@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../service/apiservice.dart';
-import '../../../routes/app_pages.dart'; // Assuming routes are here for Get.offAllNamed if needed, or just use string
+// Assuming routes are here for Get.offAllNamed if needed, or just use string
 
 import '../../output_outfit/views/main_navigation_view.dart';
 

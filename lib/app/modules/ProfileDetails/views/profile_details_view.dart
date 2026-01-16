@@ -415,29 +415,30 @@ class ProfileDetailsView extends StatelessWidget {
   /// ======================
   /// Switch Account Tile
   /// ======================
-  Widget _listTileCard({
-    required String iconPath,
-    required String title,
-    bool hasTrailing = false,
-  }) {
-    return Container(
-      decoration: _cardDecoration(),
-      child: ListTile(
-        leading: SvgPicture.asset(iconPath, width: 20.w, height: 20.h),
-        title: Text(
-          title,
-          style: TextStyle(fontSize: 14.sp, color: AppColors.neutral700),
-        ),
-        trailing: hasTrailing
-            ? Icon(
-                Icons.chevron_right,
-                color: AppColors.neutral700,
-                size: 20.sp,
-              )
-            : null,
-      ),
-    );
-  }
+  // Widget _listTileCard({
+  //   required String iconPath,
+  //   required String title,
+  //   bool hasTrailing = false,
+  // }) {
+  //   return Container(
+  //     decoration: _cardDecoration(),
+  //     child: ListTile(
+  //       leading: SvgPicture.asset(iconPath, width: 20.w, height: 20.h),
+  //       title: Text(
+  //         title,
+  //         style: TextStyle(fontSize: 14.sp, color: AppColors.neutral700),
+  //       ),
+  //       trailing: hasTrailing
+  //           ? Icon(
+  //               Icons.chevron_right,
+  //               color: AppColors.neutral700,
+  //               size: 20.sp,
+  //             )
+  //           : null,
+  //     ),
+  //   );
+  // }
+
 }
 
 /// ======================
