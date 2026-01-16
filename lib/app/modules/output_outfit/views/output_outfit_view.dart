@@ -91,7 +91,7 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                     ),
                   ),
                 ),
-                SizedBox(height: 40.h),
+                SizedBox(height: 24.h),
 
                 // Featured Outfit Card
                 Padding(

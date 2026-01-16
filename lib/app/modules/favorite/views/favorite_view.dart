@@ -46,7 +46,7 @@ class FavoriteView extends GetView<FavoriteController> {
                   height: 1.56,
                 ),
               ),
-              SizedBox(height: 24.h),
+              SizedBox(height: 16.h),
 
               // Toggle Buttons (Product / Outfit)
               Obx(
@@ -140,7 +140,7 @@ class FavoriteView extends GetView<FavoriteController> {
                 ),
               ),
 
-              SizedBox(height: 24.h),
+              SizedBox(height: 16.h),
 
               // Content based on selection
               Obx(

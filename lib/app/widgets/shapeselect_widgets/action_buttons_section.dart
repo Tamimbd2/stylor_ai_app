@@ -11,7 +11,7 @@ class ActionButtonsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.h),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
