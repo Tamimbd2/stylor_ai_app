@@ -40,7 +40,7 @@ class OutfitCardSectionState extends State<OutfitCardSection> {
     final controller = Get.find<ShapeselectController>();
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.h),
       child: SizedBox(
         height: 375.h,
         child: Obx(() {
