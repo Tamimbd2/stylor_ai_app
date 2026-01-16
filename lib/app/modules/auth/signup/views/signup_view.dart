@@ -40,7 +40,6 @@ class _SignupViewState extends State<SignupView> {
 
   String? _nameError;
   String? _emailError;
-  String? _phoneError;
   String? _passwordError;
   String? _confirmPasswordError;
   String? _privacyError;
@@ -586,7 +585,6 @@ class _SignupViewState extends State<SignupView> {
     setState(() {
       _nameError = null;
       _emailError = null;
-      _phoneError = null;
       _passwordError = null;
       _privacyError = null;
     });

@@ -153,49 +153,47 @@ class OtpView extends GetView<OtpController> {
 }
 
 /// OTP Input Field Widget
-class _OtpInputField extends StatelessWidget {
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final Function(String) onChanged;
-
-  const _OtpInputField({
-    required this.controller,
-    required this.focusNode,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 76.w,
-      height: 48.h,
-      decoration: ShapeDecoration(
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-          side: const BorderSide(width: 1, color: Color(0xFF1C1C1E)),
-          borderRadius: BorderRadius.circular(8.r),
-        ),
-      ),
-      child: TextField(
-        controller: controller,
-        focusNode: focusNode,
-        textAlign: TextAlign.center,
-        keyboardType: TextInputType.number,
-        maxLength: 1,
-        style: TextStyle(
-          color: const Color(0xFF1C1C1E),
-          fontSize: 20.sp,
-          fontFamily: 'Poppins',
-          fontWeight: FontWeight.w600,
-        ),
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        decoration: const InputDecoration(
-          counterText: '',
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.zero,
-        ),
-        onChanged: onChanged,
-      ),
-    );
-  }
-}
+// class _OtpInputField extends StatelessWidget {
+//   final TextEditingController controller;
+//   final FocusNode focusNode;
+//   final Function(String) onChanged;
+//   const _OtpInputField({
+//     required this.controller,
+//     required this.focusNode,
+//     required this.onChanged,
+//   });
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: 76.w,
+//       height: 48.h,
+//       decoration: ShapeDecoration(
+//         color: Colors.white,
+//         shape: RoundedRectangleBorder(
+//           side: const BorderSide(width: 1, color: Color(0xFF1C1C1E)),
+//           borderRadius: BorderRadius.circular(8.r),
+//         ),
+//       ),
+//       child: TextField(
+//         controller: controller,
+//         focusNode: focusNode,
+//         textAlign: TextAlign.center,
+//         keyboardType: TextInputType.number,
+//         maxLength: 1,
+//         style: TextStyle(
+//           color: const Color(0xFF1C1C1E),
+//           fontSize: 20.sp,
+//           fontFamily: 'Poppins',
+//           fontWeight: FontWeight.w600,
+//         ),
+//         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+//         decoration: const InputDecoration(
+//           counterText: '',
+//           border: InputBorder.none,
+//           contentPadding: EdgeInsets.zero,
+//         ),
+//         onChanged: onChanged,
+//       ),
+//     );
+//   }
+// }
