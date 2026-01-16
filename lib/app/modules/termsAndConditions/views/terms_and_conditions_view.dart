@@ -147,7 +147,7 @@ class TermsAndConditionsView extends GetView<TermsAndConditionsController> {
                           ),
                         ),
                         TextSpan(
-                          text: 'Stylor.ai provides:\n\nAI-generated outfit suggestions\n\nProduct recommendations through affiliate partners\n\nWardrobe image upload and background removal\n\nIn future: Pro features (paid or subscription-based) that may include advanced AI tools, exclusive styles, unlimited wardrobe storage, and more.\n\nWe may update or modify features at any time.\n',
+                          text: 'Stylor.ai provides:\n\nAI-generated outfit suggestions\n\nProduct recommendations through affiliate partners\n\nWhen users upload clothes to their wardrobe, new outfits will be generated based on those clothes, and similar products will be shown for purchase. Wardrobe image upload and background removal\n\nIn future: Pro features (paid or subscription-based) that may include advanced AI tools, exclusive styles, unlimited wardrobe storage, and more.\n\nWe may update or modify features at any time.\n',
                           style: TextStyle(
                             color: Color(0xFF49494B),
                             fontSize: 14.sp,

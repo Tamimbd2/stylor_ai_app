@@ -52,32 +52,34 @@ class _ShapeselectViewState extends State<ShapeselectView> {
                         },
                         color: AppColors.primaryDark,
                         backgroundColor: Colors.white,
-                        child: ListView(
+                        child: SingleChildScrollView(
                           physics: const AlwaysScrollableScrollPhysics(),
-                          children: [
-                            const HeaderSection(),
-                            // SizedBox(height: 8.h),
-                            OutfitCardSection(
-                              key: _cardSectionKey,
-                              onDetailsPressed: () =>
-                                  controller.toggleOutfitDetails(),
-                            ),
-                            SizedBox(height: 0.h),
-                            ActionButtonsSection(
-                              onCancel: () =>
-                                  _cardSectionKey.currentState?.swipeLeft(),
-                              onLike: () {
-                                final currentIndex = _cardSectionKey.currentState?.currentIndex ?? 0;
-                                controller.addCurrentOutfitToFavorites(currentIndex);
-                                _cardSectionKey.currentState?.swipeRight();
-                              },
-                            ),
-                            SizedBox(height: 8.h),
-                          ],
+                          child: Column(
+                            children: [
+                              const HeaderSection(),
+                              // SizedBox(height: 8.h),
+                              OutfitCardSection(
+                                key: _cardSectionKey,
+                                onDetailsPressed: () =>
+                                    controller.toggleOutfitDetails(),
+                              ),
+                              SizedBox(height: 8.h),
+                              ActionButtonsSection(
+                                onCancel: () =>
+                                    _cardSectionKey.currentState?.swipeLeft(),
+                                onLike: () {
+                                  final currentIndex = _cardSectionKey.currentState?.currentIndex ?? 0;
+                                  controller.addCurrentOutfitToFavorites(currentIndex);
+                                  _cardSectionKey.currentState?.swipeRight();
+                                },
+                              ),
+                              SizedBox(height:8.h),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    // Replace local state usage with controller's observable
+// Replace local state usage with controller's observable
                     StyleSelectorSection(
                       selectedStyle: controller.selectedStyle.value,
                       onStyleChanged: (style) {

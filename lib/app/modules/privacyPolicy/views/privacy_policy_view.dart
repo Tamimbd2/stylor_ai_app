@@ -110,7 +110,7 @@ class PrivacyPolicyView extends GetView<PrivacyPolicyController> {
               "Wardrobe photos you upload are used only to:\n\n"
                   "• Remove background\n"
                   "• Show clean wardrobe previews\n"
-                  "• Suggest similar products\n\n"
+                  "• Suggest similar products And Generate similar Clothes\n\n"
                   "We do not use your wardrobe photos for training our AI models.",
             ),
 
