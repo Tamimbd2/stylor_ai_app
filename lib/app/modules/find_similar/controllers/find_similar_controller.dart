@@ -115,6 +115,35 @@ class FindSimilarController extends GetxController {
   String _detectCategory(String name) {
     final nameLower = name.toLowerCase();
 
+    // Check for Shoes FIRST - highest priority
+    // This ensures shoes are never categorized as anything else
+    if (nameLower.contains('shoe') ||
+        nameLower.contains('sneaker') ||
+        nameLower.contains('boot') ||
+        nameLower.contains('sandal') ||
+        nameLower.contains('footwear') ||
+        nameLower.contains('loafer') ||
+        nameLower.contains('heel') ||
+        nameLower.contains('slipper')) {
+      return 'Shoes';
+    }
+
+    // Check for Sunglasses
+    if (nameLower.contains('sunglass') ||
+        nameLower.contains('glasses') ||
+        nameLower.contains('eyewear')) {
+      return 'Sunglass';
+    }
+
+    // Check for Bags
+    if (nameLower.contains('bag') ||
+        nameLower.contains('purse') ||
+        nameLower.contains('backpack') ||
+        nameLower.contains('handbag')) {
+      return 'Bag';
+    }
+
+    // Check for Tops
     if (nameLower.contains('shirt') ||
         nameLower.contains('t-shirt') ||
         nameLower.contains('blouse') ||
@@ -127,31 +156,13 @@ class FindSimilarController extends GetxController {
       return 'Top';
     }
 
+    // Check for Bottoms
     if (nameLower.contains('pant') ||
         nameLower.contains('trouser') ||
         nameLower.contains('jeans') ||
         nameLower.contains('short') ||
-        nameLower.contains('skirt') ||
-        nameLower.contains('shoe') ||
-        nameLower.contains('sneaker') ||
-        nameLower.contains('boot') ||
-        nameLower.contains('sandal') ||
-        nameLower.contains('footwear') ||
-        nameLower.contains('loafer')) {
+        nameLower.contains('skirt')) {
       return 'bottoms';
-    }
-
-    if (nameLower.contains('sunglass') ||
-        nameLower.contains('glasses') ||
-        nameLower.contains('eyewear')) {
-      return 'Sunglass';
-    }
-
-    if (nameLower.contains('bag') ||
-        nameLower.contains('purse') ||
-        nameLower.contains('backpack') ||
-        nameLower.contains('handbag')) {
-      return 'Bag';
     }
 
     return 'Top'; // Default

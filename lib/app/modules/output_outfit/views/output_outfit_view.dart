@@ -227,28 +227,31 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                           Positioned(
                             right: 24.w,
                             top: 155.h,
-                            child: Container(
-                              width: 56.w,
-                              height: 56.h,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: const Color(0xFFF4F4F4),
-                                ),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Color(0x0F101828),
-                                    blurRadius: 64,
-                                    offset: Offset(0, 32),
-                                    spreadRadius: -12,
+                            child: GestureDetector(
+                              onTap: () => controller.shareOutfit(),
+                              child: Container(
+                                width: 56.w,
+                                height: 56.h,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: const Color(0xFFF4F4F4),
                                   ),
-                                ],
-                              ),
-                              child: Icon(
-                                Icons.share_outlined,
-                                color: const Color(0xFF1C1C1E),
-                                size: 24.sp,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color(0x0F101828),
+                                      blurRadius: 64,
+                                      offset: Offset(0, 32),
+                                      spreadRadius: -12,
+                                    ),
+                                  ],
+                                ),
+                                child: Icon(
+                                  Icons.share_outlined,
+                                  color: const Color(0xFF1C1C1E),
+                                  size: 24.sp,
+                                ),
                               ),
                             ),
                           ),
@@ -264,7 +267,7 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Text(
-                    'Try Form'.tr,
+                    'Find your match'.tr,
                     style: TextStyle(
                       color: const Color(0xFF1C1C1E),
                       fontSize: 20.sp,
@@ -308,6 +311,12 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                           onTap: () => controller.selectChip('Sunglass'),
                           isSelected:
                               controller.selectedChip.value == 'Sunglass',
+                        ),
+                        SizedBox(width: 8.w),
+                        _buildChip(
+                          'Shoes'.tr,
+                          onTap: () => controller.selectChip('Shoes'),
+                          isSelected: controller.selectedChip.value == 'Shoes',
                         ),
                         SizedBox(width: 8.w),
                         _buildChip(

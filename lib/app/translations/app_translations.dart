@@ -174,6 +174,7 @@ class AppTranslations extends Translations {
           'bottoms': 'Bottoms',
           'Sunglass': 'Sunglasses',
           'Bag': 'Bags',
+          'Find your match':'Find your match',
 
           // Personalize
           'Personalize': 'Personalize',
@@ -411,6 +412,7 @@ class AppTranslations extends Translations {
           'bottoms': 'Bas',
           'Sunglass': 'Lunettes de soleil',
           'Bag': 'Sacs',
+          'Find your match':"Trouvez votre partenaire",
 
           // Personalize
           'Personalize': 'Personnaliser',
@@ -648,6 +650,8 @@ class AppTranslations extends Translations {
           'bottoms': 'Onderkleding',
           'Sunglass': 'Zonnebrillen',
           'Bag': 'Tassen',
+          'Find your match':'Find your match',
+          'Find your match':"Finde dein Match",
 
           // Personalize
           'Personalize': 'Personaliseren',
