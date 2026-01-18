@@ -85,6 +85,12 @@ class WardrobeView extends GetView<WardrobeController> {
                       onTap: () => controller.selectFilter('Bag'),
                       isSelected: controller.selectedFilter.value == 'Bag',
                     ),
+                    SizedBox(width: 8.w),
+                    _buildFilterChip(
+                      'Shoe'.tr,
+                      onTap: () => controller.selectFilter('Shoe'),
+                      isSelected: controller.selectedFilter.value == 'Shoe',
+                    ),
                   ],
                 ),
               ),

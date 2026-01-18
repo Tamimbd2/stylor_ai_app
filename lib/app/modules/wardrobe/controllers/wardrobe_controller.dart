@@ -28,6 +28,14 @@ class WardrobeController extends GetxController {
       return wardrobeItems;
     }
     
+    // Special case: bottoms filter also shows shoes
+    if (selectedFilter.value.toLowerCase() == 'bottoms') {
+      return wardrobeItems.where((item) {
+        final category = item['category'] as String? ?? '';
+        return category.toLowerCase() == 'bottoms' || category.toLowerCase() == 'shoe';
+      }).toList();
+    }
+    
     return wardrobeItems.where((item) {
       final category = item['category'] as String? ?? '';
       return category.toLowerCase() == selectedFilter.value.toLowerCase();
@@ -76,6 +84,18 @@ class WardrobeController extends GetxController {
         titleLower.contains('backpack') || 
         titleLower.contains('handbag')) {
       return 'Bag';
+    }
+    
+    // Shoe category keywords
+    if (titleLower.contains('shoe') || 
+        titleLower.contains('sneaker') || 
+        titleLower.contains('boot') || 
+        titleLower.contains('sandal') ||
+        titleLower.contains('heel') ||
+        titleLower.contains('slipper') ||
+        titleLower.contains('loafer') ||
+        titleLower.contains('footwear')) {
+      return 'Shoe';
     }
     
     // Default to Top if no match
