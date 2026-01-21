@@ -436,64 +436,45 @@ Widget _buildWardrobeItem(Map<String, dynamic> item) {
   final isAsset = item['isAsset'] as bool? ?? false; // Default to false for API items
   final fit = item['fit'] as BoxFit? ?? BoxFit.cover;
 
-  return Container(
-    width: 112.w,
-    height: 126.h,
-    decoration: BoxDecoration(
-      color: Colors.white,
+  return Material(
+    color: Colors.transparent,
+    child: InkWell(
+      onTap: () {
+        print('🔥 Wardrobe item tapped!');
+        print('   Item ID: ${item['id']}');
+        
+        // Get the controller and switch to this item
+        final controller = Get.find<WardropDetailsController>();
+        if (item['id'] != null) {
+          controller.switchToItem(item['id'] as int);
+        }
+      },
       borderRadius: BorderRadius.circular(12.r),
-      boxShadow: [
-        BoxShadow(
-          color: const Color(0x0F101828),
-          blurRadius: 64,
-          offset: const Offset(0, 32),
-          spreadRadius: -12,
+      child: Container(
+        width: 112.w,
+        height: 126.h,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12.r),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0x0F101828),
+              blurRadius: 64,
+              offset: const Offset(0, 32),
+              spreadRadius: -12,
+            ),
+          ],
         ),
-      ],
-    ),
-    child: ClipRRect(
-      borderRadius: BorderRadius.circular(12.r),
-      child: Center(
-        child: isAsset
-            ? Image.asset(
-                imagePath,
-                height: 80.h,
-                width: 60.w,
-                fit: fit,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: Colors.grey[100],
-                    child: Center(
-                      child: Icon(
-                        Icons.image_not_supported_outlined,
-                        color: Colors.grey[400],
-                        size: 40.sp,
-                      ),
-                    ),
-                  );
-                },
-              )
-            : (imagePath.startsWith('http')
-                ? Image.network(
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12.r),
+          child: Center(
+            child: isAsset
+                ? Image.asset(
                     imagePath,
                     height: 80.h,
                     width: 60.w,
                     fit: fit,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Center(
-                        child: SizedBox(
-                          width: 20.w,
-                          height: 20.h,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.black,
-                          ),
-                        ),
-                      );
-                    },
                     errorBuilder: (context, error, stackTrace) {
-                      print('❌ Wardrobe item image error: $error');
                       return Container(
                         color: Colors.grey[100],
                         child: Center(
@@ -506,24 +487,59 @@ Widget _buildWardrobeItem(Map<String, dynamic> item) {
                       );
                     },
                   )
-                : Image.file(
-                    File(imagePath),
-                    height: 80.h,
-                    width: 60.w,
-                    fit: fit,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: Colors.grey[100],
-                        child: Center(
-                          child: Icon(
-                            Icons.image_not_supported_outlined,
-                            color: Colors.grey[400],
-                            size: 40.sp,
-                          ),
-                        ),
-                      );
-                    },
-                  )),
+                : (imagePath.startsWith('http')
+                    ? Image.network(
+                        imagePath,
+                        height: 80.h,
+                        width: 60.w,
+                        fit: fit,
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                            child: SizedBox(
+                              width: 20.w,
+                              height: 20.h,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.black,
+                              ),
+                            ),
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          print('❌ Wardrobe item image error: $error');
+                          return Container(
+                            color: Colors.grey[100],
+                            child: Center(
+                              child: Icon(
+                                Icons.image_not_supported_outlined,
+                                color: Colors.grey[400],
+                                size: 40.sp,
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    : Image.file(
+                        File(imagePath),
+                        height: 80.h,
+                        width: 60.w,
+                        fit: fit,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: Colors.grey[100],
+                            child: Center(
+                              child: Icon(
+                                Icons.image_not_supported_outlined,
+                                color: Colors.grey[400],
+                                size: 40.sp,
+                              ),
+                            ),
+                          );
+                        },
+                      )),
+          ),
+        ),
       ),
     ),
   );

@@ -28,11 +28,11 @@ class WardrobeController extends GetxController {
       return wardrobeItems;
     }
     
-    // Special case: bottoms filter also shows shoes
-    if (selectedFilter.value.toLowerCase() == 'bottoms') {
+    // Special case: lowerwear filter also shows shoes
+    if (selectedFilter.value.toLowerCase() == 'lowerwear') {
       return wardrobeItems.where((item) {
         final category = item['category'] as String? ?? '';
-        return category.toLowerCase() == 'bottoms' || category.toLowerCase() == 'shoe';
+        return category.toLowerCase() == 'lowerwear' || category.toLowerCase() == 'shoe';
       }).toList();
     }
     
@@ -46,7 +46,7 @@ class WardrobeController extends GetxController {
   String _detectCategory(String title) {
     final titleLower = title.toLowerCase();
     
-    // Top category keywords
+    // Upperwear category keywords
     if (titleLower.contains('shirt') || 
         titleLower.contains('t-shirt') || 
         titleLower.contains('tshirt') ||
@@ -57,10 +57,10 @@ class WardrobeController extends GetxController {
         titleLower.contains('sweater') ||
         titleLower.contains('hoodie') ||
         titleLower.contains('dress')) {
-      return 'Top';
+      return 'upperwear';
     }
     
-    // Bottom category keywords
+    // Lowerwear category keywords
     if (titleLower.contains('pant') || 
         titleLower.contains('trouser') || 
         titleLower.contains('jeans') || 
@@ -68,7 +68,7 @@ class WardrobeController extends GetxController {
         titleLower.contains('skirt') ||
         titleLower.contains('underwear') ||
         titleLower.contains('legging')) {
-      return 'bottoms';
+      return 'lowerwear';
     }
     
     // Sunglass category keywords
@@ -98,8 +98,8 @@ class WardrobeController extends GetxController {
       return 'Shoe';
     }
     
-    // Default to Top if no match
-    return 'Top';
+    // Default to upperwear if no match
+    return 'upperwear';
   }
 
   // Fetch wardrobe items from API

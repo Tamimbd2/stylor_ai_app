@@ -143,7 +143,7 @@ class FindSimilarController extends GetxController {
       return 'Bag';
     }
 
-    // Check for Tops
+    // Check for Upperwear
     if (nameLower.contains('shirt') ||
         nameLower.contains('t-shirt') ||
         nameLower.contains('blouse') ||
@@ -153,19 +153,19 @@ class FindSimilarController extends GetxController {
         nameLower.contains('sweater') ||
         nameLower.contains('hoodie') ||
         nameLower.contains('dress')) {
-      return 'Top';
+      return 'upperwear';
     }
 
-    // Check for Bottoms
+    // Check for Lowerwear
     if (nameLower.contains('pant') ||
         nameLower.contains('trouser') ||
         nameLower.contains('jeans') ||
         nameLower.contains('short') ||
         nameLower.contains('skirt')) {
-      return 'bottoms';
+      return 'lowerwear';
     }
 
-    return 'Top'; // Default
+    return 'upperwear'; // Default
   }
 
   void toggleProductFavorite(int index) {

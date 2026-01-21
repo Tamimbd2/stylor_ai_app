@@ -294,16 +294,16 @@ class OutputOutfitView extends GetView<OutputOutfitController> {
                         ),
                         SizedBox(width: 8.w),
                         _buildChip(
-                          'Top'.tr,
-                          onTap: () => controller.selectChip('Top'),
-                          isSelected: controller.selectedChip.value == 'Top',
+                          'upperwear'.tr,
+                          onTap: () => controller.selectChip('upperwear'),
+                          isSelected: controller.selectedChip.value == 'upperwear',
                         ),
                         SizedBox(width: 8.w),
                         _buildChip(
-                          'Bottoms'.tr,
-                          onTap: () => controller.selectChip('bottoms'),
+                          'lowerwear'.tr,
+                          onTap: () => controller.selectChip('lowerwear'),
                           isSelected:
-                              controller.selectedChip.value == 'bottoms',
+                              controller.selectedChip.value == 'lowerwear',
                         ),
                         SizedBox(width: 8.w),
                         _buildChip(

@@ -146,9 +146,9 @@ class FindSimilarView extends GetView<FindSimilarController> {
                               children: [
                                 _buildChip('All', controller.selectedChip.value == 'All'),
                                 SizedBox(width: 8.w),
-                                _buildChip('Top', controller.selectedChip.value == 'Top'),
+                                _buildChip('upperwear', controller.selectedChip.value == 'upperwear'),
                                 SizedBox(width: 8.w),
-                                _buildChip('bottoms', controller.selectedChip.value == 'bottoms'),
+                                _buildChip('lowerwear', controller.selectedChip.value == 'lowerwear'),
                                 SizedBox(width: 8.w),
                                 _buildChip('Sunglass', controller.selectedChip.value == 'Sunglass'),
                                 SizedBox(width: 8.w),

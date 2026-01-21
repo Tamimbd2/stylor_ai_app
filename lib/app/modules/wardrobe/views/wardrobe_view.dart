@@ -63,15 +63,15 @@ class WardrobeView extends GetView<WardrobeController> {
                     ),
                     SizedBox(width: 8.w),
                     _buildFilterChip(
-                      'Top'.tr,
-                      onTap: () => controller.selectFilter('Top'),
-                      isSelected: controller.selectedFilter.value == 'Top',
+                      'upperwear'.tr,
+                      onTap: () => controller.selectFilter('upperwear'),
+                      isSelected: controller.selectedFilter.value == 'upperwear',
                     ),
                     SizedBox(width: 8.w),
                     _buildFilterChip(
-                      'Bottoms'.tr,
-                      onTap: () => controller.selectFilter('bottoms'),
-                      isSelected: controller.selectedFilter.value == 'bottoms',
+                      'lowerwear'.tr,
+                      onTap: () => controller.selectFilter('lowerwear'),
+                      isSelected: controller.selectedFilter.value == 'lowerwear',
                     ),
                     SizedBox(width: 8.w),
                     _buildFilterChip(
@@ -149,7 +149,7 @@ class WardrobeView extends GetView<WardrobeController> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'AI Analyzing your photo',
+                                      'Analysis in progress',
                                       style: TextStyle(
                                         color: AppColors.neutral900,
                                         fontSize: 16.sp,
@@ -159,7 +159,7 @@ class WardrobeView extends GetView<WardrobeController> {
                                     ),
                                     SizedBox(height: 8.h),
                                     Text(
-                                      'Item will be store in your wardrobe',
+                                      'Item will be stored in your wardrobe',
                                       style: TextStyle(
                                         color: AppColors.neutral700,
                                         fontSize: 14.sp,

@@ -192,7 +192,7 @@ class OutputOutfitController extends GetxController {
       return 'Watch';
     }
 
-    // Check for Tops
+    // Check for Upperwear
     if (nameLower.contains('shirt') ||
         nameLower.contains('t-shirt') ||
         nameLower.contains('blouse') ||
@@ -202,19 +202,20 @@ class OutputOutfitController extends GetxController {
         nameLower.contains('sweater') ||
         nameLower.contains('hoodie') ||
         nameLower.contains('dress')) {
-      return 'Top';
+      return 'upperwear';
     }
 
-    // Check for Bottoms
+    // Check for Lowerwear
     if (nameLower.contains('pant') ||
         nameLower.contains('trouser') ||
+        nameLower.contains('pants') ||
         nameLower.contains('jeans') ||
         nameLower.contains('short') ||
         nameLower.contains('skirt')) {
-      return 'bottoms';
+      return 'lowerwear';
     }
 
-    return 'Top'; // Default
+    return 'upperwear'; // Default
   }
 
   void toggleFeaturedFavorite() async {
