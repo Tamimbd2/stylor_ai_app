@@ -391,14 +391,11 @@ class WardropDetailsView extends GetView<WardropDetailsController> {
                   );
                 }
 
-                // Show first 5 products
-                final productsToShow = controller.allProducts.take(5).toList();
-                
                 return Column(
                   children: List.generate(
-                    productsToShow.length,
+                    controller.allProducts.length,
                     (index) {
-                      final product = productsToShow[index];
+                      final product = controller.allProducts[index];
                       final isFavorited = controller.favoriteProducts.contains(index);
                       
                       return Padding(

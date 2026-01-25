@@ -54,100 +54,123 @@ class ShapeselectController extends GetxController {
   }
   
   Future<void> getLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+    try {
+      // 1. Check if services are enabled
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        currentLocation.value = 'Location Disabled';
+        return;
+      }
 
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the 
-      // App to enable the location services.
-      currentLocation.value = 'Location Disabled';
-      return;
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
+      // 2. Check permissions
+      LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale 
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          currentLocation.value = 'Permission Denied';
+          return;
+        }
+      }
+      
+      if (permission == LocationPermission.deniedForever) {
         currentLocation.value = 'Permission Denied';
         return;
       }
-    }
-    
-    if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately. 
-      currentLocation.value = 'Permission Denied';
-      return;
-    } 
 
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
-    try {
-      Position position = await Geolocator.getCurrentPosition();
-      List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
-      
-      if (placemarks.isNotEmpty) {
-        Placemark place = placemarks[0];
-        String city = place.locality ?? '';
-        String country = place.country ?? '';
-        
-        if (city.isNotEmpty && country.isNotEmpty) {
-          currentLocation.value = '$city, $country';
-          // Fetch weather for the city
-          fetchWeatherAndSetTemperature(city);
-        } else if (city.isNotEmpty) {
-           currentLocation.value = city;
-           fetchWeatherAndSetTemperature(city);
-        } else if (country.isNotEmpty) {
-           currentLocation.value = country;
-           fetchWeatherAndSetTemperature(country);
-        } else {
-           currentLocation.value = 'Unknown Location';
-        }
+      // 3. FAST RESPONSE: Try last known position first
+      // This is near-instant and works great if the user hasn't moved much
+      Position? lastKnown = await Geolocator.getLastKnownPosition();
+      if (lastKnown != null) {
+        print('📍 Using last known position for fast response');
+        _updateLocationAndWeather(lastKnown);
       }
+
+      // 4. ACCURATE RESPONSE: Fetch fresh position in background
+      // Using 'high' instead of 'bestForNavigation' for faster lock-on
+      // Adding a 5-second timeout so it doesn't hang
+      Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+        timeLimit: const Duration(seconds: 5),
+      ).then((position) {
+        print('📍 Fresh position obtained');
+        _updateLocationAndWeather(position);
+      }).catchError((e) {
+        print('📍 Could not get fresh position: $e');
+        if (lastKnown == null) {
+          currentLocation.value = 'Unknown';
+        }
+      });
+
     } catch (e) {
-      print('Error getting location: $e');
+      print('Error in getLocation: $e');
       currentLocation.value = 'Unknown';
     }
+  }
+
+  // Helper to process position, update UI and fetch weather
+  Future<void> _updateLocationAndWeather(Position position) async {
+    try {
+      // Get address for UI display
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude, 
+        position.longitude
+      ).timeout(const Duration(seconds: 3));
+      
+      if (placemarks.isNotEmpty) {
+        Placemark p = placemarks.first;
+        String city = p.locality ?? p.subAdministrativeArea ?? p.administrativeArea ?? '';
+        String country = p.country ?? '';
+        
+        if (city.isNotEmpty) {
+          currentLocation.value = country.isNotEmpty ? '$city, $country' : city;
+        } else {
+          currentLocation.value = country.isNotEmpty ? country : 'Known Location';
+        }
+      }
+
+      // Always fetch weather by coordinates (most reliable)
+      // This call is async and won't block the UI
+      fetchWeatherByCoordinates(position.latitude, position.longitude);
+    } catch (e) {
+      print('Error updating specific location details: $e');
+      // Still try to get weather even if geocoding fails
+      fetchWeatherByCoordinates(position.latitude, position.longitude);
+    }
+  }
+
+  Future<void> fetchWeatherByCoordinates(double lat, double lng) async {
+    print('🌦️ Fetching weather for coordinates: $lat, $lng...');
+    final weatherData = await _apiService.fetchWeatherByCoordinates(lat, lng);
+    _processWeatherData(weatherData);
   }
 
   Future<void> fetchWeatherAndSetTemperature(String queryLocation) async {
     print('🌦️ Fetching weather for $queryLocation...');
     final weatherData = await _apiService.fetchWeather(queryLocation);
-    
-    if (weatherData != null) {
-      if (weatherData['current'] != null) {
-        final current = weatherData['current'];
-        final tempC = current['temp_c'];
-        
-        if (tempC != null) {
-           double temp = (tempC as num).toDouble();
-           print('🌡️ Weather API returned temp: $temp °C');
-           
-           isWeatherLoaded.value = true;
+    _processWeatherData(weatherData);
+  }
 
-           // Update temperature via our main update method to trigger dependent logic
-           temperature.value = temp;
-           
-           // Since this is real weather data, we should ensure outfits are generated 
-           // based on this new temperature, even if we already generated for default temp.
-           if (isInitialGenerationDone.value) {
-              print('🌦️ Real weather received ($temp°C), regenerating outfits...');
-              generateOutfit();
-           } else {
-              updateTemperature(temp);
-           } 
+  void _processWeatherData(Map<String, dynamic>? weatherData) {
+    if (weatherData != null && weatherData['current'] != null) {
+      final current = weatherData['current'];
+      final tempC = current['temp_c'];
+      
+      if (tempC != null) {
+        double temp = (tempC as num).toDouble();
+        print('🌡️ Weather API returned temp: $temp °C');
+        
+        isWeatherLoaded.value = true;
+        temperature.value = temp;
+        
+        if (isInitialGenerationDone.value) {
+          print('🌦️ Weather received ($temp°C), regenerating outfits...');
+          generateOutfit();
+        } else {
+          updateTemperature(temp);
         }
       }
     } else {
-      print('⚠️ Failed to fetch weather data for $queryLocation');
+      print('⚠️ Failed to process weather data');
     }
   }
 
