@@ -51,7 +51,9 @@ android {
     
     packaging {
         jniLibs {
-            keepDebugSymbols.add("**/*.so")
+            // Disable debug symbol stripping to avoid build failure
+            excludes.add("**/gdbserver")
+            excludes.add("**/gdb.setup")
         }
     }
 
