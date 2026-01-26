@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../models/product_model.dart';
 import '../../../../service/apiservice.dart';
 
@@ -158,6 +159,40 @@ class OutputOutfitController extends GetxController {
   String _detectCategory(String name) {
     final nameLower = name.toLowerCase();
 
+    // Check for Shoes FIRST - highest priority
+    // This ensures shoes are never categorized as anything else
+    if (nameLower.contains('shoe') ||
+        nameLower.contains('sneaker') ||
+        nameLower.contains('boot') ||
+        nameLower.contains('sandal') ||
+        nameLower.contains('footwear') ||
+        nameLower.contains('loafer') ||
+        nameLower.contains('heel') ||
+        nameLower.contains('slipper')) {
+      return 'Shoes';
+    }
+
+    // Check for Sunglasses
+    if (nameLower.contains('sunglass') ||
+        nameLower.contains('glasses') ||
+        nameLower.contains('eyewear')) {
+      return 'Sunglass';
+    }
+
+    // Check for Bags
+    if (nameLower.contains('bag') ||
+        nameLower.contains('purse') ||
+        nameLower.contains('backpack') ||
+        nameLower.contains('handbag')) {
+      return 'Bag';
+    }
+
+    // Check for Watch
+    if (nameLower.contains('watch') || nameLower.contains('clock')) {
+      return 'Watch';
+    }
+
+    // Check for Upperwear
     if (nameLower.contains('shirt') ||
         nameLower.contains('t-shirt') ||
         nameLower.contains('blouse') ||
@@ -167,41 +202,20 @@ class OutputOutfitController extends GetxController {
         nameLower.contains('sweater') ||
         nameLower.contains('hoodie') ||
         nameLower.contains('dress')) {
-      return 'Top';
+      return 'upperwear';
     }
 
+    // Check for Lowerwear
     if (nameLower.contains('pant') ||
         nameLower.contains('trouser') ||
+        nameLower.contains('pants') ||
         nameLower.contains('jeans') ||
         nameLower.contains('short') ||
-        nameLower.contains('skirt') ||
-        nameLower.contains('shoe') ||
-        nameLower.contains('sneaker') ||
-        nameLower.contains('boot') ||
-        nameLower.contains('sandal') ||
-        nameLower.contains('footwear') ||
-        nameLower.contains('loafer')) {
-      return 'bottoms';
+        nameLower.contains('skirt')) {
+      return 'lowerwear';
     }
 
-    if (nameLower.contains('sunglass') ||
-        nameLower.contains('glasses') ||
-        nameLower.contains('eyewear')) {
-      return 'Sunglass';
-    }
-
-    if (nameLower.contains('bag') ||
-        nameLower.contains('purse') ||
-        nameLower.contains('backpack') ||
-        nameLower.contains('handbag')) {
-      return 'Bag';
-    }
-
-    if (nameLower.contains('watch') || nameLower.contains('clock')) {
-      return 'Watch';
-    }
-
-    return 'Top'; // Default
+    return 'upperwear'; // Default
   }
 
   void toggleFeaturedFavorite() async {
@@ -346,5 +360,44 @@ class OutputOutfitController extends GetxController {
 
   void selectChip(String chipLabel) {
     selectedChip.value = chipLabel;
+  }
+
+  // Share outfit
+  Future<void> shareOutfit() async {
+    try {
+      final title = 'AI Generated Outfit'.tr;
+      final description = outfitDescription.value.isNotEmpty 
+          ? outfitDescription.value 
+          : 'Check out this amazing outfit!'.tr;
+      final imageUrl = outfitImageUrl.value;
+
+      // Create share text
+      final shareText = '''
+$title
+
+$description
+
+${imageUrl.isNotEmpty ? imageUrl : ''}
+''';
+
+      print('📤 Sharing outfit...');
+      print('   Text: $shareText');
+
+      await Share.share(
+        shareText,
+        subject: title,
+      );
+
+      print('✅ Share dialog opened');
+    } catch (e) {
+      print('❌ Error sharing outfit: $e');
+      Get.snackbar(
+        'Error'.tr,
+        'Failed to share outfit'.tr,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
   }
 }

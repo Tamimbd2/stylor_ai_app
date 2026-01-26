@@ -1121,19 +1121,14 @@ class ApiService extends GetConnect {
       return false;
     }
   }
-  // Fetch Weather
-  // Fetch Weather
+  // Fetch Weather by Name
   Future<Map<String, dynamic>?> fetchWeather(String location) async {
     try {
-      // Encode location to be URL safe
       final encodedLocation = Uri.encodeComponent(location);
-      // Use the provided API URL directly
       final url = 'https://api.weatherapi.com/v1/current.json?key=89f5861539b24f3fa4961656261401&q=$encodedLocation';
       
       print('🌤️ Fetching Weather for: $location');
       
-      // Create a fresh GetConnect instance to avoid baseUrl conflicts
-      // The main ApiService has baseUrl set to stylorai.com which breaks external URL calls
       final connect = GetConnect();
       connect.timeout = const Duration(seconds: 20);
       
@@ -1141,7 +1136,35 @@ class ApiService extends GetConnect {
 
       if (response.status.hasError) {
         print('❌ Weather API Error: ${response.statusCode} - ${response.statusText}');
-        print('   Body: ${response.body}');
+        return null;
+      } else {
+        print('✅ Weather Data Success');
+        if (response.body is Map<String, dynamic>) {
+          return response.body;
+        }
+        return null;
+      }
+    } catch (e) {
+      print('❌ Weather Exception: $e');
+      return null;
+    }
+  }
+
+  // Fetch Weather by Coordinates
+  Future<Map<String, dynamic>?> fetchWeatherByCoordinates(double lat, double lng) async {
+    try {
+      // Use latitude and longitude for more accurate weather fetching
+      final url = 'https://api.weatherapi.com/v1/current.json?key=89f5861539b24f3fa4961656261401&q=$lat,$lng';
+      
+      print('🌤️ Fetching Weather for coordinates: $lat, $lng');
+      
+      final connect = GetConnect();
+      connect.timeout = const Duration(seconds: 20);
+      
+      final response = await connect.get(url);
+
+      if (response.status.hasError) {
+        print('❌ Weather API Error: ${response.statusCode} - ${response.statusText}');
         return null;
       } else {
         print('✅ Weather Data Success');

@@ -28,6 +28,14 @@ class WardrobeController extends GetxController {
       return wardrobeItems;
     }
     
+    // Special case: lowerwear filter also shows shoes
+    if (selectedFilter.value.toLowerCase() == 'lowerwear') {
+      return wardrobeItems.where((item) {
+        final category = item['category'] as String? ?? '';
+        return category.toLowerCase() == 'lowerwear' || category.toLowerCase() == 'shoe';
+      }).toList();
+    }
+    
     return wardrobeItems.where((item) {
       final category = item['category'] as String? ?? '';
       return category.toLowerCase() == selectedFilter.value.toLowerCase();
@@ -38,7 +46,7 @@ class WardrobeController extends GetxController {
   String _detectCategory(String title) {
     final titleLower = title.toLowerCase();
     
-    // Top category keywords
+    // Upperwear category keywords
     if (titleLower.contains('shirt') || 
         titleLower.contains('t-shirt') || 
         titleLower.contains('tshirt') ||
@@ -49,10 +57,10 @@ class WardrobeController extends GetxController {
         titleLower.contains('sweater') ||
         titleLower.contains('hoodie') ||
         titleLower.contains('dress')) {
-      return 'Top';
+      return 'upperwear';
     }
     
-    // Bottom category keywords
+    // Lowerwear category keywords
     if (titleLower.contains('pant') || 
         titleLower.contains('trouser') || 
         titleLower.contains('jeans') || 
@@ -60,7 +68,7 @@ class WardrobeController extends GetxController {
         titleLower.contains('skirt') ||
         titleLower.contains('underwear') ||
         titleLower.contains('legging')) {
-      return 'bottoms';
+      return 'lowerwear';
     }
     
     // Sunglass category keywords
@@ -78,8 +86,20 @@ class WardrobeController extends GetxController {
       return 'Bag';
     }
     
-    // Default to Top if no match
-    return 'Top';
+    // Shoe category keywords
+    if (titleLower.contains('shoe') || 
+        titleLower.contains('sneaker') || 
+        titleLower.contains('boot') || 
+        titleLower.contains('sandal') ||
+        titleLower.contains('heel') ||
+        titleLower.contains('slipper') ||
+        titleLower.contains('loafer') ||
+        titleLower.contains('footwear')) {
+      return 'Shoe';
+    }
+    
+    // Default to upperwear if no match
+    return 'upperwear';
   }
 
   // Fetch wardrobe items from API

@@ -49,6 +49,12 @@ class WardropDetailsController extends GetxController {
     }
   }
 
+  /// Switch to a different wardrobe item
+  void switchToItem(int itemId) {
+    print('🔄 Switching to item ID: $itemId');
+    fetchItemDetails(itemId);
+  }
+
   /// Fetch item details from API
   Future<void> fetchItemDetails(int itemId) async {
     try {
@@ -183,8 +189,8 @@ class WardropDetailsController extends GetxController {
   String _detectCategory(String name) {
     final lowerName = name.toLowerCase();
     if (lowerName.contains('dress')) return 'Dress';
-    if (lowerName.contains('shirt') || lowerName.contains('top') || lowerName.contains('blouse')) return 'Top';
-    if (lowerName.contains('pant') || lowerName.contains('jean') || lowerName.contains('trouser')) return 'Bottoms';
+    if (lowerName.contains('shirt') || lowerName.contains('top') || lowerName.contains('blouse')) return 'upperwear';
+    if (lowerName.contains('pant') || lowerName.contains('jean') || lowerName.contains('trouser')) return 'lowerwear';
     if (lowerName.contains('shoe') || lowerName.contains('sneaker') || lowerName.contains('boot')) return 'Shoes';
     if (lowerName.contains('bag') || lowerName.contains('purse')) return 'Bag';
     return 'Other';
