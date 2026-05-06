@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../models/product_model.dart';
+import '../../../services/product_recommendation_filter_service.dart';
 import '../../../../service/apiservice.dart';
 
 class OutputOutfitController extends GetxController {
   final ApiService _apiService = Get.put(ApiService());
+  final ProductRecommendationFilterService _filterService =
+      const ProductRecommendationFilterService();
 
   // Selected outfit data
   final outfitImageUrl = ''.obs;
@@ -89,38 +92,31 @@ class OutputOutfitController extends GetxController {
       print('📡 Products key exists: ${response?['products'] != null}');
 
       if (response != null && response['products'] != null) {
-        final productsList = response['products'] as List;
+        final productsList = (response['products'] as List)
+            .map((item) => Map<String, dynamic>.from(item as Map))
+            .toList();
+        final queryTokens =
+            _filterService.parseQueryTokens(outfitQueries.value);
 
         print('✅ Found ${productsList.length} products in response');
 
-        int successCount = 0;
-        for (var i = 0; i < productsList.length; i++) {
-          try {
-            final productData = productsList[i];
-            
-            // Parse product data with correct field names
-            final product = ProductModel(
-              id: productData['product_url']?.toString() ?? '', // Use URL as ID
-              name: productData['product_name'] ?? 'Product',
-              imagePath: '', // No local asset
-              price: _parsePrice(productData['price']),
-              category: _detectCategory(productData['product_name'] ?? ''),
-              imageUrl: productData['image_url'],
-              productUrl: productData['product_url'],
-            );
+        final rankedProducts = _filterService.rankProducts(
+          rawProducts: productsList,
+          queryTokens: queryTokens,
+        );
 
-            allProducts.add(product);
-            successCount++;
-            
-            if (i < 3) { // Log first 3 products
-              print('   Product $i: ${product.name} - ${product.category} - \$${product.price}');
-            }
-          } catch (e) {
-            print('   ❌ Error parsing product $i: $e');
-          }
+        allProducts.assignAll(rankedProducts);
+
+        for (var i = 0; i < rankedProducts.length && i < 3; i++) {
+          final product = rankedProducts[i];
+          print(
+            '   Product $i: ${product.name} - ${product.category} - score=${product.recommendationScore}',
+          );
         }
 
-        print('📦 Successfully loaded $successCount/${productsList.length} products');
+        print(
+          '📦 Successfully ranked ${rankedProducts.length}/${productsList.length} products',
+        );
         print('📦 Total products in controller: ${allProducts.length}');
         print('📦 Categories: ${allProducts.map((p) => p.category).toSet()}');
       } else {
@@ -141,81 +137,6 @@ class OutputOutfitController extends GetxController {
       isLoading.value = false;
       print('🏁 Search completed. Loading: ${isLoading.value}');
     }
-  }
-
-  // Helper to parse price
-  double _parsePrice(dynamic price) {
-    if (price == null) return 0.0;
-    if (price is num) return price.toDouble();
-    if (price is String) {
-      // Remove currency symbols and parse
-      final cleaned = price.replaceAll(RegExp(r'[^\d.]'), '');
-      return double.tryParse(cleaned) ?? 0.0;
-    }
-    return 0.0;
-  }
-
-  // Detect category from product name
-  String _detectCategory(String name) {
-    final nameLower = name.toLowerCase();
-
-    // Check for Shoes FIRST - highest priority
-    // This ensures shoes are never categorized as anything else
-    if (nameLower.contains('shoe') ||
-        nameLower.contains('sneaker') ||
-        nameLower.contains('boot') ||
-        nameLower.contains('sandal') ||
-        nameLower.contains('footwear') ||
-        nameLower.contains('loafer') ||
-        nameLower.contains('heel') ||
-        nameLower.contains('slipper')) {
-      return 'Shoes';
-    }
-
-    // Check for Sunglasses
-    if (nameLower.contains('sunglass') ||
-        nameLower.contains('glasses') ||
-        nameLower.contains('eyewear')) {
-      return 'Sunglass';
-    }
-
-    // Check for Bags
-    if (nameLower.contains('bag') ||
-        nameLower.contains('purse') ||
-        nameLower.contains('backpack') ||
-        nameLower.contains('handbag')) {
-      return 'Bag';
-    }
-
-    // Check for Watch
-    if (nameLower.contains('watch') || nameLower.contains('clock')) {
-      return 'Watch';
-    }
-
-    // Check for Upperwear
-    if (nameLower.contains('shirt') ||
-        nameLower.contains('t-shirt') ||
-        nameLower.contains('blouse') ||
-        nameLower.contains('top') ||
-        nameLower.contains('jacket') ||
-        nameLower.contains('coat') ||
-        nameLower.contains('sweater') ||
-        nameLower.contains('hoodie') ||
-        nameLower.contains('dress')) {
-      return 'upperwear';
-    }
-
-    // Check for Lowerwear
-    if (nameLower.contains('pant') ||
-        nameLower.contains('trouser') ||
-        nameLower.contains('pants') ||
-        nameLower.contains('jeans') ||
-        nameLower.contains('short') ||
-        nameLower.contains('skirt')) {
-      return 'lowerwear';
-    }
-
-    return 'upperwear'; // Default
   }
 
   void toggleFeaturedFavorite() async {
