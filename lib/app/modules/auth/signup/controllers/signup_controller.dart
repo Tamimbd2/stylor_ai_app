@@ -67,13 +67,15 @@ class SignupController extends GetxController {
     } catch (e) {
       String errorMessage = e.toString();
       
-      // Handle Common Google Sign In Errors
-      if (errorMessage.contains('ApiException: 10')) {
-        errorMessage = 'Configuration Error (Code 10):\n'
-            '1.  Check SHA-1 fingerprint in Firebase.\n'
-            '2.  Ensure correct google-services.json.\n'
-            '3.  Set Support Email in Firebase Console.';
-        print("❌ GOOGLE SIGN IN ERROR: $errorMessage");
+      // Clean up the error message
+      if (errorMessage.contains('network_error') || errorMessage.contains('SocketException')) {
+        errorMessage = 'Please check your internet connection.';
+      } else if (errorMessage.contains('ApiException: 10')) {
+        errorMessage = 'Configuration Error (Code 10):\nCheck SHA-1 fingerprint in Firebase.';
+      } else if (errorMessage.contains('PlatformException') || errorMessage.contains('ApiException')) {
+        errorMessage = 'Please try again later.';
+      } else if (errorMessage.startsWith('Exception: ')) {
+        errorMessage = errorMessage.substring(11);
       }
 
       Get.snackbar(
@@ -85,7 +87,7 @@ class SignupController extends GetxController {
         margin: const EdgeInsets.all(20),
         borderRadius: 10,
         icon: const Icon(Icons.error_outline, color: Colors.white),
-        duration: const Duration(seconds: 5),
+        duration: const Duration(seconds: 4),
       );
       return false;
     } finally {

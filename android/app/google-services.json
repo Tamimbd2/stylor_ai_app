@@ -7,18 +7,26 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:276093179006:android:a137485988a28d728e342f",
+        "mobilesdk_app_id": "1:276093179006:android:7b5058976f4bf71a8e342f",
         "android_client_info": {
-          "package_name": "com.example.outfit"
+          "package_name": "com.stylorai.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "276093179006-hfvqccv6vr0ib9vb2dbf0796ciqr527s.apps.googleusercontent.com",
+          "client_id": "276093179006-8jebm2ekj3t65gbgg1umo3lmqngqligc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.outfit",
+            "package_name": "com.stylorai.app",
             "certificate_hash": "8edbac03e3b9831badc6b5f17739631e180fc320"
+          }
+        },
+        {
+          "client_id": "276093179006-k4jb0ggmu1hrkfuc4mb6eeqgka88je04.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stylorai.app",
+            "certificate_hash": "8e777fcfbfacbdb497a2772b43aa3354ba769d38"
           }
         },
         {

@@ -40,7 +40,7 @@ class OnboardingController extends GetxController {
 
   void nextPage() {
     if (currentPage.value == onboardingPages.length - 1) {
-      Get.offNamed('/login');
+      Get.offNamed('/auth-login');
     } else {
       pageController.nextPage(
         duration: const Duration(milliseconds: 300),
@@ -55,7 +55,6 @@ class OnboardingController extends GetxController {
       curve: Curves.easeInOut,
     );
   }
-
 
   @override
   void onClose() {

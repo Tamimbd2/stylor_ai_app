@@ -45,12 +45,38 @@ class ApiService extends GetConnect {
         
         // Navigate to login if not already there
         // Using SchedulerBinding to avoid build phase errors if this happens during build
-        Get.offAllNamed('/auth/login');
+        Get.offAllNamed('/auth-login');
       }
       return response;
     });
 
     super.onInit();
+  }
+
+  // Helper to get formatted error message
+  String _getErrorMessage(Response response, [String defaultMessage = 'An error occurred']) {
+    if (response.status.connectionError || response.statusCode == null) {
+      return 'Are you offline? Please check your internet connection.';
+    }
+    if (response.statusCode == 408) {
+      return 'Request timed out. Please try again.';
+    }
+    if (response.status.isServerError) {
+      return 'Server is currently down. Please try again later.';
+    }
+    
+    if (response.body != null) {
+      if (response.body is Map) {
+        return response.body['message'] ?? 
+               response.body['error'] ?? 
+               response.body['msg'] ?? 
+               response.statusText ?? 
+               defaultMessage;
+      } else if (response.body is String && response.body.toString().isNotEmpty) {
+        return response.body.toString();
+      }
+    }
+    return response.statusText ?? defaultMessage;
   }
 
   // Helper to fix avatar URL
@@ -78,22 +104,7 @@ class ApiService extends GetConnect {
       print('❌ Login API Error: ${response.statusCode} - ${response.statusText}');
       print('❌ Login API Body: ${response.body}');
       
-      // Extract error message from response body
-      String errorMessage = 'Login failed';
-      if (response.body != null) {
-        if (response.body is Map) {
-          // Try to get error message from various possible fields
-          errorMessage = response.body['message'] ?? 
-                        response.body['error'] ?? 
-                        response.body['msg'] ?? 
-                        response.statusText ?? 
-                        'Login failed';
-        } else if (response.body is String) {
-          errorMessage = response.body;
-        }
-      }
-      
-      return Future.error(errorMessage);
+      return Future.error(_getErrorMessage(response, 'Login failed'));
     } else {
       print('✅ Login Success: ${response.body}');
       final loginResponse = LoginResponse.fromJson(response.body);
@@ -118,22 +129,7 @@ class ApiService extends GetConnect {
       print('❌ Register API Error: ${response.statusCode} - ${response.statusText}');
       print('❌ Register API Body: ${response.body}');
       
-      // Extract error message from response body
-      String errorMessage = 'Registration failed';
-      if (response.body != null) {
-        if (response.body is Map) {
-          // Try to get error message from various possible fields
-          errorMessage = response.body['message'] ?? 
-                        response.body['error'] ?? 
-                        response.body['msg'] ?? 
-                        response.statusText ?? 
-                        'Registration failed';
-        } else if (response.body is String) {
-          errorMessage = response.body;
-        }
-      }
-      
-      return Future.error(errorMessage);
+      return Future.error(_getErrorMessage(response, 'Registration failed'));
     } else {
       print('✅ Register Success: ${response.body}');
       
@@ -175,7 +171,7 @@ class ApiService extends GetConnect {
     if (response.status.hasError) {
       print('API Error: ${response.statusCode} - ${response.statusText}');
       print('API Body: ${response.body}');
-      return Future.error(response.statusText ?? 'Unknown Error');
+      return Future.error(_getErrorMessage(response, 'Google Login Failed'));
     } else {
       final loginResponse = LoginResponse.fromJson(response.body);
       if (loginResponse.user != null) {
@@ -223,7 +219,7 @@ class ApiService extends GetConnect {
       if (response.status.hasError) {
         print('Upload Error: ${response.statusCode} - ${response.statusText}');
         print('Upload Body: ${response.body}');
-        return Future.error(response.statusText ?? 'Upload Failed');
+        return Future.error(_getErrorMessage(response, 'Upload Failed'));
       } else {
         print('Upload Success: ${response.body}');
         
@@ -293,7 +289,7 @@ class ApiService extends GetConnect {
     if (response.status.hasError) {
       print('Update Profile Error: ${response.statusCode} - ${response.statusText}');
       print('Update Profile Body: ${response.body}');
-      return Future.error(response.statusText ?? 'Update Failed');
+      return Future.error(_getErrorMessage(response, 'Update Failed'));
     } else {
       print('Update Profile Success: ${response.body}');
       try {
@@ -398,7 +394,7 @@ class ApiService extends GetConnect {
     if (response.status.hasError) {
       print('Generate Flat Lay Error: ${response.statusCode} - ${response.statusText}');
       print('Generate Flat Lay Body: ${response.body}');
-      return Future.error(response.statusText ?? 'Generation Failed');
+      return Future.error(_getErrorMessage(response, 'Generation Failed'));
     } else {
       print('Generate Flat Lay Success: ${response.body}');
       if (response.body is Map<String, dynamic>) {
@@ -453,16 +449,7 @@ class ApiService extends GetConnect {
       print('❌ Password Reset Request Error: ${response.statusCode} - ${response.statusText}');
       print('❌ Password Reset Request Body: ${response.body}');
       
-      // Extract error message from response body
-      String errorMessage = 'Failed to send reset code';
-      if (response.body != null && response.body is Map) {
-        errorMessage = response.body['message'] ?? 
-                      response.body['error'] ?? 
-                      response.statusText ?? 
-                      'Failed to send reset code';
-      }
-      
-      throw Exception(errorMessage);
+      throw _getErrorMessage(response, 'Failed to send reset code');
     } else {
       print('✅ Password Reset Request Success: ${response.body}');
       return true;
