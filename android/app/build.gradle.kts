@@ -19,7 +19,6 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = "com.example.outfit"
     compileSdk = flutter.compileSdkVersion
-    // ndkVersion = flutter.ndkVersion
     ndkVersion = "27.0.12077973"
 
     compileOptions {
@@ -53,7 +52,7 @@ android {
     
     packaging {
         jniLibs {
-            keepDebugSymbols.add("**/*.so")
+            // keepDebugSymbols.add("**/*.so")
         }
     }
 
