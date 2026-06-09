@@ -22,7 +22,7 @@ class ProfileController extends GetxController {
 Get personalized outfit recommendations powered by AI.
 Download now and transform your wardrobe!
 
-📱 Download: https://play.google.com/store/apps/details?id=com.example.outfit
+📱 Download: https://play.google.com/store/apps/details?id=com.stylorai.app
     ''';
     
     Share.share(
